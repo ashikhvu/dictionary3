@@ -283,7 +283,7 @@ class Command(BaseCommand):
             if created or not obj.image:
                 # Normalize the name to a filename (e.g., Alfam (f).jpg)
                 for ext in ['jpg', 'png', 'jpeg', 'webp']:
-                    image_path = os.path.join(image_folder, f'{i["item_name"].upper()}.{ext}')
+                    image_path = os.path.join(image_folder, f'{i["item_name"].replace("/","by").upper()}.{ext}')
                     if os.path.exists(image_path):
                         with open(image_path, 'rb') as f:
                             obj.image.save(os.path.basename(image_path), File(f), save=True)
