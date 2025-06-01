@@ -1,0 +1,455 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+{% load custom_filter %}
+
+{% load static %}
+
+{% block body_block %}
+
+<style>
+    @media screen and (max-width:992px) {
+       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+           font-size: 0.75rem;
+       }
+       #profile_img1{
+           width: 13rem;
+           height: 13rem;
+           padding: 0.5rem;
+       }
+       .padding_here{
+           padding: 0.5rem 1rem;
+       }
+   }
+   @media screen and (max-width:568px) {
+       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+           font-size: 0.60rem;
+       }
+       #profile_img1{
+           width: 7rem;
+           height: 7rem;
+           padding: 0.2rem;
+       }
+       .padding_here{
+           padding: 0.5rem 0.5rem;
+       }
+   }
+</style>
+
+<style>
+    .custom-dropdown{
+        background-color: #212529;
+        width: 100%;
+        max-height: 10rem;
+    }
+    .b_s{
+        box-shadow: 10px 10px 10px 10px solid black;
+    }
+    .ts{
+        text-shadow: 0px 0px 2px black ;
+    }
+    .ball{
+        margin-top: 10px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: green;
+    }
+    .mark_images{
+        width: 2rem;
+        height: 2rem;
+    }
+    .large_img{
+        width: 8rem;
+        height: 8rem;
+        opacity: 0.8;
+    }
+    .container1{
+        display: grid;
+        grid-template-rows: repeat(1,25rem);
+        grid-template-columns: repeat(4,1fr);
+    }
+    .container1_tems{
+        margin: 0.1rem;
+    }
+    @media screen and (max-width:992px){
+        .container1{
+            grid-template-columns: repeat(3,1fr);
+        }
+    }
+    @media screen and (max-width:768px) {
+        .container1{
+            grid-template-columns: repeat(2,1fr);
+        }
+        .text_size{
+            font-size: 0.75rem;
+        }
+        .text_size1{
+            font-size: 0.75rem;
+        }
+    }
+    @media screen and (max-width:460px) {
+        .container1{
+            grid-template-rows: repeat(1,16rem);
+            grid-template-columns: repeat(2,1fr);
+        }
+        .text_size{
+            font-size: 0.55rem;
+        }
+        .text_size1{
+            font-size: 0.35rem;
+            /* width: 75%; */
+        }
+    }
+    @media screen and (max-width:700px){
+        .padd-marg-mob-0{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+    @media screen and (max-width:1199px) {
+        .font_size1{
+            font-size: 1.3rem;
+        }
+    }
+    @media screen and (max-width:460px) {
+        .font_size1{
+            font-size: 0.5rem;
+        }
+    }
+    .bill_box_padding{
+        padding: 0.5rem;
+    }
+    @media screen and (max-width:460px) {
+        .bill_box_padding{
+            padding: 0.3rem;
+        }
+        .table th{
+            padding: 0;
+        }
+        .table tr{
+            padding: 0;
+        }
+        .table td{
+            padding: 0.1rem;
+        }
+    }
+    .table_overflow_class{
+        overflow-y: auto;
+        height: 9rem;
+    }
+    @media screen and (max-width:460px) {
+        .table_overflow_class{
+            overflow-y: auto;
+            height: 6rem;
+        }   
+    }
+    .hr_margin{
+        margin-top: 0.5rem;
+    }
+    .my_margin{
+        margin-top: 0.4rem;
+    }
+    @media screen and (max-width:460px) {
+        .hr_margin{
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+        } 
+        .my_margin{
+            margin-top: 0.2rem;
+            margin-bottom: 0rem;
+        }
+    }
+    .status3_margin{
+        margin-left: 0rem;
+    }
+    @media screen and (max-width:460px){
+        .search_font_size{
+            font-size: 0.65rem;
+        }
+        .icon_size{
+            font-size: 0.65rem;
+        }
+        .mark_images{
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        .status2_margin{
+            margin-top: -0.1rem;
+        }
+        .status3_margin{
+            margin-left: -0.5rem;
+        }
+    }
+    img{
+        pointer-events: none;
+    }
+    .btn-custom-color{
+        background-color: rgb(45, 84, 255);
+    }
+    .btn-custom-color:hover{
+        background-color: rgb(88, 119, 255);
+    }
+    .btn-custom-color:active{
+        background-color: rgb(45, 84, 255);
+    }
+</style>
+    <div class="container padd-marg-mob-0">
+        <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">DISPATCHED ORDERS</h3>
+
+        <div class="input-group my-2">
+            <span class="input-group-text bi bi-search icon_size"></span>
+            <input id="search_bill_filter" class="form-control search_font_size" placeholder="search here .." type="text">
+        </div>
+
+        {% if bills %}
+            <div class="container1 scrolling_window_height" style="overflow-y: auto;">
+                <!-- <div class="row"> -->
+            {% for bill in bills %}
+            <div class="container1_tems billbox ">
+                <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 billbox"> -->
+                <div class="position-relative">
+                    <div class="position-absolute start-50 top-0 z-1" style="margin-top: 6rem;margin-left: -4rem;">
+                        {% if bill.status == 'cancelled' %}
+                        <img draggable="false" src="{% static 'images\cross_mark.png' %}" alt="no_image" class="large_img">
+                        {% elif bill.status == 'delivered'  %}
+                        <img draggable="false" src="{% static 'images\tick_mark.png' %}" alt="no_image" class="large_img">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card b_s bill_box_padding mt-2 bg-dark bg-gradient">
+                    <div class="d-flex justify-content-between">
+                        <strong class="ts text-light text_size">{{ bill.billno }}</strong>
+                        <strong class="ts text-light text_size">{% if bill.user.phone %}XX {{ bill.user.phone|cropback:4 }}{% else %}None{% endif %}</strong>
+                        <strong class="ts text-light text_size">{{ bill.created_at|date:'d-m-Y' }}</strong>
+                    </div>
+                    <hr class="hr_margin" style="color: rgb(0, 0, 0);">
+                    <table class="table table-striped table-hover table-overflow mt-0 mb-0">
+                        <thead class="bg-success">
+                            <th class="ps-2 text_size"><small><small>#</small></small></th>
+                            <th class="ps-2 text_size"><small><small>ITEM</small></small></th>
+                            <th class="ps-2 text-end text_size"><small><small>PRICE</small></small></th>
+                            <th class="ps-2 text-end text_size"><small><small>QTY</small></small></th>
+                            <th class="text-end pe-2 text_size"><small><small>TOTAL</small></small></th>
+                        </thead>
+                    </table>
+                    <div class="bg-light table_overflow_class">
+                        <table class="table table-striped table-hover table-overflow">
+                            <tbody id="tbody2"> 
+                                    {% for item in itemlist %}
+                                        {% if item.bill.id == bill.id %}
+                                            <tr>
+                                                <td class="ps-2 text-success fw-bolder text_size"><small><small class="counter_id"></small></small></td>
+                                                <td class="ps-2 text_size"><small><small>{{ item.name|upper }}</small></small></td>
+                                                <td class="ps-0 text_size"><small><small>{{ item.prize }}</small></small></td>
+                                                <td class="ps-2 text_size"><small><small>{{ item.qty }}</small></small></td>
+                                                <td class="text-end pe-2 text_size"><small><small>{{ item.total }}</small></small></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex my_margin justify-content-between">
+                            <div>
+                                <label for="" class="fw-bolder text-light ts text_size"><small>TOTAL</small></label>
+                                <input class="form-control form-control-sm fw-bold text_size" type="text" name="" id="" value="{{ bill.grand_total }}" readonly>
+                            </div>
+                            <div class="text-center ms-1 me-1">
+                                <label for="" class="fw-bolder text-light ts text_size"><small>PAID</small></label>
+                                <input class="form-control form-control-sm fw-bold text-center text_size" type="text" name="" id="" value="{{ bill.paid }}" readonly>
+                            </div>
+                            <div class="text-end">
+                                <label for="" class="fw-bolder text-light ts text-end text_size"><small>BAL</small></label>
+                                <input class="form-control form-control-sm text-end fw-bold text_size" type="text" name="" id="" value="{{ bill.bal }}" readonly>
+                            </div>
+                        </div>
+                        <div class="d-flex my_margin justify-content-between">
+                            <div class="position-relative">
+                                <div class="position-absolute start-50 status2_margin">
+                                    {% if bill.ready_status == "ready" %}
+                                    <img draggable="false" src="{% static 'images/check_mark.png' %}" alt="no-image" class="mark_images">
+                                    {% elif bill.ready_status == "notready" %}
+                                    <img draggable="false" src="{% static 'images/x_mark.png' %}" alt="no-image" class="mark_images">
+                                    {% else %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-warning bg-gradient w-100 me-1 fw-bolder text_size" onclick="order_ready('{{ bill.id }}',$(this))"><small>READY</small></button>
+                            <div class="position-relative">
+                                <div class="position-absolute start-50 status2_margin">
+                                    {% if bill.called_status == "called" %}
+                                    <img draggable="false" src="{% static 'images/check_mark.png' %}" alt="no-image" class="mark_images">
+                                    {% elif bill.called_status == "notcalled" %}
+                                    <img draggable="false" src="{% static 'images/x_mark.png' %}" alt="no-image" class="mark_images">
+                                    {% else %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-warning bg-gradient w-100 fw-bolder text_size" onclick="order_call('{{ bill.user.phone }}','{{ bill.id }}',$(this))"><small>CALLED</small></button>
+                        </div>
+                        <div class="d-flex my_margin">
+                            <!-- <div class="position-relative">
+                                <div class="position-absolute start-0 status3_margin">
+                                    {% if bill.ready_status == "ready" %}
+                                    <img draggable="false" src="{% static 'images/check_mark.png' %}" alt="no-image" class="mark_images">
+                                    {% elif bill.ready_status == "notready" %}
+                                    <img draggable="false" src="{% static 'images/x_mark.png' %}" alt="no-image" class="mark_images">
+                                    {% else %}
+                                    {% endif %}
+                                </div>
+                            </div> -->
+                            <button class="btn btn-sm text-light btn-danger bg-gradient w-100 fw-bolder text_size me-1" onclick="dispatch_order('{{ bill.id }}',$(this))">
+                                <small class="fw-bolder ts">UNDISPATCH</small>
+                            </button>
+                            <button class="btn btn-sm text-light btn-primary bg-gradient w-100 fw-bolder text_size" onclick="delevered_order('{{ bill.id }}',$(this))">
+                                <small class="fw-bolder ts">DELIVERED</small>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+        <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No Bills</h4>
+        {% endif %}
+    </div>
+
+<script>
+    $(document).ready(function(){
+        $('#dispatched_list').addClass('text-light');
+    })
+    $(document).ready(function(){
+        $('.billbox').filter(function(){
+            var row = 1;
+            $(this).find('td .counter_id').filter(function(){
+                $(this).text(row);
+                row=row+1;
+            });
+        })
+    })
+    $(document).ready(function(){
+        $('#search_bill_filter').on('input',function(){
+            var search_data = $(this).val().toLowerCase();
+            $('.billbox').filter(function(){
+                if($(this).text().toLowerCase().indexOf(search_data)===-1){
+                    $(this).hide();
+                }
+                else{
+                    $(this).show();
+                }
+            })
+        })
+    })
+    function order_ready(id,obj){
+        var user_confirm = confirm("Do you want to change the ready status ?");
+        var src_link = obj.prev().find('img').attr('src');
+        if(user_confirm){
+            $.ajax({
+                url : "{% url 'order_ready' %}",
+                type:"POST",
+                data:{
+                    "id":id,
+                    csrfmiddlewaretoken:"{{ csrf_token }}"
+                },
+                success:function(res){
+                    if(src_link.indexOf('x_mark.png')!==-1){
+                        obj.prev().find('img').attr('src','static/images/check_mark.png')
+                    }
+                    else{
+                        obj.prev().find('img').attr('src','static/images/x_mark.png')
+                    }
+                },
+                error:function(res){
+                    alert('failed')
+                }
+            })
+        }
+    }
+    function order_call(phone,id,obj){
+        var user_confirm = confirm(`Do you want to call this [${phone}] number ? `);
+        var src_link = obj.prev().find('img').attr('src');
+        if(user_confirm){
+            $.ajax({
+                url : `{% url 'order_call' %}`,
+                type:"POST",
+                data:{
+                    'id':id,
+                    csrfmiddlewaretoken:'{{ csrf_token }}',
+                },
+                success: function(res){
+                    // if(src_link.indexOf('x_mark.png')!==-1){
+                        window.location.href=`tel:${phone}`
+                        obj.prev().find('img').attr('src','static/images/check_mark.png')
+                    // }
+                    // else{
+                    //     obj.prev().find('img').attr('src','static/images/x_mark.png')
+                    // }
+                },
+                error: function(res){
+                    alert('failed')
+                }
+            })
+        }
+    }
+    function dispatch_order(id,obj){
+        var user_confirm = confirm("Do you want to undispatch the product ? ");
+        if(user_confirm){
+            $.ajax({
+                url:"{% url 'dispatch_order' %}",
+                type:"POST",
+                data:{
+                    "id":id,
+                    csrfmiddlewaretoken:"{{ csrf_token }}"
+                },
+                success:function(res){
+                    obj.parent().parent().parent().attr('hidden',true)
+                    // alert('success')
+                },
+                error:function(error){
+                    alert("failed")
+                }
+            })
+        }
+    }
+    $(document).ready(function(){
+        var height_here = $(window).height()
+        var ten_percent = (height_here*25)/100;
+        $('.scrolling_window_height').height(height_here-ten_percent);
+    })
+    function delevered_order(id,obj){
+        var user_confirm = confirm("Do you want to undispatch the product ? ");
+        if(user_confirm){
+            $.ajax({
+                url:"{% url 'delevered_order' %}",
+                type:"POST",
+                data:{
+                    "id":id,
+                    csrfmiddlewaretoken:"{{ csrf_token }}"
+                },
+                success:function(res){
+                    obj.parent().parent().parent().attr('hidden',true)
+                    // alert('success')
+                },
+                error:function(error){
+                    alert("failed")
+                }
+            })
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        let url = `ws://${window.location.host}/ws/socket-server/`;
+        const chatSocket = new WebSocket(url);
+        chatSocket.onmessage = function(e){
+            let data = JSON.parse(e.data);
+            console.log('Data',data);
+        }
+        $('#form1').on("submit",function(){
+            
+        })
+    })
+</script>
+{% endblock %}

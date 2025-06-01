@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project_curryshop</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <style>
+        .text-hover{
+            color: rgb(124, 124, 124);
+        }
+        .text-hover:hover{
+            color: rgb(255, 255, 255);
+            text-shadow: 0px 0px 1px white;
+        }
+        .bar{
+            padding: 0rem;
+        }
+        .ts{
+            text-shadow: 0px 0px 1px white;
+        }
+        .icon_size{
+            font-size: 1rem;
+        }
+        /* @media screen and (max-width:992px) {
+            .width_adjust{
+                width: 3rem;
+            }
+            .icon_size{
+                font-size: 0.75rem;
+            }
+        } */
+         .count_position1{
+            margin-top: 0.5rem;
+            margin-left: 7rem;
+         }
+         @media screen and (max-width:576px) {
+            .count_position1{
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+                margin-left: 0.8rem;
+            }
+         }
+    </style>
+
+    
+    
+    
+
+    <div class="d-flex bar bg-dark bg-gradient justify-content-between fixed-top" style="margin: 0;">
+        <button class="btn" onclick="history.back()"><i class="bi bi-chevron-left text-light ps-3"></i></button>
+        <a class="navbar-brand p-3 text-light" href="#"><strong>CURRY_SHOP</strong></a>
+        <div></div>
+    </div>
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark width_adjust">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 top">
+                <br><br><br>
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <!-- <li class="nav-item text-hover">
+                        <a id="home" href="{% url 'index' %}" class="nav-link align-middle px-0 text-hover">
+                            <i class="fs-5 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
+                        </a>
+                    </li> -->
+                    <li>
+                        <a id="profile" href="{% url 'profile' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">My Profile</span> 
+                        </a>
+                    </li>
+                    <li>
+                        <a id="all_item" href="{% url 'all_items' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 fa fa-cutlery pe-1"></i> <span class="ms-1 d-none d-sm-inline"> All Items</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="my_order" href="{% url 'my_order' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-geo-alt"></i> <span class="ms-1 d-none d-sm-inline">Order Track</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="billitem" href="{% url 'billitem' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-cart-plus"></i> <span class="ms-1 d-none d-sm-inline">Bill Items</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="new_bill_list" href="{% url 'new_bill_list' %}" class="nav-link px-0 align-middle  text-hover">
+                            {%  if new_bill_count > 0 %}
+                            <div class="position-relative">
+                                <div class="position-absolute count_position1 start-0">
+                                    <span class="ms-2 badge badge-success bg-success">{{ new_bill_count }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <i class="fs-4 bi-cart4"></i> <span class="ms-1 d-none d-sm-inline">New Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="bill_list" href="{% url 'bill_list' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-cart4"></i> <span class="ms-1 d-none d-sm-inline">Bill List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="dispatched_list" href="{% url 'dispatched_list' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi bi-truck"></i> <span class="ms-1 d-none d-sm-inline">Dispatched Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="order_history" href="{% url 'order_history' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi bi-clock-history"></i> <span class="ms-1 d-none d-sm-inline">Order History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="add_item" href="{% url 'add_item' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-plus-square"></i> <span class="ms-1 d-none d-sm-inline">Add Item</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="itemlist" href="{% url 'itemlist' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Item List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="rejected" href="" data-bs-toggle="collapse" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-exclamation-square"></i> <span class="ms-1 d-none d-sm-inline">Rejected Packs</span> </a>
+                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a id="approved" href="" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Approved Packs</span></a>
+                    </li>
+                    <li>
+                        <a id="itemlist" href="{% url 'home' %}" class="nav-link px-0 align-middle  text-hover">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Dictionary</span>
+                        </a>
+                    </li>
+                    <li>
+                        {% if not user.is_authenticated %}
+                        <a id="user_login" href="{% url 'login' %}" class="nav-link px-0 align-middle text-hover">
+                            <i class="fs-4 bi-people "></i> <span class="ms-1 d-none d-sm-inline">Login</span> 
+                        </a>
+                        {% else %}
+                        <a id="user_logout" href="{% url 'logout' %}" class="nav-link px-0 align-middle text-hover">
+                            <i class="fs-4 bi-people "></i> <span class="ms-1 d-none d-sm-inline ">Logout</span> 
+                        </a>
+                        {% endif %}
+                    </li>
+                </ul>
+                <hr>
+                <div class="dropdown pb-4">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if user_data.profile_image %}
+                        <img src="{{ user_data.profile_image.url }}" alt="hugenerd" width="30" height="30" class="rounded-circle text-hover">
+                        {% else %}
+                        <img src="{% static 'images\profile3d.png' %}" alt="hugenerd" width="30" height="30" class="rounded-circle text-hover">
+                        {% endif %}
+                        <span class="d-none d-sm-inline mx-1">{{ user.username|upper }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col py-3">
+            <br>
+            <div class="overflow-y">
+                <br><br>
+                {% if messages %}
+                    {% for i in messages %}
+                    <div id="asd" class="alert alert-{{ i.tags }} alert-dismissible fade show container mt-2" role="alert" style="z-index: 1;">
+                        <strong>Alert !</strong> {{ i }}
+                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close" onclick="$('#asd').hide(3000)"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block body_block %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>    
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</body>
+</html>

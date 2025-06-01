@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style>
+    @media screen and (min-width:801px) {
+      .card_margin{
+        margin: 2rem 3rem 3rem 3rem;
+        margin-top: 1rem;
+      }
+    }
+    @media screen and (max-width:800px) {
+      .card_margin{
+        margin: 1rem 0rem 0rem 0rem;
+      }
+    }
+  </style>
+
+    <div class="card card_margin bg-danger bg-gradient">
+        <div class="card-header">
+            <div class="card-title">
+                <h1 class="text-center p-3 text-light ts">MY DICTIONARY</h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d_card">
+                <ol class="fw-bolder fs-5 ts">
+                    <li><a href="">Learn Words</a></li>
+                    <li><a href="{% url 'test_words' 0 %}">Test Words</a></li>
+                    <li><a href="">Spoken</a></li>
+                    <li><a href="{% url 'dictionary' %}">Eng-Mal Dictionary</a></li>
+                    <li><a href="{% url 'dictionary_add' %}">Add to Dictionary</a></li>
+                    <li><a href="{% url 'index' %}">CURRY_SHOP</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+        $('.hom').addClass('active')
+      })
+  </script>
+
+{% endblock %}

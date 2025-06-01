@@ -1,0 +1,209 @@
+{% extends 'curry_shop_base2.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block body_block %}
+
+<style>
+    .profile_img{
+        /* width: 20rem; */
+        height: 20rem;
+        border-radius: 5%;
+        padding: 1rem;
+        border: 1px solid black;
+    }
+    #form_here{
+        text-transform: uppercase;
+    }
+    input{
+        text-transform: uppercase;
+    }
+    .padding_here{
+        padding: 1rem 2rem;
+    }
+    @media screen and (max-width:992px) {
+        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+            font-size: 0.75rem;
+        }
+        #profile_img1{
+            width: 13rem;
+            height: 13rem;
+            padding: 0.5rem;
+        }
+        .padding_here{
+            padding: 0.5rem 1rem;
+        }
+    }
+    @media screen and (max-width:568px) {
+        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+            font-size: 0.60rem;
+        }
+        #profile_img1{
+            width: 7rem;
+            height: 7rem;
+            padding: 0.2rem;
+        }
+        .padding_here{
+            padding: 0.5rem 0.5rem;
+        }
+    }
+</style>
+
+<div class="container padd-marg-mob-0">
+    <h3 class="bg-dark p-2 text-center text-light rounded mb-3 font_size1">MY PROFILE</h3>
+
+    <div class="padding_here scrolling_window_height" style="overflow-y: auto;">
+        <div class="text-center rounded">
+            <img id="profile_img1" class="profile_img" {% if user_data.profile_image %} src="{{ user_data.profile_image.url }}" {% else %} src="{% static 'images\profile3d.png' %}"{% endif %} alt="">
+            <div class="d-flex justify-content-center mt-2">
+                <small><button class="btn btn-sm btn-danger me-1" type="button" onclick="remove_image()"><span class="bi bi-x-square"></span> Remove</button></small>
+                <button class="btn btn-sm btn-secondary" type="button" onclick="$('#image_field').click()"><label class="bi bi-pencil-square"></label> Edit</button>
+            </div>
+        </div>
+        
+
+        <form id="form_here" action="{% url 'update_userdata' user.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="fw-bold text-uppercase mt-3" for="">username</label>
+            <input class="form-control" type="text" name="username" value="{{ user_data.username }}" id="" readonly>
+
+            <label class="fw-bold text-uppercase mt-3" for="">first name</label>
+            <input class="form-control" type="text" name="first_name" value="{{ user_data.first_name }}" id="" readonly>
+
+            <label class="fw-bold text-uppercase mt-3" for="">last name</label>
+            <input class="form-control" type="text" name="last_name" value="{{ user_data.last_name }}" id="" readonly>
+
+            <label class="fw-bold text-uppercase mt-3" for="">email</label>
+            <input class="form-control" type="email" name="email" value="{{ user_data.email }}" id="" readonly>
+
+            <label class="fw-bold text-uppercase mt-3" for="">phone</label>
+            <input class="form-control" type="text" name="phone" value="{{ user_data.phone }}" id="" readonly>
+
+            <label class="fw-bold text-uppercase mt-3" for="">address</label>
+            <textarea class="form-control" rows="5" name="address" id="">{{ user_data.delivery_address|upper }}</textarea>
+
+            <input type="file" name="image_field" id="image_field" hidden>
+
+            <div class="text-center">
+                <a class="btn btn-outline-danger mt-4" type="button" href="">Cancel</a>
+                <button class="btn btn-outline-primary mt-4" type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+   <!-- Modal 2 -->
+    <div class="modal fade" id="modal_2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+                <form id="order_list_form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Order Reject</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+                    </div>
+                    
+                    <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                        <div id="modal_content" class="modal-body p-3 m-0">
+                            <label class="text-light mb-1" for="">Reason</label>
+                            <textarea id="reason_here" class="form-control bg-dark text-light" name="reject_bill_reason" rows="5" placeholder="Type here the reason ...." required></textarea>
+                            <input id="bill_id_here" name="reject_bill_id" type="number" hidden readonly>
+                        </div>
+                    </div>
+                    <hr class="border pb-0 mb-2">
+                    <div class="d-flex justify-content-end">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div class="modal fade" id="modal_3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+                <form id="order_list_form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+                    </div>
+                    
+                    <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                        <div id="modal_content1" class="modal-body p-3 m-0">
+                            <h5 class="text-light">Do you want to Accept this order ? </h5>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                        <button id="confirm_accept_id" type="button" class="btn btn-outline-warning">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4 -->
+    <div class="modal fade" id="modal_4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Order Reject</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+                    </div>
+                    
+                    <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                        <div id="modal_content" class="modal-body p-3 m-0">
+                            <label class="text-light mb-1" for="">Reason</label>
+                            <textarea id="reason_here2" class="form-control bg-dark text-light" name="reject_bill_reason" rows="5" placeholder="Type here the reason ...." required readonly></textarea>
+                        </div>
+                    </div>
+                    <hr class="border pb-0 mb-2">
+                    <div class="d-flex justify-content-end">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $('#profile').addClass('text-light')
+        $('input[name="username"]').blur();
+    })
+    $(document).ready(function(){
+        var height_here = $(window).height()
+        var ten_percent = (height_here*25)/100;
+        $('.scrolling_window_height').height(height_here-ten_percent);
+    })
+    function remove_image(){
+        $('#profile_img1').attr('src','{% static "images\profile3d.png" %}');
+        $('#image_field').val('');
+    }
+    $(document).ready(function(){
+        $('#image_field').on('change',function(event){
+            var file = event.target.files[0]
+            if (file){
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    $('#profile_img1').attr('src',e.target.result);
+                    $('#profile_img1').show();
+                }
+            }
+            reader.readAsDataURL(file);
+        })
+    })
+
+</script>
+{% endblock %}

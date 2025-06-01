@@ -1,0 +1,90 @@
+{% extends "curry_shop_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<div class="container">
+    <form action="" method = "POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div>
+            <button class="btn btn-success" type="button">Get Current Location</button>
+        </div>
+        <div id="otp_input" class="mb-4" hidden>
+            <label for="">Enter the OTP</label>
+            <input id="my_otp" class="form-control" type="text">
+            <small id="valid_true" class="text-danger fw-bolder" hidden><span class="bi bi-x-circle fw-bolder" ></span> Invalid otp entered</small>
+            <small id="valid_false" class="text-success fw-bolder" hidden><span class="bi bi-check-circle fw-bolder" ></span> Validation success</small>
+        </div>
+        <button id="send_otp" class="btn btn-primary" type="button" onclick="send_otp_here()">Send Validation OTP</button>
+        <div id="validate_num" hidden>
+            <button class="btn btn-sm text-primary p-0" style="text-decoration: underline;" type="button" onclick="send_otp_here()">Resend Otp</button><br>
+            <button class="btn btn-primary mt-2" type="button" onclick="validate_otp()">Validate OTP</button>
+        </div>
+        <button id="submit_btn" class="btn btn-success" type="submit" hidden>Register</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#register').addClass('active');
+        $('input[name="phone"]').attr('type','number')
+        $('input[name="phone"]').attr('min','1')
+        // $('input[name="phone"]').val('9074006756')
+    })
+    function send_otp_here(){
+        var phone = $('input[name="phone"]').val().trim();
+        var phone = parseInt(phone).toString()
+        if(phone!='' && phone.length === 10){
+            $.ajax({
+                url:"{% url 'send_otp' %}",
+                type:"POST",
+                data:{
+                    "phone":$('input[name="phone"]').val(),
+                    csrfmiddlewaretoken:"{{ csrf_token }}"
+                },
+                success:function(res){
+                    alert('Otp send to your number successfully')
+                    $('#otp_input').attr('hidden',false)
+                    $('#send_otp').attr('hidden',true)
+                    $('#validate_num').attr('hidden',false)
+                },
+                error:function(error){
+                    alert('failed')
+                }
+            })
+        }
+        else{
+            alert("Please enter a valid phone number !")
+        }
+    }
+
+    function validate_otp(){
+        var otp_entered = $('#my_otp').val()
+        if(otp_entered!=''){
+            $.ajax({
+                url:"{% url 'verify_otp' %}",
+                type:"POST",
+                data:{
+                    'otp_entered':otp_entered,
+                    csrfmiddlewaretoken:"{{ csrf_token }}"
+                },
+                success:function(res){
+                    $('#validate_num').attr('hidden',true)
+                    $('#submit_btn').attr('hidden',false)
+                    $('#valid_true').attr('hidden',true)
+                    $('#valid_false').attr('hidden',false)
+                },
+                error:function(error){
+                    alert('validation failed')
+                    $('#valid_true').attr('hidden',false)
+                    $('#valid_false').attr('hidden',true)
+                }
+            })
+        }
+        else{
+            alert('Please enter the otp here !')
+        }
+    }
+</script>
+{% endblock %}

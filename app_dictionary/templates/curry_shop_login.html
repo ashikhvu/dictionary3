@@ -1,0 +1,20 @@
+{% extends 'curry_shop_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+<div class="container mt-5">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <a href="{% url 'register' %}" class="my-5">New User Registration</a><br>
+        <button class="btn btn-success my-2" type="submit">LOGIN</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#user_login').addClass('active');
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,557 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+{% load custom_filter %}
+
+{% load static %}
+
+{% block body_block %}
+
+<style>
+    .custom-dropdown{
+        background-color: #212529;
+        width: 100%;
+        max-height: 10rem;
+    }
+    .b_s{
+        box-shadow: 10px 10px 10px 10px solid black;
+    }
+    .ts{
+        text-shadow: 0px 0px 2px black ;
+    }
+    .ball{
+        margin-top: 10px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: green;
+    }
+    .mark_images{
+        width: 2rem;
+        height: 2rem;
+    }
+    .large_img{
+        width: 8rem;
+        height: 8rem;
+        opacity: 0.8;
+    }
+    .my_card{
+        box-shadow: 10px 10px 10px 10px rgba(87, 87, 87, 0.27);
+        height: 19rem;
+        transition: all 0.02s linear;
+        user-select: none;
+        border: 1px solid black;
+        background-color: black;
+    }
+    .dark{
+        background-image: linear-gradient(rgba(0, 0, 0, 0),rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.261),rgba(0, 0, 0, 0.533),black);
+        width: 100%;
+        height: 19rem;
+        border-radius: 7px;
+    }
+    .my_card:active{
+        border: 1px solid rgba(0, 0, 0, 0.285);
+        box-shadow: 10px 10px 10px 10px rgba(87, 87, 87, 0);
+    }
+    .text-red{
+        color: red;
+    }
+    .ts1{
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.578);
+    }
+    .modal_img{
+        width: 4rem;
+        height: 3rem;
+        border-radius: 10px;
+    }
+    .modal_input{
+        background-color: transparent;
+        border: none;
+        color: white;
+        user-select: none;
+        text-align: center;
+    }
+    .modal_input:active{
+        border: none;
+    }
+    .modal_input:focus{
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        color: white;
+    }
+    .table-custom{
+        background-color: black;
+        color: white;
+        width: 100%;
+    }
+    .orderlist_pad{
+        padding-top: 0.6rem;
+    }
+    #modal_content input{
+        padding: 0;
+    }
+    @media screen and (max-width:500px) {
+        #modal_content{
+            font-size: 0.75rem;
+        }
+        #modal_content h6{
+            font-size: 0.75rem;
+        }
+        #modal_content input{
+            font-size: 0.75rem;
+            padding: 0;
+        }
+        .orderlist_pad{
+            padding-top: 0rem;
+        }
+        .modal_img{
+            width: 3rem;
+            height: 2rem;
+            border-radius: 10px;
+        }
+    }
+    .my_order{
+        background-color: black;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+    }
+    .container1{
+        display: grid;
+        grid-template-rows: repeat(1,20rem);
+        grid-template-columns: repeat(4,1fr) ;
+    }
+    .container_items{
+        margin: 0.5rem;
+    }
+    @media screen and (max-width:1199px) {
+        .my_card{
+            height: 12rem;
+        }
+        .icon_size{
+            font-size: 0.75rem;
+        }
+        .font_size{
+            font-size: 0.75rem;
+        }
+        .button_padding{
+            padding: 0.25rem;
+        }
+        .font_size1{
+            font-size: 1.3rem;
+        }
+        .container1{
+            display: grid;
+            grid-template-rows: repeat(1,13.5rem);
+            grid-template-columns: repeat(4,1fr) ;
+        }
+    }
+    @media screen and (max-width:991px){
+        .my_card{
+            height: 14rem;
+        }
+    }
+    @media screen and (max-width:768px){
+        .my_card{
+            height: 15rem;
+        }
+    }
+    @media screen and (max-width:991px){
+        .container1{
+            grid-template-rows: repeat(1,15.5rem);
+            grid-template-columns: repeat(3,1fr);
+        }
+    }
+    @media screen and (max-width:850px){
+        .container1{
+            grid-template-rows: repeat(1,16rem);
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+    @media screen and (max-width:700px){
+        .padd-marg-mob-0{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+    @media screen and (max-width:460px) {
+        .my_card{
+            height: 10rem;
+        }
+        .icon_size{
+            font-size: 0.65rem;
+        }
+        .font_size{
+            font-size: 0.55rem;
+        }
+        .button_padding{
+            padding: 0.15rem;
+        }
+        .font_size1{
+            font-size: 0.5rem;
+        }
+        .container1{
+            grid-template-rows: repeat(1,12rem);
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+    .btn-shadow{
+        box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.466);
+    }
+    .image_height{
+        height: 80%;
+    }
+    @media screen and (max-width:1199px) {
+        .image_height{
+            height: 70%;
+        }
+    }
+    @media screen and (max-width:992px){
+        .image_height{
+            height: 75%;
+        }
+    }
+    @media screen and (max-width:460px) {
+        .image_height{
+            height: 68%;
+        }
+    }
+    .img_map{
+        border-radius: 5px;
+        border: 1px solid white ;
+        padding: 0.3rem;
+        margin-left: 1.3rem;
+    }
+    .img_map:focus{
+        border-color: red;
+    }
+</style>
+
+
+<div class="container padd-marg-mob-0" >
+    
+    <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">ITEMS</h3>
+
+    <div class="input-group my-2">
+        <span class="input-group-text bi bi-search icon_size"></span>
+        <input id="search_bill_filter" class="form-control search_font_size" placeholder="search here .." type="text">
+    </div>
+        {% if all_items %}
+        <!-- <div style="overflow-y: auto;height: 50vh;"> -->
+            <div class="container1 scrolling_window_height" style="overflow-y: auto;">
+                    {% for i in all_items %}
+                        <div class="container_items mt-2 clickhere">
+                        <div class="card my_card position-relative">
+                            <div class="position-absolute h-100 w-100">
+                                <div class="d-flex justify-content-between text-light" style="padding: 0.8rem 1rem;">
+                                    <h5 class="bi bi-heart ts1 icon_size" onclick="$(this).removeClass('bi-heart');$(this).addClass('bi-heart-fill text-red');"></h5>
+                                    <h5 class="bi bi-star ts1 icon_size" onclick="$(this).removeClass('bi-star');$(this).addClass('bi-star-fill text-warning');"></h5>
+                                </div>
+                            </div>
+                            <div class="p-1 rounded image_height">
+                                <a href="" download="{% if i.image %}{{ i.image.url|cropfront:14 }}{% endif %}">
+                                    <img id="item_img{{ i.id }}" {% if i.image %} src="{{ i.image.url }}" {% else %} src="{% static 'images\empy_food1.jpg' %}"{% endif %} class="h-100 w-100 border-secondary border" alt="">
+                                </a>
+                            </div>
+                            <div class="text-light p-1">
+                                <div class="d-flex justify-content-between">
+                                    <h6 id="item_name{{ i.id }}" class="fw-bolder font_size">{{ i.name|upper }}</h6>
+                                    <h6 id="item_price{{ i.id }}" class="fw-bolder font_size">₹{{ i.prize }}</h6>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <small id="item_cat{{ i.id }}" class="font_size">[ {{ i.category|upper }} ]</small>
+                                    <div class="z-2">
+                                        <!-- <button class="btn btn-sm btn-outline-success"><span class="bi bi-cart"></span> Add</button> -->
+                                        <button class="btn btn-sm btn-outline-warning font_size button_padding" data-bs-toggle="modal" data-bs-target="#modal_1" onclick="add_to_order_list('{{ i.id }}')"><span class="bi bi-cart4"></span> Order Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            <!-- </div> -->
+        {% else %}
+        <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No Items Added yet</h4>
+        {% endif %}
+    </div>
+
+    <button onclick="openmodal()" class="btn btn-dark z-3 btn-shadow" style="position: fixed;bottom: 2.5rem;right: 2.5rem;padding: 0.5rem 1rem;">
+        <span class="bi bi-cart"> ORDER</span>
+    </button>
+    
+    <br><br><br><br><br><br>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modal_1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+            <form id="order_list_form" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Order List</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+                </div>
+                
+                <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                    <div id="modal_content" class="modal-body p-0 m-0">
+        
+                    </div>
+                </div>
+                
+                <div class="text-end me-2">
+                    <button type="button" class="btn btn-sm btn-success px- py-0" onclick="$('#modal_1').modal('hide');">Add more</button>
+                </div>
+                <hr class="border pb-0 mb-2">
+                <div class="d-flex justify-content-end">
+                    <h5 class="text-end fw-bolder text-light" for="">Total :</h5>
+                    <input id="grand_total" style="width: 30%;" class="form-control modal_input p-0 fw-bolder text-end pe-4 pb-2" type="number" value="0.00" name="grant_total" readonly>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    <button id="confirm_order_next" type="button" class="btn btn-outline-warning">Place Order</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modal_2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+            <form id="order_list_form2" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Delivery Location</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;" onclick="$('#modal_1').modal('show');"></button>
+                </div>
+                
+                <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                    <div class="d-flex justify-content-between p-3 text-light" style="margin: 0rem 5rem ;">
+                        <div>
+                            <img onclick="$('#current_loc').click()" class="img_map" src="{% static 'images\googlemap.jpg' %}" width="100px" height="100px" alt=""><br>
+                            <input id="current_loc" class="form-check-input" name="choose_loc" type="radio" required>
+                            <label for="current_loc">Current Location</label>
+                        </div>
+                        <div>
+                            <img onclick="$('#home_loc').click()" class="img_map" src="{% static 'images\home_loc.jpg' %}" width="100px" height="100px" alt=""><br>
+                            <input id="home_loc" class="form-check-input" name="choose_loc" type="radio" required>
+                            <label for="home_loc">Home Address</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" onclick="$('#modal_1').modal('show');">Close</button>
+                    <button id="confirm_order_id" type="button" class="btn btn-outline-warning" onclick="$('#order_list_form').submit();">Confirm Order</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- <input id="message-input" type="text"> -->
+
+<script>
+    $('#confirm_order_next').on('click',function(){
+        $('#modal_1').modal('hide');
+        $('#modal_2').modal('show');
+    })
+    $(document).ready(function(){
+        $('#all_item').addClass('text-light');
+    })
+    $(document).ready(function(){
+        $('.billbox').filter(function(){
+            var row = 1;
+            $(this).find('td .counter_id').filter(function(){
+                $(this).text(row);
+                row=row+1;
+            });
+        })
+    })
+    function add_to_order_list(id){
+        var row_count = $('.rowCounterClass').length+1;
+        var item_name = $(`#item_name${id}`).text();
+        var item_price = $(`#item_price${id}`).text().replace('₹','');
+        var item_cat = $(`#item_cat${id}`).text();
+        var item_img = $(`#item_img${id}`).attr('src');
+        var exist = false;
+        $('#modal_content').find('.order_item_id').filter(function(){
+                if(parseInt($(this).val())==parseInt(id)){
+                    exist = true;
+                    alert(`Item "${item_name.toUpperCase()}" Already exist`);
+                }
+        })
+        if(exist==false){
+            $('#modal_content').append(`
+
+            <div id="item_detail${row_count}">
+                <div class="position-relative rowCounterClass">
+                    <div class="position-absolute end-0 top-100" style="margin-top: -0.2rem;margin-right: 0rem;">
+                        <span onclick="clearContent(${row_count},$(this))" class="badge text-bg-danger p-1"><i class="bi bi-x"></i></span>
+                    </div>
+                </div>
+
+                <div class="row  m-2 p-2 border border-secondary rounded text-light">
+                    <div class="col-2">
+                        <input name="item_id" class="order_item_id" value="${id}" hidden/>
+                        <img class="modal_img" src="${item_img}" alt="">
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex" style="flex-direction: row;">
+                            <div>
+                                <h6>${item_name}</h6>
+                                <input type="text" name="ordered_item_name" value="${item_name}" hidden/>
+                                <small> ${item_cat} </small>
+                            </div>
+                            <div class="pt-3 pe-2 ps-3">X</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex orderlist_pad">
+                            <button type="button" class="btn btn-dark" onclick="minus_here($(this))">-</button>
+                            <input class="form-control text-center p-0 ps-1 modal_input qty_val" type="number" name="qty" id="item_qty${row_count}" value="1" min="1" readonly>
+                            <button type="button" class="btn btn-dark" onclick="add_here($(this))">+</button>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <input class="price_val" style="display:none" type="number" name="price" id="item_price_id${row_count}" value="${item_price}" readonly>
+                        <input class="total_price_val form-control modal_input p-0 pt-3 fw-bolder my_total" type="number" name="total_price" id="total_price${row_count}" value="${item_price}" readonly>
+                    </div>
+                </div>
+            </div>
+        `);
+        cal_total();
+        }
+    }
+
+    function clearContent(id,obj){
+        var row_count = parseInt($('.rowCounterClass').length);
+        var user_confirm = confirm('Do you want to clear this item ? ')
+        var gtot = $('#grand_total').val();
+        var tot = obj.parent().parent().parent().find('.my_total').val();
+        if(user_confirm){
+            obj.parent().parent().parent().empty();
+            if(row_count<=1){
+                $('#modal_1').modal('hide');
+            }
+        }
+        $('#grand_total').val(parseFloat(gtot) - parseFloat(tot))
+    }
+    function add_here(obj){
+        var qty = obj.parent().parent().find('.qty_val')
+        var qty_val = parseInt(qty.val())
+        qty.val(qty_val+1);
+        multiply(obj)
+    }
+    function minus_here(obj){
+        var qty = obj.parent().parent().find('.qty_val')
+        var qty_val = parseInt(qty.val())
+        if(qty_val>1){
+            qty.val(qty_val-1);
+            multiply(obj)
+        }
+    }
+    function multiply(obj){
+        var qty = obj.parent().parent().find('.qty_val')
+        var qty_val = parseInt(qty.val())
+        var price = obj.parent().parent().parent().find('.price_val')
+        var price_val = parseFloat(price.val())
+        var total = obj.parent().parent().parent().find('.total_price_val')
+        total.val(qty_val*price_val)
+        cal_total()
+    }
+    function cal_total(){
+        var gtot = 0;
+        $('.my_total').filter(function(){
+            gtot = gtot+ parseFloat($(this).val()) ;
+            console.log($(this).val());
+        })
+        $('#grand_total').val(gtot);
+    }
+    function openmodal(){
+        var row_count = parseInt($('.rowCounterClass').length);
+        if(row_count==0){
+            alert("No Items Added")
+        }
+        else{
+            $('#modal_1').modal('show');
+        }
+    }
+
+    $(document).ready(function () {
+        $('#order_list_form').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'create_order' %}",
+                type: "POST",
+                dataType:"json",
+                data: $("#order_list_form").serialize(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                success: function (res) {
+                    // alert('success')
+                    $('#modal_1').modal('hide');
+                    $('#modal_2').modal('hide');
+                    $('#modal_content').empty();
+                },
+                error: function (error) {
+                    alert('failed');
+                }
+            });
+        });
+    });
+    $(document).ready(function(){
+        var height_here = $(window).height()
+        var ten_percent = (height_here*25)/100;
+        $('.scrolling_window_height').height(height_here-ten_percent);
+    })
+    $(document).ready(function(){
+        $('#search_bill_filter').on('input',function(){
+            var input_data = $(this).val().toLowerCase()
+            $('.container_items').filter(function(){
+                console.log($(this).parent().html())
+                if($(this).text().toLowerCase().indexOf(input_data)===-1){
+                    $(this).hide();
+                }
+                else{
+                    $(this).show();
+                }
+            })
+        })
+    })
+</script>
+
+<script>
+     $(document).ready(function() {
+        // Initialize WebSocket connection
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/live_message/');
+
+        // When a message is received from the WebSocket
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            $('#live-message').text(data.message);  // Update the #live-message element with the received message
+        };
+
+        // Handle WebSocket closure
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        // Function to send a message via WebSocket
+        function sendMessage(message) {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+        }
+
+        // You can call sendMessage when needed, for example, on a button click or form submission
+        $('#confirm_order_id').click(function() {
+            const message = $('#message-input').val();
+            sendMessage(message);  // Send the message through WebSocket
+            $('#message-input').val('');  // Optionally clear the input field
+        });
+    });
+</script>
+{% endblock %}

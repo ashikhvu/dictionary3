@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <style>
+      @media screen and (min-width:801px) {
+        .card_margin{
+          margin: 2rem 3rem 3rem 3rem;
+          margin-top: 1rem;
+        }
+      }
+      @media screen and (max-width:800px) {
+        .card_margin{
+          margin: 1rem 0rem 0rem 0rem;
+        }
+      }
+    </style>
+
+
+    <div class="card card_margin bg-danger bg-gradient">
+        <div class="card-header">
+            <div class="card-title">
+                <h1 class="text-center p-3 text-light ts">Test Words</h1>
+            </div>
+            {% if messages %}
+            {% for i in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Saved !</strong> {{ i }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="card-body">
+          <!-- <table id="table1" class="table table-bordered text-center table-dark bg-dark bg-gradient table-hover">
+            <thead>
+                <th>English</th>
+                <th>English</th>
+            </thead>
+            <tbody class="table_bod">
+              <tr>
+                <td>
+                  <input name="eng[]" class="form-control input_color1" value="{{ dict.eng_word }}" type="text" readonly required>
+                </td>
+                <td>
+                  <input name="mal[]" class="form-control input_color1" value="{{ dict.mal_word }}" type="text" readonly required>
+                </td>
+              </tr>
+            </tbody>
+          </table> -->
+          <div style="background-color: black;" class="bg-gradient rounded p-3">
+            <div class="position-relative" style="z-index: 1;">
+              <div class="position-absolute end-0">
+                <a class="btn btn-sm btn-outline-warning" href="{% url 'edit_word' dict.id %}"><span class="bi bi-pencil"></span></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 pb-3">
+                <p class="text-center fw-bolder text-light" for="">English</p>
+                <hr style="border-color: white;">
+                <input name="eng[]" class="form-control input_color1 bg-light" value="{{ dict.eng_word }}" type="text" readonly required>
+              </div>
+              <div class="col-md-6 pb-3">
+                <p class="text-center fw-bolder text-light" for="">Malayalam</p>
+                <hr style="border-color: white;">
+                <input name="mal[]" class="form-control input_color1 bg-light" value="{{ dict.mal_word }}" type="text" readonly required>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-content-center text-center ">
+            <a class="btn btn-light mt-3" href="{% url 'test_words' 0 %}">Reset</a>
+            <a class="btn btn-light mt-3" href="{% url 'prev_word' dict.id %}">Previous</a>
+            <a class="btn btn-light mt-3 px-4" href="{% url 'next_word' dict.id %}">Next</a>
+          </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+        $('.test_w').addClass('active')
+      })
+  </script>
+
+{% endblock %}
+
+
+</body>
+</html>
