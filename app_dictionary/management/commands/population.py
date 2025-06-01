@@ -2,6 +2,7 @@ from app_dictionary.models import ItemModel
 from django.core.management.base import BaseCommand
 import os
 from django.core.files import File
+from django.conf import settings
 
 class Command(BaseCommand):
     help = "Populate Item Model with predefined items"
@@ -265,6 +266,10 @@ class Command(BaseCommand):
                 "category":"food"
             }
         ]
+
+        image_folder = os.path.join(settings.BASE_DIR, 'static', 'images', 'foods')
+
+
         for i in item_names_and_prices:
             obj,created = ItemModel.objects.get_or_create(
                 name=i["item_name"],
@@ -278,7 +283,7 @@ class Command(BaseCommand):
             if created or not obj.image:
                 # Normalize the name to a filename (e.g., Alfam (f).jpg)
                 for ext in ['jpg', 'png', 'jpeg', 'webp']:
-                    image_path = os.path.join(image_folder, f'{i["item_name"]}.{ext}')
+                    image_path = os.path.join(image_folder, f'{i["item_name"].upper()}.{ext}')
                     if os.path.exists(image_path):
                         with open(image_path, 'rb') as f:
                             obj.image.save(os.path.basename(image_path), File(f), save=True)
