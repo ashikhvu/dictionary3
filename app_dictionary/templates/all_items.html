@@ -437,8 +437,8 @@
             if(row_count<=1){
                 $('#modal_1').modal('hide');
             }
+            $('#grand_total').val(parseFloat(gtot) - parseFloat(tot))
         }
-        $('#grand_total').val(parseFloat(gtot) - parseFloat(tot))
     }
     function add_here(obj){
         var qty = obj.parent().parent().find('.qty_val')

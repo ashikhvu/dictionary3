@@ -32,6 +32,9 @@
               </div>
               <div class="col-md-3 my-2">
                 <div class="d-flex justify-content-between">
+                  <button class="btn btn-sm btn-dark" onclick="hide_all()" id="hide">Hide All</button>
+                  <button class="btn btn-sm btn-dark" onclick="unhide_all()" id="unhide" hidden>Unhide All</button>
+                  <button class="btn btn-sm btn-secondary" onclick="test()" >Test</button>
                   <a class="btn btn-warning" href="{% url 'delete_all' %}">Delete All</a>
                   <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal1" >confirm delete</button>
                 </div>
@@ -65,7 +68,7 @@
             <tbody class="table_bod" id="tbody1">
               {% if dict %}
                 {% for i in dict %}
-                <tr onclick="window.location.href = `{% url 'test_words' i.id %}`">
+                <tr id="index{{ forloop.counter }}" onclick="window.location.href = `{% url 'test_words' i.id %}`" class="diction_field">
                   <td style="width: 0.5rem;padding: 1rem 1rem;padding-right: 0rem;">{{ forloop.counter }}</td>
                   <td>
                     <input name="eng[]" class="fw-bolder form-control input_color1 engText bg-light" type="text" value="{{ i.eng_word | upper }}" readonly>
@@ -107,6 +110,57 @@
       })
     })
   </script>
+
+  <script>
+    function hide_all(){
+      $("#hide").attr("hidden",true)
+      $("#unhide").attr("hidden",false)
+      $('.diction_field ').hide()
+    }
+  </script>
+
+   <script>
+      function unhide_all(){
+        $("#unhide").attr("hidden",true)
+        $("#hide").attr("hidden",false)
+        $('.diction_field ').show()
+
+
+
+        
+      }
+    </script>
+
+    <script>
+
+      var index_register = []
+      const diction_field_count = $('.diction_field').length
+      // const diction_field_count = 10
+      for(i=0;i<diction_field_count;i++){
+        index_register[i]=i+1;
+      }
+      // alert(`length ${diction_field_count}\n\n [${index_register}]`)
+
+
+      function test(){
+        var random_index_number = Math.floor(Math.random()*index_register.length);
+        var removing_number = index_register[random_index_number]
+
+        index_register.splice(random_index_number,1)
+        
+        // alert(`
+        //     \n\nRANDOM INDEX: ${random_index_number}
+        //     \n\n REMOVING INDEX NUMBER: ${random_index_number}
+        //     \n\n REMOVED NUMBER: ${removing_number}
+        //     \n\n [${index_register}]`
+        // )
+        if(removing_number!=null){
+          $('.diction_field ').hide()
+          $(`#index${removing_number}`).show();
+        }
+      }
+
+    </script>
 {% endblock %}
 
 
