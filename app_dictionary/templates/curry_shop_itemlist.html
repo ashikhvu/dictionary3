@@ -1,0 +1,98 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+<style>
+     @media screen and (max-width:992px) {
+        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+            font-size: 0.75rem;
+        }
+        #profile_img1{
+            width: 13rem;
+            height: 13rem;
+            padding: 0.5rem;
+        }
+        .padding_here{
+            padding: 0.5rem 1rem;
+        }
+    }
+    @media screen and (max-width:568px) {
+        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+            font-size: 0.60rem;
+        }
+        #profile_img1{
+            width: 7rem;
+            height: 7rem;
+            padding: 0.2rem;
+        }
+        .padding_here{
+            padding: 0.5rem 0.5rem;
+        }
+    }
+</style>
+
+<div class="container">
+
+    <h3 class="bg-dark p-2 text-center text-light rounded mb-4">ITEM LIST</h3>
+    {% if items %}
+    <div class="mb-3 input-group">
+        <span class="input-group-text bi bi-search"></span>
+        <input id="search_item_id" class="form-control" type="text">
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+
+        {% if items %}
+
+        <table class="table table-success table-striped table-hover">
+            <thead>
+                <th>#</th>
+                <th>NAME</th>
+                <th>CATEGORY</th>
+                <th>QTY</th>
+                <th>PRIZE</th>
+            </thead>
+            <tbody id="tbody1">
+                {% for i in items %}
+                <tr onclick="window.location.href=`{% url 'item_details' i.id %}`">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.name|upper }}</td>
+                    <td>{{ i.category|upper }}</td>
+                    <td>{{ i.qty }}</td>
+                    <td>{{ i.prize }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+
+        <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No items</h4>
+
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#itemlist').addClass('text-light');
+    })
+    $(document).ready(function(){
+        $('#search_item_id').on('input',function(){
+            search_text = $(this).val().toLowerCase();
+            $('table #tbody1 tr').filter(function(){
+                if($(this).text().toLowerCase().indexOf(search_text)===-1){
+                    console.log(`${$(this).text()}-no`)
+                    $(this).hide()
+                }
+                else{
+                    console.log(`${$(this).text()}-yes`)
+                    $(this).show()
+                }
+            })
+        })
+    })
+</script>
+
+{% endblock %}

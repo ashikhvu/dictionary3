@@ -1,0 +1,263 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+<style>
+    @media screen and (max-width:992px) {
+       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+           font-size: 0.75rem;
+       }
+       #profile_img1{
+           width: 13rem;
+           height: 13rem;
+           padding: 0.5rem;
+       }
+       .padding_here{
+           padding: 0.5rem 1rem;
+       }
+   }
+   @media screen and (max-width:568px) {
+       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+           font-size: 0.60rem;
+       }
+       #profile_img1{
+           width: 7rem;
+           height: 7rem;
+           padding: 0.2rem;
+       }
+       .padding_here{
+           padding: 0.5rem 0.5rem;
+       }
+   }
+</style>
+
+<style>
+    .custom-dropdown{
+        background-color: #212529;
+        width: 100%;
+        max-height: 10rem;
+    }
+</style>
+
+<form action="{% url 'addbill' %}" method="POST">
+    {% csrf_token %}
+    <div class="container">
+    
+        <h3 class="bg-dark p-2 text-center text-light rounded mb-4">BILL ITEMS</h3>
+        {% if items %}
+    
+        <div class="position-relative" style="z-index: 1;">
+            <div class="mb-3 input-group">
+                <span class="input-group-text bi bi-search"></span>
+                <input id="search_item_id" class="form-control" type="text" onclick="$('#toggle_dropdown').toggle()">
+            </div>
+            <div class="position-absolute w-100">
+                <div id="toggle_dropdown" class="custom-dropdown rounded text-light" style="overflow-y: auto;" onclick="$('#toggle_dropdown').toggle()">
+                    <div class="">
+                        <table class="table table-dark table-striped table-hover py-0">
+                            <tbody id="tbody1">
+                                {% for i in items %}
+                                <tr onclick="addtotable($(this),'{{ i.id }}')">
+                                    <td id="one{{ i.id }}">{{ forloop.counter }}</td>
+                                    <td id="two{{ i.id }}">{{ i.name|upper }}</td>
+                                    <td id="three{{ i.id }}" class="text-end">{{ i.prize }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    
+        <table class="table table-light table-striped table-hover">
+            <thead>
+                <th>Name</th>
+                <th>Prize</th>
+                <th>QTY</th>
+                <th class="text-end">TOTAL</th>
+            </thead>
+            <tbody id="tbody2">
+                
+            </tbody>
+        </table>
+
+        <div class="text-end mb-3">
+            <button class="btn btn-sm btn-danger rounded" type="button" onclick="additionalItem()"><i class="fa fa-solid fa-plus"></i> Item</button>
+        </div>
+    
+        <div class="row">
+            <div class="col-sm-2 col-lg-3">
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2 ">
+                <label for="grnd_total" class="fw-bolder text-end pt-2">GRAND TOTAL</label>
+            </div>
+            <div class="col-lg-3">
+                <div>
+                    <input name="grnd_total" id="grnd_total" class="form-control text-end" type="number" value="0" readonly required>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-3">
+            <div class="col-sm-2 col-lg-3">
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2 ">
+                <label for="paid_amount" class="fw-bolder text-end pt-2">AMOUNT PAID</label>
+            </div>
+            <div class="col-lg-3">
+                <div>
+                    <input name="paid_amount" id="paid_amount" min="0" onblur="calculate_balance()" class="form-control text-end" type="number" placeholder="0" required>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-3">
+            <div class="col-sm-2 col-lg-3">
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2 ">
+                <label for="bal_amount" class="fw-bolder text-end pt-2">BAL AMOUNT</label>
+            </div>
+            <div class="col-lg-3">
+                <div>
+                    <input name="bal_amount" id="bal_amount" class="form-control text-end" type="number" placeholder="0" value="0" readonly required>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="text-center mt-5">
+            <button class="btn btn-danger me-2" onclick="clear_all()" type="button">Clear</button>
+            <button class="btn btn-success me-2" type="submit">Bill items</button>
+            <button class="btn btn-primary" type="submit" name="billnext">Bill next</button>
+        </div>
+    
+    </div>
+</form>
+
+<script>
+    $(document).ready(function(){
+        $('#search_item_id').on('input',function(){
+            filtercall($(this));
+        })
+    })
+    function filtercall(e){
+        search_text = e.val().toLowerCase();
+        $('table #tbody1 tr').filter(function(){
+            if($(this).text().toLowerCase().indexOf(search_text)===-1){
+                console.log(`${$(this).text()}-no`);
+                $(this).hide();
+            }
+            else{
+                console.log(`${$(this).text()}-yes`);
+                $(this).show();
+            }
+        })
+    }
+    $(document).ready(function(){
+        $('#toggle_dropdown').hide();
+    })
+    function addtotable(obj,id){
+        var id_val= $(`#one${id}`).text();
+        var name= $(`#two${id}`).text();
+        var prize= $(`#three${id}`).text();
+
+        var rowCount = $('#tbody2 tr').length+1;
+
+        $('#tbody2').append(`
+        <tr id="row${rowCount}">
+            <td>
+                <input name="itemname" class="form-control" type="text" value="${name}"readonly>
+            </td>
+            <td>
+                <input name="itemprize" id="prize${rowCount}" oninput="mul_prize(${rowCount})" class="form-control" type="number" min="0" value="${prize}">
+            </td>
+            <td>
+                <input name="itemqty" id="qty${rowCount}" oninput="mul_prize(${rowCount})" class="form-control" type="number" value="1" min="0">
+            </td>
+            <td class="text-end">
+                <div class="position-relative" onclick="clearContent(${rowCount})">
+                    <div class="position-absolute end-0 top-100" style="margin-top: -1rem;margin-right: -1rem;">
+                        <span class="badge text-bg-danger p-1"><i class="bi bi-x"></i></span>
+                    </div>
+                </div>
+                <input name="itemtotal" id="totprize${rowCount}" class="form-control totprizeClass" type="number" value="${prize}" readonly>
+            </td>
+        </tr>
+        `);
+        $('#search_item_id').val('');
+        filtercall($('#search_item_id'));
+        grandTotalCalculate();
+        calculate_balance();
+    }
+    
+    function clearContent(rowCount){
+        var userconfirm = confirm('Are You want to clear the row ?');
+        if(userconfirm)
+        {
+            $(`#row${rowCount}`).html('');
+        }
+    }
+    function mul_prize(rowCount){
+        var qty = $(`#qty${rowCount}`).val();
+        var totprize = $(`#prize${rowCount}`).val();
+        $(`#totprize${rowCount}`).val(qty*totprize);
+        grandTotalCalculate();
+        calculate_balance();
+    }
+    function grandTotalCalculate(){
+        var grand_tot = 0;
+        $('#tbody2 tr .totprizeClass').filter(function(){
+            grand_tot = grand_tot + parseInt($(this).val());
+        })
+        $('#grnd_total').val(grand_tot);
+    }
+    function clear_all(){
+        var userconfirm = confirm('Do you want to cancel this bill ?');
+        if(userconfirm){
+            $('#tbody2').html('');
+        }
+    }
+    function calculate_balance(){
+        $('#bal_amount').val(parseInt($('#paid_amount').val())-parseInt($('#grnd_total').val()))
+    }
+    function additionalItem(){
+        var rowCount = $('#tbody2 tr').length+1;
+
+        $('#tbody2').append(`
+        <tr id="row${rowCount}">
+            <td>
+                <input name="itemname" class="form-control" type="text" placeholder="Item Name Here" required>
+            </td>
+            <td>
+                <input name="itemprize" id="prize${rowCount}" oninput="mul_prize(${rowCount})" class="form-control" type="number" min="0" placeholder="----">
+            </td>
+            <td>
+                <input name="itemqty" id="qty${rowCount}" oninput="mul_prize(${rowCount})" class="form-control" type="number" value="" min="0" placeholder="----">
+            </td>
+            <td class="text-end">
+                <div class="position-relative" onclick="clearContent(${rowCount})">
+                    <div class="position-absolute end-0 top-100" style="margin-top: -1rem;margin-right: -1rem;">
+                        <span class="badge text-bg-danger p-1"><i class="bi bi-x"></i></span>
+                    </div>
+                </div>
+                <input name="itemtotal" id="totprize${rowCount}" oninput="grandTotalCalculate()" class="form-control totprizeClass" type="number" placeholder="0" required>
+            </td>
+        </tr>
+        `);
+    }
+    $(document).ready(function(){
+        $('#billitem').addClass('text-light');
+    })
+</script>
+
+{% endblock %}

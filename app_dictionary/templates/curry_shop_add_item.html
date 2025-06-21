@@ -1,0 +1,56 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+<style>
+    @media screen and (max-width:992px) {
+       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+           font-size: 0.75rem;
+       }
+       #profile_img1{
+           width: 13rem;
+           height: 13rem;
+           padding: 0.5rem;
+       }
+       .padding_here{
+           padding: 0.5rem 1rem;
+       }
+   }
+   @media screen and (max-width:568px) {
+       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+           font-size: 0.60rem;
+       }
+       #profile_img1{
+           width: 7rem;
+           height: 7rem;
+           padding: 0.2rem;
+       }
+       .padding_here{
+           padding: 0.5rem 0.5rem;
+       }
+   }
+</style>
+
+<div class="container">
+
+    <h3 class="bg-dark p-2 text-center text-light rounded mb-4">ADD ITEM</h3>
+
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="text-center">
+            <button class="btn btn-primary me-2" name="add_item" type="submit">Add Item</button>
+            <button class="btn btn-success" name="add_next" type="submit">Add Next</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add_item').addClass('text-light');
+    })
+</script>
+
+{% endblock %}

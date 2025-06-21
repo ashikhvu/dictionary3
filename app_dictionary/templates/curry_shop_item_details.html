@@ -1,0 +1,28 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+
+<div class="container">
+
+    <h3 class="bg-dark p-2 text-center text-light rounded mb-4">ADD ITEM</h3>
+
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="text-center">
+            <a class="btn btn-info me-2" href="{% url 'itemlist' %}"> <i class="bi bi-reply"></i> Back</a>
+            <button class="btn btn-warning me-2" name="update" onclick="return confirm('Do you want to save the changes?')" type="submit">Update</button>
+            <a href="{% url 'delete_item' item.id %}" class="btn btn-danger" onclick="return confirm(`Do you want to to delete '{{item.name|upper}}'`)" name="delete">Delete</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#add_item').addClass('text-light');
+    })
+</script>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'curry_shop_base.html' %}
+
+{% load static %}
+
+{% load custom_filter %}
+
+{% block body_block %}
+
+<br><br>
+<div>
+    <!-- <div class="container"> -->
+        <img src="{% static 'images\lettuce_1.jpg' %}" class="w-100" alt="asd">
+    <!-- </div> -->
+</div>
+
+<div class="container mt-3">
+    {% if item_list %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if item_list.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ item_list.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for i in 1|range_fn:item_list.paginator.num_pages %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endfor %}
+            {% if item_list.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ item_list.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item {% if not item_list.has_previous %}disabled{% endif %}"><a class="page-link" href="?page={% if item_list.has_previous %}{{ item_list.previous_page_number }}{% endif %}">Previous</a></li>
+                {% for i in 1|range_fn:item_list.paginator.num_pages %}
+                <li class="page-item"><a id="page_id{{ i }}" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+                
+                <li class="page-item {% if not item_list.has_next %}disabled{% endif %}"><a class="page-link" href="?page={% if item_list.has_next %}{{ item_list.next_page_number }}{% endif %}">Next</a></li>
+                
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#search_id').on('input',function(){
+            var text_data = $(this).val().toLowerCase()
+            $('#table1 tbody tr').filter(function(){
+                if( $(this).text().toLowerCase().indexOf(text_data)===-1 ){
+                    $(this).hide()
+                }
+                else{
+                    $(this).show()
+                }
+            })
+            console.log(text_data)
+        })
+
+        var param = new URLSearchParams(window.location.search);
+        var search_param = param.get('page');
+        $(`#page_id${search_param}`).addClass('active');
+    })
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('#home').addClass('active');
+    })
+</script>
+
+{% endblock %}

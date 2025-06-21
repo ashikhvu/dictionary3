@@ -1,0 +1,50 @@
+.body{
+    background-color: gray;
+}
+.d_card{
+    width: 20rem;
+    height: 30rem;
+    margin-left: 0rem;
+    margin: auto;
+    cursor: pointer;
+    color: rgb(206, 206, 206);
+    transition: all 0.2s linear;
+}
+.d-card h1{
+    cursor: pointer;
+}
+.d_card a{
+    text-decoration: none;
+    color: rgb(206, 206, 206);
+    transition: all 0.1s linear;
+}
+.d_card li:hover a{
+    color: white;
+    transition: all 0.1s linear;
+}
+.d_card li{
+    padding-left: 3rem;
+    color: rgb(206, 206, 206);
+    transition: all 0.2s linear;
+    user-select: none;
+}
+.d_card li:hover{
+    color: rgb(255, 255, 255);
+    text-shadow: 0px 0px 5px white;
+    transition: all 0.2s linear;
+}
+.ts{
+    text-shadow: 2px 2px 2px black;
+}
+.ts-sm{
+    text-shadow: 1px 1px 1px black;
+}
+.input_color1{
+    background-color: rgb(197, 197, 197);
+}
+.text_last{
+    text-align: end;
+}
+.text_start{
+    text-align: start;
+}

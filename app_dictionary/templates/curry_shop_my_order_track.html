@@ -1,0 +1,410 @@
+{% extends 'curry_shop_base2.html' %}
+
+{% load crispy_forms_tags %}
+{% load custom_filter %}
+
+{% load static %}
+
+{% block body_block %}
+
+<style>
+    
+    @media screen and (max-width:1199px) {
+        .font_size1{
+            font-size: 1.3rem;
+        }
+    }
+    @media screen and (max-width:460px) {
+        .font_size1{
+            font-size: 0.5rem;
+        }
+    }
+    .progress_bar1{
+        border-left: 5px solid rgb(9, 185, 9);
+        height: 4.5rem;
+        border-radius: 5px;
+        margin-top: 2.3rem;
+        margin-left: 0.65rem;
+        border-radius: 50%;
+    }
+    .progress_bar{
+        border-left: 5px solid rgb(179, 227, 179);
+        height: 4.5rem;
+        border-radius: 5px;
+        margin-top: 2.3rem;
+        margin-left: 0.65rem;
+        border-radius: 50%;
+    }
+    .bg_check_round{
+        background-color: rgb(0, 128, 0);
+        border-radius: 50%;
+        padding:  0rem 0.2rem;
+    }
+    .bg_x_round{
+        background-color: rgb(211, 0, 0);
+        border-radius: 50%;
+        padding:  0rem 0.2rem;
+    }
+    .progress_icons{
+        font-size: 1.5rem;
+    }
+    /* @media screen and (min-width:768px) and (max-width:971px) { */
+    @media screen and (max-width:971px) {
+        .progress_bar1{
+            border-left: 5px solid rgb(9, 185, 9);
+            height: 4.5rem;
+            border-radius: 5px;
+            margin-top: 2.3rem;
+            margin-left: 0.65rem;
+            border-radius: 50%;
+        }
+        .progress_bar{
+            border-left: 5px solid rgb(179, 227, 179);
+            height: 4.5rem;
+            border-radius: 5px;
+            margin-top: 2rem;
+            margin-left: 0.65rem;
+            border-radius: 50%;
+        }
+        .text_size3{
+            font-size: 1rem;
+        }
+        .text_size4{
+            font-size: 0.65rem;
+        }
+    }
+    .padding_progressbar_collection{
+        padding-left: 3rem;
+    }
+    @media screen and (max-width:480px) {
+        .padding_progressbar_collection{
+            padding-left: 1rem;
+        }
+    }
+    .thin_border{
+        margin-top: 1rem;
+        border: 2px solid green;
+        box-shadow: 1px 1px 5px 5px rgba(0, 128, 0, 0.4);
+        border-radius: 10px;
+        padding: 1rem;
+        background-color: rgb(32, 32, 32);
+        color: white;
+    }
+
+    .thin_border1{
+        margin-top: 1rem;
+        border: 2px solid red;
+        box-shadow: 1px 1px 5px 5px rgba(255, 0, 0, 0.4);
+        border-radius: 10px;
+        padding: 1rem;
+        background-color: rgb(195, 0, 0);
+        color: white;
+    }
+
+    .thin_border2{
+        margin-top: 1rem;
+        border: 2px solid black;
+        box-shadow: 1px 1px 5px 5px rgba(255, 166, 0, 0.4);
+        border-radius: 10px;
+        padding: 1rem;
+        background-color: black;
+        color: white;
+    }
+    .ts{
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+    }
+    .side_border{
+        border-left: 2px solid rgb(255, 255, 255);
+        border-right: 2px solid rgb(255, 255, 255);
+        border-radius: 10px;
+    }
+</style>
+
+<div class="container">
+    <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">Track Order</h3>
+    <div class="row mt-5">
+        <div class="col-12 col-sm-12 col-md-6">
+            <div class="d-flex flex-column padding_progressbar_collection">
+
+                <div class="row">
+                    <div class="position-relative">
+                        <div class="position-absolute">
+                            <div class="
+                            {% if bill.delevered_time %}
+                                progress_bar1
+                            {% else %}
+                                progress_bar
+                            {% endif %}"></div>
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-1">
+                        <div class="
+                        {% if bill.delevered_time %}
+                            bi bi-geo-alt-fill
+                        {% else %}
+                            bi bi-geo-alt
+                        {% endif %} text-success progress_icons"></div>
+                    </div>
+                    <div class="col-10">
+                        <h5 class="pt-2 text_size3">Delivered</h5>
+                        <div class="d-flex">
+                            <small class="text_size4">{% if bill.delevered_time %}{{ bill.delevered_time }}{% else %}time and date{% endif %}</small>
+                            {% if bill.delevered_time %}
+                                <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
+                            {% else %}
+                            <!-- <small><small class="bi bi-x text-light bg_x_round ms-2"></small></small> -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-5">
+                    <div class="position-relative">
+                        <div class="position-absolute">
+                            <div class="
+                            {% if bill.dispatched_time %}
+                                progress_bar1
+                            {% else %}
+                                progress_bar
+                            {% endif %}
+                            "></div>
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-1">
+                        <div class="
+                        {% if bill.dispatched_time %}
+                            bi bi-truck-front-fill
+                        {% else %}
+                            bi bi-truck-front
+                        {% endif %}
+                         text-success progress_icons"></div>
+                    </div>
+                    <div class="col-10">
+                        <h5 class="pt-2 text_size3">Food Item Dispatched</h5>
+                        <div class="d-flex">
+                            <small class="text_size4">{% if bill.dispatched_time %}{{ bill.dispatched_time }}{% else %}time and date{% endif %}</small>
+                            {% if bill.dispatched_time %}
+                                <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
+                            {% else %}
+                                <!-- <small><small class="bi bi-x text-light bg_x_round ms-2"></small></small> -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="position-relative">
+                        <div class="position-absolute">
+                            <div class="
+                            {% if bill.packed_time %}
+                                progress_bar1
+                            {% else %}
+                                progress_bar
+                            {% endif %}
+                            "></div>
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-1">
+                        <div class="
+                        {% if bill.packed_time %}
+                            bi bi-box-fill
+                        {% else %}
+                            bi bi-box
+                        {% endif %} text-success progress_icons"></div>
+                    </div>
+                    <div class="col-10">
+                        <h5 class="pt-2 text_size3">Food Item Packed</h5>
+                        <div class="d-flex">
+                            <small class="text_size4">{% if bill.packed_time %}{{ bill.packed_time }}{% else %}time and date{% endif %}</small>
+                            {% if bill.packed_time %}
+                            <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
+                            {% else %}
+                            <!-- <small><small class="bi bi-x text-light bg_x_round ms-2"></small></small> -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="position-relative">
+                        <div class="position-absolute">
+                            <div class="
+                            {% if bill.prepared_time %}
+                                progress_bar1
+                            {% else %}
+                                progress_bar
+                            {% endif %}"></div>
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-1">
+                        <div class="
+                        {% if bill.prepared_time %}
+                            bi bi-cup-hot-fill
+                        {% else %}
+                            bi bi-cup-hot
+                        {% endif %} text-success progress_icons"></div>
+                    </div>
+                    <div class="col-10">
+                        <h5 class="pt-2 text_size3">Food Item Prepared</h5>
+                        <div class="d-flex">
+                            <small class="text_size4">{% if bill.prepared_time %}{{ bill.prepared_time }}{% else %}time and date{% endif %}</small>
+                            {% if bill.prepared_time %}
+                                <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
+                            {% else %}
+                                <!-- <small><small class="bi bi-x text-light bg_x_round ms-2"></small></small> -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="position-relative">
+                        <div class="position-absolute">
+                            <div class="
+                            {% if bill.accept_status == 'accepted' %}
+                                progress_bar1
+                            {% else %}
+                                progress_bar
+                            {% endif %}"></div>
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-1">
+                        <div class="
+                        {% if bill.accept_status == 'accepted' %}
+                            bi bi-clipboard-check-fill
+                        {% else %}
+                            bi bi-clipboard-check
+                        {% endif %} text-success progress_icons"></div>
+                    </div>
+                    <div class="col-10">
+                        <h5 class="pt-2 text_size3">Order Accepeted</h5>
+                        <div class="d-flex">
+                            <small class="text_size4">{% if bill.accept_or_reject_time %}{{ bill.accept_or_reject_time }}{% else %}time and date{% endif %}</small>
+                            {% if bill.accept_status == "accepted" %}
+                            <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
+                            {% else %}
+                            <!-- <small><small class="bi bi-x text-light bg_x_round ms-2"></small></small> -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-2 col-md-1">
+                        <div class="bi bi-cart-fill text-success progress_icons"></div>
+                    </div>
+                    <div class="col-10">
+                        <h5 class="pt-2 text_size3">Order Placed</h5>
+                        <div class="d-flex">
+                            <small class="text_size4">{% if bill.ordered_time %}{{ bill.ordered_time }}{% else %}time and date{% endif %}</small>
+                            {% if bill.ordered_time %}
+                            <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
+                            {% else %}
+                            <!-- <small><small class="bi bi-x text-light bg_x_round ms-2"></small></small> -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6">
+            <div class="thin_border bg-gradient bg-dark">
+                <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Expected Delivery Time</label>
+                <h6 class="ts mt-2 side_border p-2">{% if bill.expected_delevery_time %} {{ bill.expected_delevery_time }} {% else %} Will let you know the time soon {% endif %}</h6>
+            </div>
+
+            <div class="thin_border bg-gradient bg-dark">
+                <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Delivery Address</label>
+                <h6 class="ts mt-2 side_border p-2">{% if user_data.delivery_address %} {{ user_data.delivery_address|upper }} {% else %} Please add delivery address {% endif %}</h6>
+            </div>
+
+            <div class="thin_border bg-gradient">
+                <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Order</label>
+                <div class="side_border mt-2">
+                    <!-- ************************ -->
+                    <div class="container1_tems billbox">
+                        <div class="position-relative">
+                            <div class="position-absolute start-50 top-0 z-1 large_img_position">
+                                <!-- {% if bill.accept_status == 'rejected' %}
+                                <img draggable="false" src="{% static 'images\cancell_image.png' %}" alt="no_image" class="large_img">
+                                {% elif bill.delevered_status == 'delevered' %}
+                                <img draggable="false" src="{% static 'images\delivered_image.png' %}" alt="no_image" class="large_img">
+                                {% endif %} -->
+                            </div>
+                        </div>
+                        <div class="card b_s bill_box_padding mt-2 bg-dark bg-gradient">
+                            <div class="d-flex justify-content-between p-2">
+                                <strong class="ts text-light text_size">{{ bill.billno }}</strong>
+                                <strong class="ts 
+                                {% if bill.accept_status == 'accepted' %} 
+                                    text_custom_green 
+                                {% elif bill.accept_status == 'rejected' %} 
+                                    text_custom_red
+                                {% else %}
+                                    text-warning
+                                {% endif %} 
+                                text_size" style="text-shadow: 1px 1px 2px black;">
+                                    <!-- {% if bill.accept_status == "notaccepted"  %}
+                                    <span class="pe-1">PENDING</span>
+                                    {% else %}
+                                    {{ bill.accept_status|upper }}
+                                    {% endif %} -->
+                                </strong>
+                                <strong class="ts text-light text_size">{{ bill.created_at|date:'d/m/Y' }}</strong>
+                            </div>
+                            <hr class="hr_margin" style="color: rgb(0, 0, 0);">
+                            <table class="table table-dark table-striped table-hover table-overflow mt-0 mb-0">
+                                <thead class="bg-dark">
+                                    <th class="ps-2 text_size"><small><small>#</small></small></th>
+                                    <th class="ps-2 text_size"><small><small>ITEM</small></small></th>
+                                    <th class="ps-2 text-end text_size"><small><small>PRICE</small></small></th>
+                                    <th class="ps-2 text-end text_size"><small><small>QTY</small></small></th>
+                                    <th class="text-end pe-2 text_size"><small><small>TOTAL</small></small></th>
+                                </thead>
+                            </table>
+                            <div class="bg-dark table_overflow_class">
+                                <table class="table table-dark table-striped table-hover table-overflow">
+                                    <tbody id="tbody2"> 
+                                            {% for item in itemlist %}
+                                                {% if item.bill.id == bill.id %}
+                                                    <tr>
+                                                        <td class="ps-2 fw-bolder text_size"><small><small class="counter_id">{{ forloop.counter }}</small></small></td>
+                                                        <td class="ps-0 text_size"><small><small>{{ item.name|upper }}</small></small></td>
+                                                        <td class="ps-0 pe-3 text_size"><small><small>{{ item.prize }}</small></small></td>
+                                                        <td class="ps-2 text_size"><small><small>{{ item.qty }}</small></small></td>
+                                                        <td class="text-end pe-2 text_size"><small><small>{{ item.total }}</small></small></td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex total_margin justify-content-between mb-2">
+                                    <div class="text-start">
+                                        <label for="" class="fw-bolder text-light ts text_size ps-2"><small>PAID</small></label>
+                                        <input class="form-control form-control-sm fw-bold text_size text-start bg-dark text-light" type="text" name="" id="" value="{{ bill.paid }}" readonly>
+                                    </div>
+                                    <div class="text-center ms-1 me-1">
+                                        <label for="" class="fw-bolder text-light ts text-end text_size"><small>BAL</small></label>
+                                        <input class="form-control form-control-sm text-center fw-bold text_size bg-dark text-light" type="text" name="" id="" value="{{ bill.bal }}" readonly>
+                                    </div>
+                                    <div class="text-end">
+                                        <label for="" class="fw-bolder text-light ts text_size pe-2"><small>TOTAL</small></label>
+                                        <input class="form-control form-control-sm fw-bold text_size text-end bg-dark text-light" type="text" name="" id="" value="{{ bill.grand_total }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     <!-- *********************** -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#my_order').addClass('text-light');
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+  @media screen and (min-width:801px) {
+    .card_margin{
+      margin: 2rem 3rem 3rem 3rem;
+      margin-top: 1rem;
+    }
+  }
+  @media screen and (max-width:800px) {
+    .card_margin{
+      margin: 1rem 0rem 0rem 0rem;
+    }
+  }
+</style>
+
+
+    <div class="card card_margin bg-danger bg-gradient">
+        <div class="card-header">
+            <div class="card-title">
+                <h1 class="text-center p-3 text-light ts mb-0">MY DICTIONARY</h1>
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <button class="btn btn-info" onclick="format_toggle()">Format Toggle</button>
+                  </div>
+                  <div>
+                    <button class="btn btn-warning" onclick="fontIncrease()">Font size +</button>
+                    <button class="btn btn-light" onclick="fontDecrease()">Font size -</button>
+                    <button class="btn btn-success" onclick="resetFont()">Reset size</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-1">
+          <div {% if is_online %}  class="text-end p-2" {% else %} class="text_last" style="padding: 0rem;" {% endif %}>
+            <div class="row">
+              <div class="col-md-9 my-2">
+                <input class="form-control" type="text" placeholder="Search here..." id="inputSearch">
+              </div>
+              <div class="col-md-3 my-2">
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-sm btn-info text-uppercase" data-toggle="modal" data-target="#modal1" >confirm delete</button>
+                  <input id="letter_here" class="form-control text-center"style="width: 3rem;" minlength="1" maxlength="1" type="text" oninput="$(this).val($(this).val().toUpperCase())">
+                  <a class="btn btn-sm btn-dark" href="" id="hide">Test Reset</a>
+                  <button class="btn btn-sm btn-dark" onclick="reandomTest()" >R Test</button>
+                  <button class="btn btn-sm btn-dark" onclick="normalTest()" >N Test</button>
+                  <!-- <input class="form-control text-center"style="width: 3rem;" minlength="1" maxlength="1" type="text" oninput="$(this).val($(this).val().toUpperCase())"> -->
+                  <!-- <a class="btn btn-warning" href="{% url 'delete_all' %}">Delete All</a> -->
+                </div>
+              </div>
+
+            </div>
+            <div class="modal fade" id="modal1" tabindex="-1">
+              <div class="modal-dialog bg-light">
+                <div class="modal-contnt">
+                  <div class="modal-header">
+                    <h1 class="modal-title">Confirm Delete</h1>
+                    <span data-dismiss="modal" class="">x</span>
+                  </div>
+                  <div class="modal-body">
+                    <p class="">Do you want to delete all the dictionary contents ? </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button class="btn btn-success"  >Yes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <table class="table table-dark table-hover table-dark bg-dark">
+              <thead>
+                <th style="width: 1rem;padding-left: 1rem;">#</th>
+                <th class="format1">English</th>
+                <th class="format1">Malayalam</th>
+                <th class="format2" hidden>English & Malayalam</th>
+            </thead>
+            <tbody class="table_bod" id="tbody1">
+              {% if dict %}
+                {% for i in dict %}
+                <tr id="index{{ forloop.counter }}" onclick="window.location.href = `{% url 'test_words' i.id %}`" class="diction_field text_set">
+                  <td class="my_index" style="width: 0.5rem;padding: 1rem 1rem;padding-right: 0rem;">{{ forloop.counter }}</td>
+                  <td class="format1">
+                    <input name="eng[]" class="fw-bolder form-control input_color1 engText bg-light font_size" type="text" value="{{ i.eng_word | upper }}" readonly>
+                  </td>
+                  <td class="format1">
+                    <input name="mal[]" class="fw-bolder form-control input_color1 bg-light font_size" type="text" value="{{ i.mal_word }}" readonly>
+                  </td>
+                  <td class="format2" hidden> 
+                    <input name="eng[]" class="fw-bolder form-control input_color1 engText bg-light font_size" type="text" value="{{ i.eng_word | upper }}" readonly>
+                    <input name="mal[]" class="fw-bolder form-control input_color1 bg-light font_size" type="text" value="{{ i.mal_word }}" readonly>
+                  </td>
+                </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+
+        </div>
+
+        
+    </div>
+
+    <script>
+      $(document).ready(function(){
+        $('.dict').addClass('active')
+      })
+  </script>
+
+  <script>
+    $(document).ready(function(){
+      $('#inputSearch').on('input',function(){
+        var inpText = $(this).val().toLowerCase()
+        $('#tbody1 tr .engText').filter(function(){
+          if($(this).val().toLowerCase().indexOf(inpText)!== -1)
+          {
+            $(this).parent().parent().show()
+          }
+          else
+          {
+            $(this).parent().parent().hide()
+          }
+        })
+      })
+    })
+  </script>
+
+    <script>
+
+      var index_register = []
+      const diction_field_count = $('.diction_field').length
+      // const diction_field_count = 10
+      for(i=0;i<diction_field_count;i++){
+        index_register[i]=i+1;
+      }
+      // alert(`length ${diction_field_count}\n\n [${index_register}]`)
+
+      $('#letter_here').on("change",function(){
+        if($(this).val()!=null && $(this).val()!=""){
+          // alert($(this).val())
+          var letter_here = $('#letter_here').val()
+          if(letter_here!=null){
+            // alert(letter_here)
+            var all_words_start_with_letter = $('.engText').filter(function(){
+              if($(this).val().trim().startsWith(letter_here)){
+                return $(this)
+              }
+            })
+            var first_index = all_words_start_with_letter.first().parent().parent().find('.my_index').text()
+            var last_index = all_words_start_with_letter.last().parent().parent().find('.my_index').text()
+            var def = last_index - first_index
+            // alert(`range=${def}`)
+            first_index = parseInt(first_index)
+            last_index = parseInt(last_index)
+            index_register=[]
+            j=0
+            for(i=first_index;i<last_index+1;i++){
+              index_register[j]=i;
+              j++
+            }
+          }
+        }
+        // alert(`index_register value = [${index_register}]`)
+      })
+
+      
+
+      function reandomTest(){
+
+        var interval = setInterval(function(){
+
+          if(index_register.length>0){
+            
+            var random_index_number = Math.floor(Math.random()*index_register.length);
+            var removing_number = index_register[random_index_number]
+            
+            index_register.splice(random_index_number,1);
+            if(removing_number!=null){
+              $('.diction_field ').hide()
+              $(`#index${removing_number}`).show();
+            }
+            // console.log(`index =${index_register[0]}\n`)
+            
+          }
+          else{
+            clearInterval(interval);
+          }
+
+        },2000)
+      }
+
+      function normalTest(){
+        // console.log('inside function')
+        var interval=setInterval(function(){
+        // console.log('inside interval')
+          if(index_register.length>0){
+            console.log('inside if')
+            removing_number1 = index_register[0]
+            if(removing_number1!=null){
+              $('.diction_field').hide()
+              $(`#index${removing_number1}`).show();
+            }
+            index_register.shift();
+            // console.log(`index =${index_register[0]}\n`)
+          }
+          else{
+            // console.log('inside else')
+            clearInterval(interval);
+          }
+        }, 2000);
+
+      }
+
+      function fontIncrease(){
+        var fs = parseInt($('.font_size').css('fontSize'));
+        fs=fs+5
+        $('.font_size').css('fontSize',`${fs}px`);
+      }
+
+      function fontDecrease(){
+        var fs = parseInt($('.font_size').css('fontSize'));
+        fs = fs-5
+        $('.font_size').css('fontSize',`${fs}px`);
+      }
+
+      function resetFont(){
+        $('.font_size').css('fontSize',`16px`);
+      }
+
+      function format_toggle(){
+        $('.format2').attr('hidden',!$('.format2').attr('hidden'));
+        $('.format1').attr('hidden',!$('.format1').attr('hidden'));
+      }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  @media screen and (min-width:801px) {
+    .card_margin{
+      margin: 2rem 3rem 3rem 3rem;
+      margin-top: 1rem;
+    }
+  }
+  @media screen and (max-width:800px) {
+    .card_margin{
+      margin: 1rem 0rem 0rem 0rem;
+    }
+  }
+</style>
+
+<div class="card card_margin bg-danger bg-gradient">
+  <div class="card-header">
+      <div class="card-title">
+          <h1 class="text-center p-3 text-light ts">MY DICTIONARY</h1>
+      </div>
+  </div>
+  <div class="card-body">
+      <form action="{% url 'add_words' %}" method="post">
+        {% csrf_token %}
+        <div class="table-responsive">
+          <table id="table1" class="table table-bordered text-center table-dark bg-dark bg-gradient table-hover">
+            <thead>
+                <th>#</th>
+                <th>English</th>
+                <th>Malayalam</th>
+            </thead>
+            <tbody class="table_bod">
+              <tr>
+                <td></td>
+                <td>
+                  <input name="eng[]" class="form-control input_color1" type="text" required>
+                </td>
+                <td>
+                  <input name="mal[]" class="form-control input_color1" type="text" required>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          {% if is_online %}
+          <div class="text-end">
+            <button type="button" class="btn btn-sm btn-dark duplicate_btn"><span class="bi bi-copy"></span></button>
+          </div>  
+          {% else %}
+          <div class="text_last">
+            <button type="button" class="btn btn-sm btn-dark duplicate_btn"><span>+</span></button>
+          </div>
+          {% endif %}
+
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-light">Submit</button>
+        </div>
+      </form>
+
+      <hr>
+      <h3 class="text-center p-1 text-light ts">OR</h1>
+      <hr>
+
+      <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="bg-dark rounded px-5 pt-3 pb-5">
+          <label class="form-label text-light" for="">Upload the file</label>
+          <input class="form-control" type="file" name="file">
+        </div>
+<br><br>
+        <div class="text-center">
+          <button type="submit" class="btn btn-light">Submit</button>
+        </div>
+      </form>
+  </div>
+  <div class="card-footer">
+
+  </div>
+</div>
+
+    <script>
+      $(document).ready(function(){
+        $('.duplicate_btn').on('click',function(){
+          $('#table1 tbody').append('<tr><td></td><td><input name="eng[]" class="form-control" type="text" required></td><td><input name="mal[]" class="form-control" type="text" required></td></tr>')
+        })
+      })
+    </script>
+
+<script>
+  $(document).ready(function(){
+    $('.add_dict').addClass('active')
+  })
+</script>
+
+  {% endblock %}
