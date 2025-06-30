@@ -7,6 +7,8 @@
 
 {% block body_block %}
 
+<script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+
 <style>
     .custom-dropdown{
         background-color: #212529;
@@ -217,14 +219,64 @@
             height: 68%;
         }
     }
-    .img_map{
+    .img_map_1{
         border-radius: 5px;
-        border: 1px solid white ;
+        border: 5px solid transparent ;
+        padding: 0.3rem;
+        margin-left: 1.3rem;
+        border-image: linear-gradient(to top left,rgb(56, 56, 56),rgba(255, 255, 255, 0.543),rgb(255, 255, 255))1;
+    }
+    .img_map_2{
+        border-radius: 5px;
+        border: 5px solid transparent ;
         padding: 0.3rem;
         margin-left: 1.3rem;
     }
-    .img_map:focus{
-        border-color: red;
+</style>
+
+<style>
+    .my_badge1{
+        background-color: rgb(36, 36, 36);
+        font-size: 13px;
+        font-style: italic;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-weight: 900;
+    }
+    .my_badge1:hover{
+        background-color: rgb(72, 72, 72);
+    }
+    .my_badge2{
+        background-color: rgb(196, 40, 40);
+        font-size: 13px;
+        font-style: italic;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-weight: 900;
+    }
+    .my_badge2:hover{
+        background-color: rgb(149, 0, 0);
+    }
+    .glass_effect{
+        border: 1px solid rgba(255, 255, 255, 0.331);
+        margin: 5px;
+        border-radius: 10px;
+        background: linear-gradient(to right,rgba(0, 0, 0, 0.329),rgba(255, 255, 255, 0.388));
+    }
+    .modal_background_style{
+        box-shadow: 3px 3px 5px 10px rgba(0, 0, 0, 0.701); 
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.718),rgba(0, 0, 0, 0.57));
+        backdrop-filter: blur(3px);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        border-image: linear-gradient(to bottom right,white,rgba(255, 255, 255, 0.512)) 1;
+    }
+    .location_input{
+        /* width: 0;
+        height: 0;
+        opacity: 0; */
     }
 </style>
 
@@ -237,12 +289,13 @@
         <span class="input-group-text bi bi-search icon_size"></span>
         <input id="search_bill_filter" class="form-control search_font_size" placeholder="search here .." type="text">
     </div>
+    
         {% if all_items %}
         <!-- <div style="overflow-y: auto;height: 50vh;"> -->
             <div class="container1 scrolling_window_height" style="overflow-y: auto;">
-                    {% for i in all_items %}
-                        <div class="container_items mt-2 clickhere">
-                        <div class="card my_card position-relative">
+                {% for i in all_items %}
+                    <div class="container_items mt-2 clickhere">
+                        <div class="card my_card position-relative mb-0">
                             <div class="position-absolute h-100 w-100">
                                 <div class="d-flex justify-content-between text-light" style="padding: 0.8rem 1rem;">
                                     <h5 class="bi bi-heart ts1 icon_size" onclick="$(this).removeClass('bi-heart');$(this).addClass('bi-heart-fill text-red');"></h5>
@@ -253,6 +306,21 @@
                                 <a href="" download="{% if i.image %}{{ i.image.url|cropfront:14 }}{% endif %}">
                                     <img id="item_img{{ i.id }}" {% if i.image %} src="{{ i.image.url }}" {% else %} src="{% static 'images\empy_food1.jpg' %}"{% endif %} class="h-100 w-100 border-secondary border" alt="">
                                 </a>
+                            </div>
+                            <div class="position-relative">
+                                <div class="position-absolute w-100">
+                                    <div class="d-flex justify-content-end text-light" style="margin-top: -2.5rem;margin-right: 0.75rem;">
+                                        {% if not i.item_finished %}
+                                        <div class="my_badge1" onclick="$('#modal_3').modal('show');">
+                                            Available
+                                        </div>
+                                        {% else %}
+                                        <div class="my_badge2" onclick="$('#modal_3').modal('show');">
+                                            Stock Out
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
                             <div class="text-light p-1">
                                 <div class="d-flex justify-content-between">
@@ -269,8 +337,8 @@
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
-                </div>
+                {% endfor %}
+            </div>
             <!-- </div> -->
         {% else %}
         <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No Items Added yet</h4>
@@ -283,15 +351,15 @@
     
     <br><br><br><br><br><br>
   
-  <!-- Modal -->
+  <!-- Modal 1-->
   <div class="modal fade" id="modal_1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+        <div class="modal-content modal_background_style">
             <form id="order_list_form" action="" method="POST">
                 {% csrf_token %}
                 <div class="modal-header">
                     <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Order List</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_3').modal('hide');"></button>
                 </div>
                 
                 <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
@@ -307,6 +375,7 @@
                 <div class="d-flex justify-content-end">
                     <h5 class="text-end fw-bolder text-light" for="">Total :</h5>
                     <input id="grand_total" style="width: 30%;" class="form-control modal_input p-0 fw-bolder text-end pe-4 pb-2" type="number" value="0.00" name="grant_total" readonly>
+                    <input id="location_input" type="text" value="my home address" name="location">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
@@ -317,40 +386,71 @@
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal 2-->
   <div class="modal fade" id="modal_2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
-            <form id="order_list_form2" action="" method="POST">
+        <div class="modal-content modal_background_style">
+            <form action="" method="POST">
                 {% csrf_token %}
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Delivery Location</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;" onclick="$('#modal_1').modal('show');"></button>
+                <div class="text-end mb-2 p-2">
+                    <!-- <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Delivery Location</h1> -->
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_1').modal('show');"></button>
                 </div>
                 
                 <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                     <div class="d-flex justify-content-between p-3 text-light" style="margin: 0rem 5rem ;">
                         <div>
-                            <img onclick="$('#current_loc').click()" class="img_map" src="{% static 'images\googlemap.jpg' %}" width="100px" height="100px" alt=""><br>
-                            <input id="current_loc" class="form-check-input" name="choose_loc" type="radio" required>
-                            <label for="current_loc">Current Location</label>
+                            <div class="position-relative" id="loading_food_img" hidden>
+                                <div class="position-absolute" style="margin-top: 1.5rem;margin-left: 3rem;">
+                                    <img src="{% static 'images/food_loading.gif' %}" alt="" style="width: 3rem;height: 3rem;">
+                                </div>
+                            </div>
+                            <img id="current_loc_img" onclick="$('#current_loc').click()" class="img_map_2" src="{% static 'images\googlemap.jpg' %}" width="100px" height="100px" alt=""><br>
+                            <input id="current_loc" class="form-check-input" name="choose_loc" type="radio" style="opacity: 0;">
+                            <label for="current_loc">MY LOCATION</label>
                         </div>
                         <div>
-                            <img onclick="$('#home_loc').click()" class="img_map" src="{% static 'images\home_loc.jpg' %}" width="100px" height="100px" alt=""><br>
-                            <input id="home_loc" class="form-check-input" name="choose_loc" type="radio" required>
-                            <label for="home_loc">Home Address</label>
+                            <img id="home_loc_img" onclick="$('#home_loc').click()" style="margin-left: 1.0rem;" class="img_map_1" src="{% static 'images\home_loc.jpg' %}" width="100px" height="100px" alt=""><br>
+                            <input id="home_loc" class="form-check-input" name="choose_loc" type="radio" checked style="opacity: 0;">
+                            <label for="home_loc">MY ADDRESS</label>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" onclick="$('#modal_1').modal('show');">Close</button>
-                    <button id="confirm_order_id" type="button" class="btn btn-outline-warning" onclick="$('#order_list_form').submit();">Confirm Order</button>
+                <div class="text-center my-3">
+                    <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_1').modal('show');"><span class="bi bi-arrow-left"></span> Go Back</button>
+                    <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" onclick="$('#order_list_form').submit();"><span class="bi bi-cart4"></span> Confirm </button>
                 </div>
             </form>
       </div>
     </div>
   </div>
+
+  <!-- Modal 3-->
+  <div class="modal fade" id="modal_3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal_background_style">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                
+                <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                    <div class="text-end me-2">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_3').modal('hide');"></button>
+                    </div>
+                    <h5 class="fw-light p-3 text-light">Do you want to change the availablity status ?</h5>
+                    <div class="mb-2 text-end">
+                        <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_3').modal('hide');">Close</button>
+                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" >Confirm</button>
+                    </div>
+                </div>
+
+            </form>
+      </div>
+    </div>
+  </div>
+
+<div id="map" style="width: 400px; height: 400px;"></div>
 
   <!-- <input id="message-input" type="text"> -->
 
@@ -524,34 +624,74 @@
 </script>
 
 <script>
-     $(document).ready(function() {
-        // Initialize WebSocket connection
-        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/live_message/');
+    $(document).ready(function(){
+        $('#current_loc').on('input',function(){
+            $('#confirm_order_id').prop('disabled',true);
+            $("#current_loc_img").addClass("img_map_1");
+            $("#current_loc_img").removeClass("img_map_2");
+            $('#home_loc_img').removeClass("img_map_1");
+            $('#home_loc_img').addClass("img_map_2");
+            $('#loading_food_img').attr('hidden',false);
+            get_current_location();
+        })
+    })
+    $(document).ready(function(){
+        $('#home_loc').on('input',function(){
+            $('#confirm_order_id').prop('disabled',true);
+            $('#home_loc_img').addClass("img_map_1");
+            $('#home_loc_img').removeClass("img_map_2");
+            $('#current_loc_img').removeClass("img_map_1");
+            $('#current_loc_img').addClass("img_map_2");
+            $('#location_input').val("my home address");
+            $('#confirm_order_id').prop('disabled',false);
+        })
+    })
+</script>
 
-        // When a message is received from the WebSocket
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            $('#live-message').text(data.message);  // Update the #live-message element with the received message
-        };
 
-        // Handle WebSocket closure
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+<script>
 
-        // Function to send a message via WebSocket
-        function sendMessage(message) {
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
+    var loc_response = null;
+
+    function get_current_location(){
+
+        const addressBox = $("#location_input");
+    
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lng = position.coords.longitude;
+                    const lat = position.coords.latitude;
+    
+                    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+    
+                    try {
+                        const response = await fetch(url);
+                        loc_response = response;
+                        const data = await response.json();
+                        const address = data.display_name || "Address not found";
+                        addressBox.val(address);
+                    } catch (err) {
+                        addressBox.val('Failed to get address');
+                        console.error('Error fetching address:', err);
+                        $('#loading_food_img').attr('hidden',true);
+                    }finally{
+                        $('#confirm_order_id').prop('disabled',false);
+                        $('#loading_food_img').attr('hidden',true);
+                    }
+                },
+                (error) => {
+                    addressBox.val('Location access denied');
+                    console.error(error);
+                    $('#loading_food_img').attr('hidden',true);
+                }
+            );
+        } else {
+            addressBox.val('Geolocation not supported');
         }
 
-        // You can call sendMessage when needed, for example, on a button click or form submission
-        $('#confirm_order_id').click(function() {
-            const message = $('#message-input').val();
-            sendMessage(message);  // Send the message through WebSocket
-            $('#message-input').val('');  // Optionally clear the input field
-        });
-    });
+    }
+
+
 </script>
 {% endblock %}

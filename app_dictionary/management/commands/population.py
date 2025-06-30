@@ -256,9 +256,19 @@ class Command(BaseCommand):
                 "category":"food"
             },
             {
-                "item_name":"gravy",
+                "item_name":"Gravy",
                 "item_price":20,
                 "category":"curry"
+            },
+            {
+                "item_name":"Avil Milk",
+                "item_price":50,
+                "category":"shakes"
+            },
+            {
+                "item_name":"Avil Milk SPL",
+                "item_price":70,
+                "category":"shakes"
             },
             {
                 "item_name":"Emty",

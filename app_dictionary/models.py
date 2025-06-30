@@ -48,6 +48,7 @@ class ItemModel(models.Model):
     category = models.CharField(max_length=255,choices=cat_choices,default='food')
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images/',blank=True,null=True)
+    item_finished = models.BooleanField(default=False,blank=True,null=True)
 
     def __str__(self):
         return str(self.name)
@@ -113,6 +114,8 @@ class BillModel(models.Model):
     delevered_time = models.DateTimeField(blank=True,null=True)
 
     expected_delevery_time = models.DateTimeField(blank=True,null=True)
+
+    delivery_address = models.TextField(blank=True,null=True)
     
 
     def save(self,*args,**kwargs):
