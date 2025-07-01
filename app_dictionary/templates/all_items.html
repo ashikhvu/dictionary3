@@ -235,7 +235,7 @@
 </style>
 
 <style>
-    .my_badge1{
+    .my_badge_black{
         background-color: rgb(36, 36, 36);
         font-size: 13px;
         font-style: italic;
@@ -244,10 +244,10 @@
         padding: 5px 10px;
         font-weight: 900;
     }
-    .my_badge1:hover{
+    .my_badge_black:hover{
         background-color: rgb(72, 72, 72);
     }
-    .my_badge2{
+    .my_badge_red{
         background-color: rgb(196, 40, 40);
         font-size: 13px;
         font-style: italic;
@@ -256,7 +256,7 @@
         padding: 5px 10px;
         font-weight: 900;
     }
-    .my_badge2:hover{
+    .my_badge_red:hover{
         background-color: rgb(149, 0, 0);
     }
     .badge_margin{
@@ -264,11 +264,11 @@
         margin-right: 0.75rem;
     }
     @media screen and (max-width:700px) {
-        .my_badge1{
+        .my_badge_black{
             font-size: 7px;
             padding: 3px 5px;
         }
-        .my_badge2{
+        .my_badge_red{
             font-size: 7px;
             padding: 3px 5px;
         }
@@ -335,11 +335,11 @@
                                 <div class="position-absolute w-100">
                                     <div class="d-flex justify-content-end text-light badge_margin">
                                         {% if not i.item_finished %}
-                                        <div class="my_badge1" onclick="$('#modal_3').modal('show');change_availability_status_click(`{{i.id}}`,$(this))">
+                                        <div class="my_badge_black" onclick="change_availability_status_click(`{{i.id}}`,$(this));$('#modal_3').modal('show');">
                                             Available
                                         </div>
                                         {% else %}
-                                        <div class="my_badge2" onclick="$('#modal_3').modal('show');change_availability_status_click(`{{i.id}}`,$(this))">
+                                        <div class="my_badge_red" onclick="change_availability_status_click(`{{i.id}}`,$(this));$('#modal_3').modal('show');">
                                             Stock Out
                                         </div>
                                         {% endif %}
@@ -814,9 +814,19 @@
             },
             success:function(res){
                 $('#modal_3').modal('hide');
-                availability_obj.removeClass('my_badge1');
-                availability_obj.addClass('my_badge2');
-                availability_obj.text('Stock Out');
+                // alert(availability_obj.text().toLowerCase().trim())
+                if(availability_obj.text().toLowerCase().trim()=="available"){
+                    // alert('avail---------')
+                    availability_obj.removeClass('my_badge_black');
+                    availability_obj.addClass('my_badge_red');
+                    availability_obj.text('Stock Out');
+                }
+                else{
+                    // alert('stk out------------')
+                    availability_obj.removeClass('my_badge_red');
+                    availability_obj.addClass('my_badge_black');
+                    availability_obj.text('Available');
+                }
             },
             error:function(res){
                 alert('error occured during status change')

@@ -558,9 +558,6 @@ def update_userdata(request,pk):
 def change_availablity_status(request,pk):
     try:
         item_data = ItemModel.objects.get(id=pk)
-        print("----------------------------------------------------------------")
-        print(item_data)
-        print("----------------------------------------------------------------")
     except ItemModel.DoesNotExist:
         return JsonResponse({"error:Item does not exist"},status=404)
     
