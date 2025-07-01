@@ -553,3 +553,21 @@ def update_userdata(request,pk):
             user.save()
             messages.success(request,f'User profile changes has saved.')
     return redirect('profile')
+
+@login_required
+def change_availablity_status(request,pk):
+    try:
+        item_data = ItemModel.objects.get(id=pk)
+        print("----------------------------------------------------------------")
+        print(item_data)
+        print("----------------------------------------------------------------")
+    except ItemModel.DoesNotExist:
+        return JsonResponse({"error:Item does not exist"},status=404)
+    
+    if item_data and item_data.item_finished == False:
+        item_data.item_finished = True
+        item_data.save()
+    elif item_data and item_data.item_finished == True:
+        item_data.item_finished = False
+        item_data.save()
+    return JsonResponse({"success":"Item status changed successfully"},status=200)

@@ -199,7 +199,7 @@
         }
     }
     .btn-shadow{
-        box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.466);
+        box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.466);
     }
     .image_height{
         height: 80%;
@@ -259,6 +259,24 @@
     .my_badge2:hover{
         background-color: rgb(149, 0, 0);
     }
+    .badge_margin{
+        margin-top: -2.5rem;
+        margin-right: 0.75rem;
+    }
+    @media screen and (max-width:700px) {
+        .my_badge1{
+            font-size: 7px;
+            padding: 3px 5px;
+        }
+        .my_badge2{
+            font-size: 7px;
+            padding: 3px 5px;
+        }
+        .badge_margin{
+            margin-top: -1.75rem;
+            margin-right: 0.65rem;
+        }
+    }
     .glass_effect{
         border: 1px solid rgba(255, 255, 255, 0.331);
         margin: 5px;
@@ -273,10 +291,16 @@
         border-radius: 10px;
         border-image: linear-gradient(to bottom right,white,rgba(255, 255, 255, 0.512)) 1;
     }
-    .location_input{
-        /* width: 0;
+    #location_input{
+        width: 0;
         height: 0;
-        opacity: 0; */
+        opacity: 0;
+    }
+    .text-red{
+        color: rgb(224, 60, 60);
+    }
+    .text-orange{
+        color: orange;
     }
 </style>
 
@@ -309,13 +333,13 @@
                             </div>
                             <div class="position-relative">
                                 <div class="position-absolute w-100">
-                                    <div class="d-flex justify-content-end text-light" style="margin-top: -2.5rem;margin-right: 0.75rem;">
+                                    <div class="d-flex justify-content-end text-light badge_margin">
                                         {% if not i.item_finished %}
-                                        <div class="my_badge1" onclick="$('#modal_3').modal('show');">
+                                        <div class="my_badge1" onclick="$('#modal_3').modal('show');change_availability_status_click(`{{i.id}}`,$(this))">
                                             Available
                                         </div>
                                         {% else %}
-                                        <div class="my_badge2" onclick="$('#modal_3').modal('show');">
+                                        <div class="my_badge2" onclick="$('#modal_3').modal('show');change_availability_status_click(`{{i.id}}`,$(this))">
                                             Stock Out
                                         </div>
                                         {% endif %}
@@ -344,6 +368,10 @@
         <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No Items Added yet</h4>
         {% endif %}
     </div>
+
+    <button onclick="$('#modal_4').modal('show');" class="btn btn-danger z-3 btn-shadow" style="position: fixed;bottom: 6rem;right: 2.5rem;padding: 0.5rem 1rem;border-radius: 50%;">
+        <span class="fa fa-refresh"></span>
+    </button>
 
     <button onclick="openmodal()" class="btn btn-dark z-3 btn-shadow" style="position: fixed;bottom: 2.5rem;right: 2.5rem;padding: 0.5rem 1rem;">
         <span class="bi bi-cart"> ORDER</span>
@@ -374,7 +402,7 @@
                 <hr class="border pb-0 mb-2">
                 <div class="d-flex justify-content-end">
                     <h5 class="text-end fw-bolder text-light" for="">Total :</h5>
-                    <input id="grand_total" style="width: 30%;" class="form-control modal_input p-0 fw-bolder text-end pe-4 pb-2" type="number" value="0.00" name="grant_total" readonly>
+                    <input id="grand_total" style="width: 30%;" class="form-control modal_input p-0 fw-bolder text-end pe-4 pb-2" type="number" value="0.00" name="grant_total" readonly><span class="text-light">Rs</span>
                     <input id="location_input" type="text" value="my home address" name="location">
                 </div>
                 <div class="modal-footer">
@@ -438,10 +466,10 @@
                     <div class="text-end me-2">
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_3').modal('hide');"></button>
                     </div>
-                    <h5 class="fw-light p-3 text-light">Do you want to change the availablity status ?</h5>
+                    <h5 class="fw-light p-3 text-light">Do you want to <span class="text-red fw-bolder">Change</span> the <span class="text-red fw-bolder">Availablity</span> status ?</h5>
                     <div class="mb-2 text-end">
                         <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_3').modal('hide');">Close</button>
-                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" >Confirm</button>
+                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" onclick="change_availability_status()">Confirm</button>
                     </div>
                 </div>
 
@@ -450,7 +478,78 @@
     </div>
   </div>
 
-<div id="map" style="width: 400px; height: 400px;"></div>
+  
+  <!-- Modal 3-->
+  <div class="modal fade" id="modal_3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal_background_style">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                
+                <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                    <div class="text-end me-2">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_3').modal('hide');"></button>
+                    </div>
+                    <h5 class="fw-light p-3 text-light">Do you want to <span class="text-red fw-bolder">Change</span> the <span class="text-red fw-bolder">Availablsssssssssssssity</span> status ?</h5>
+                    <div class="mb-2 text-end">
+                        <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_3').modal('hide');">Close</button>
+                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" onclick="change_availability_status()">Confirm</button>
+                    </div>
+                </div>
+
+            </form>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal 4-->
+  <div class="modal fade" id="modal_4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal_background_style">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                
+                <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                    <div class="text-end me-2">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_4').modal('hide');"></button>
+                    </div>
+                    <h5 class="fw-light p-3 text-light">Do you want to <span class="text-red fw-bolder">Reset</span> the <span class="text-red fw-bolder">Availablity</span> status ?</h5>
+                    <div class="mb-2 text-end">
+                        <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_4').modal('hide');">Close</button>
+                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" onclick="change_availability_status()">Confirm</button>
+                    </div>
+                </div>
+
+            </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5-->
+  <div class="modal fade" id="modal_5" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal_background_style">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                
+                <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                    <div class="text-end me-2">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_5').modal('hide');"></button>
+                    </div>
+                    <h5 class="fw-light p-3 text-light">No Items Added to the <span class="bi bi-cart4 text-red fw-bolder"> cart</span> ! please select atleast one item</h5>
+                    <div class="mb-2 text-end">
+                        <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_5').modal('hide');">Close</button>
+                    </div>
+                </div>
+
+            </form>
+      </div>
+    </div>
+  </div>
+
 
   <!-- <input id="message-input" type="text"> -->
 
@@ -574,7 +673,7 @@
     function openmodal(){
         var row_count = parseInt($('.rowCounterClass').length);
         if(row_count==0){
-            alert("No Items Added")
+            $('#modal_5').modal("show");
         }
         else{
             $('#modal_1').modal('show');
@@ -644,6 +743,7 @@
             $('#current_loc_img').addClass("img_map_2");
             $('#location_input').val("my home address");
             $('#confirm_order_id').prop('disabled',false);
+            $('#loading_food_img').attr('hidden',true);
         })
     })
 </script>
@@ -693,5 +793,35 @@
     }
 
 
+</script>
+
+<script>
+    // availability status change script
+    var availability_id;
+    var availability_obj;
+
+    function change_availability_status_click(id,obj){
+        availability_id = parseInt(id);
+        availability_obj=obj;
+    }
+
+    function change_availability_status(){
+        $.ajax({
+            url:'{% url "change_availablity_status" 0 %}'.replace("0",availability_id),
+            type:"POST",
+            data:{
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            success:function(res){
+                $('#modal_3').modal('hide');
+                availability_obj.removeClass('my_badge1');
+                availability_obj.addClass('my_badge2');
+                availability_obj.text('Stock Out');
+            },
+            error:function(res){
+                alert('error occured during status change')
+            }
+        })
+    }
 </script>
 {% endblock %}

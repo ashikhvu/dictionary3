@@ -48,4 +48,5 @@ urlpatterns = [
     path('get_the_reason',views.get_the_reason,name='get_the_reason'),
     path('my_order_track/<int:pk>',views.my_order_track,name='my_order_track'),
     path('update_userdata/<int:pk>',views.update_userdata,name='update_userdata'),
+    path('change_availablity_status/<int:pk>',views.change_availablity_status,name="change_availablity_status",)
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
