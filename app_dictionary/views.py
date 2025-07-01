@@ -285,7 +285,7 @@ def create_order(request):
 
         # validation check1
         if(len(item_id)!=len(ordered_item_name)!=len(qty)!=len(price)!=len(total_price)):
-            return JsonResponse({'error':'error'})
+            return JsonResponse({'error':'error'},status=400)
         print('validation check1 completed')
 
         # validation check2
@@ -296,6 +296,16 @@ def create_order(request):
             if float(tot) != float(total_price[i]):
                 return JsonResponse({'error':'error'})
         print('validation check2 completed')
+
+        for i in item_id:
+            try:
+                item_data = ItemModel.objects.get(id=int(i))
+            except ItemModel.DoesNotExist:
+                return JsonResponse({"error":"Few Items doesn't exist !"},status=404)
+            if item_data and item_data.item_finished==True:
+                return JsonResponse({"error":f'Item "{item_data.name}" is not available please remove this item from the order !'},status=400)
+                 
+
 
         bill = BillModel(
             user=request.user,
@@ -559,7 +569,7 @@ def change_availablity_status(request,pk):
     try:
         item_data = ItemModel.objects.get(id=pk)
     except ItemModel.DoesNotExist:
-        return JsonResponse({"error:Item does not exist"},status=404)
+        return JsonResponse({"error:Item does not exist !"},status=404)
     
     if item_data and item_data.item_finished == False:
         item_data.item_finished = True
@@ -567,4 +577,19 @@ def change_availablity_status(request,pk):
     elif item_data and item_data.item_finished == True:
         item_data.item_finished = False
         item_data.save()
-    return JsonResponse({"success":"Item status changed successfully"},status=200)
+    return JsonResponse({"success":"Item status changed successfully !"},status=200)
+
+@login_required
+def reset_product_availability_status(requet):
+    try:
+        items_data = ItemModel.objects.all()
+    except ItemModel.DoesNotExist:
+        return JsonResponse({"error":"No Items Availble !"},status=404)
+    except Exception as e:
+        return JsonResponse({"error":str(e)},status=400)
+    
+    if items_data:
+        for i in items_data:
+            i.item_finished = False
+            i.save()
+    return redirect('all_items')

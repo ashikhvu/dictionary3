@@ -518,7 +518,7 @@
                     <h5 class="fw-light p-3 text-light">Do you want to <span class="text-red fw-bolder">Reset</span> the <span class="text-red fw-bolder">Availablity</span> status ?</h5>
                     <div class="mb-2 text-end">
                         <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_4').modal('hide');">Close</button>
-                        <button id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" onclick="change_availability_status()">Confirm</button>
+                        <a id="confirm_order_id" type="button" class="btn btn-outline-warning me-2 fw-light" href="{% url 'reset_product_availability_status' %}">Confirm</a>
                     </div>
                 </div>
 
@@ -537,11 +537,11 @@
                 
                 <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                     <div class="text-end me-2">
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_5').modal('hide');"></button>
+                        <button type="button" class="btn-close btn-close-white modal_5_close_btn" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_5').modal('hide');"></button>
                     </div>
-                    <h5 class="fw-light p-3 text-light">No Items Added to the <span class="bi bi-cart4 text-red fw-bolder"> cart</span> ! please select atleast one item</h5>
+                    <h5 id="model_5_content" class="fw-light p-3 text-light"></h5>
                     <div class="mb-2 text-end">
-                        <button type="button" class="btn btn-outline-danger me-2 fw-light" data-bs-dismiss="modal" onclick="$('#modal_5').modal('hide');">Close</button>
+                        <button type="button" class="btn btn-outline-danger me-2 fw-light modal_5_close_btn" data-bs-dismiss="modal" onclick="$('#modal_5').modal('hide');">Close</button>
                     </div>
                 </div>
 
@@ -673,11 +673,16 @@
     function openmodal(){
         var row_count = parseInt($('.rowCounterClass').length);
         if(row_count==0){
-            $('#modal_5').modal("show");
+            modal_5_open(`No Items Added to the <span class="bi bi-cart4 text-red fw-bolder"> cart</span> ! please select atleast one item`);
         }
         else{
             $('#modal_1').modal('show');
         }
+    }
+
+    function modal_5_open(content){
+        $("#model_5_content").html(content)
+        $('#modal_5').modal("show");
     }
 
     $(document).ready(function () {
@@ -696,7 +701,9 @@
                     $('#modal_content').empty();
                 },
                 error: function (error) {
-                    alert('failed');
+                    $('#modal_2').modal('hide');
+                    modal_5_open(error.responseJSON.error);
+                    $('.modal_5_close_btn').attr('onclick',`$('#modal_5').modal('hide');$('#modal_1').modal('show');`)
                 }
             });
         });
