@@ -223,14 +223,12 @@
         border-radius: 5px;
         border: 5px solid transparent ;
         padding: 0.3rem;
-        margin-left: 1.3rem;
         border-image: linear-gradient(to top left,rgb(56, 56, 56),rgba(255, 255, 255, 0.543),rgb(255, 255, 255))1;
     }
     .img_map_2{
         border-radius: 5px;
         border: 5px solid transparent ;
         padding: 0.3rem;
-        margin-left: 1.3rem;
     }
 </style>
 
@@ -426,23 +424,34 @@
                 </div>
                 
                 <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
-                    <div class="d-flex justify-content-between p-3 text-light" style="margin: 0rem 5rem ;">
-                        <div>
+                    <div class="d-flex justify-content-center text-light">
+                        <div class="border-light me-5">
                             <div class="position-relative" id="loading_food_img" hidden>
                                 <div class="position-absolute" style="margin-top: 1.5rem;margin-left: 3rem;">
                                     <img src="{% static 'images/food_loading.gif' %}" alt="" style="width: 3rem;height: 3rem;">
                                 </div>
                             </div>
-                            <img id="current_loc_img" onclick="$('#current_loc').click()" class="img_map_2" src="{% static 'images\googlemap.jpg' %}" width="100px" height="100px" alt=""><br>
-                            <input id="current_loc" class="form-check-input" name="choose_loc" type="radio" style="opacity: 0;">
-                            <label for="current_loc">MY LOCATION</label>
+                            <img id="current_loc_img" onclick="$('#current_loc').click()" class="img_map_2" src="{% static 'images\googlemap.jpg' %}" width="130px" height="130px" alt="">
+                            <div class="position-relative">
+                                <div class="position-absolute" style="margin-left: 0.70rem;margin-top: -1.5rem;">
+                                    <input id="current_loc" class="form-check-input" name="choose_loc" type="radio" style="opacity: 0;">
+                                    <label for="current_loc">MY_LOCATION</label>
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <img id="home_loc_img" onclick="$('#home_loc').click()" style="margin-left: 1.0rem;" class="img_map_1" src="{% static 'images\home_loc.jpg' %}" width="100px" height="100px" alt=""><br>
-                            <input id="home_loc" class="form-check-input" name="choose_loc" type="radio" checked style="opacity: 0;">
-                            <label for="home_loc">MY ADDRESS</label>
+                            <img id="home_loc_img" onclick="$('#home_loc').click()" class="img_map_1" src="{% static 'images\home_loc.jpg' %}" width="130px" height="130px" alt="">
+                            <div class="position-relative">
+                                <div class="position-absolute" style="margin-left: -0rem;">
+                                    <div class="d-flex justify-content-center">
+                                        <input id="home_loc" class="form-check-input" name="choose_loc" type="radio" checked style="opacity: 0;">
+                                        <label for="home_loc">MY_ADDRESS</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <br>
                 </div>
 
                 <div class="text-center my-3">
