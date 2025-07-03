@@ -671,6 +671,9 @@
         $('#grand_total').val(gtot);
     }
     function openmodal(){
+        
+        clear_close()
+        
         var row_count = parseInt($('.rowCounterClass').length);
         if(row_count==0){
             modal_5_open(`No Items Added to the <span class="bi bi-cart4 text-red fw-bolder"> cart</span> ! please select atleast one item`);
@@ -688,11 +691,15 @@
     $(document).ready(function () {
         $('#order_list_form').submit(function (e) {
             e.preventDefault();
+
+            var formData = $("#order_list_form").serialize();
+            formData +=  `&lat=${latitude}&lon=${longitude}`;
+
             $.ajax({
                 url: "{% url 'create_order' %}",
                 type: "POST",
                 dataType:"json",
-                data: $("#order_list_form").serialize(),
+                data: formData,
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 success: function (res) {
                     // alert('success')
@@ -708,6 +715,7 @@
             });
         });
     });
+
     $(document).ready(function(){
         var height_here = $(window).height()
         var ten_percent = (height_here*25)/100;
@@ -751,6 +759,8 @@
             $('#location_input').val("my home address");
             $('#confirm_order_id').prop('disabled',false);
             $('#loading_food_img').attr('hidden',true);
+            latitude= 0;
+            longitude=0;
         })
     })
 </script>
@@ -759,6 +769,8 @@
 <script>
 
     var loc_response = null;
+    var latitude = 0;
+    var longitude = 0;
 
     function get_current_location(){
 
@@ -769,6 +781,9 @@
                 async (position) => {
                     const lng = position.coords.longitude;
                     const lat = position.coords.latitude;
+
+                    latitude = lat;
+                    longitude = lng;
     
                     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
     
@@ -839,6 +854,10 @@
                 alert('error occured during status change')
             }
         })
+    }
+
+    function clear_close(){
+        $('.modal_5_close_btn').attr('onclick',`$('#modal_5').modal('hide');`)
     }
 </script>
 {% endblock %}

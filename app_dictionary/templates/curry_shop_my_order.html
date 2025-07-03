@@ -255,6 +255,26 @@
         }
     }
 </style>
+
+
+<style>
+    .modal_background_style{
+        box-shadow: 3px 3px 5px 10px rgba(0, 0, 0, 0.701); 
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.718),rgba(0, 0, 0, 0.57));
+        backdrop-filter: blur(3px);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        border-image: linear-gradient(to bottom right,white,rgba(255, 255, 255, 0.512)) 1;
+    }
+    
+    .text-red{
+        color: rgb(224, 60, 60);
+    }
+    .text-orange{
+        color: orange;
+    }
+</style>
+
     <div class="container padd-marg-mob-0">
         <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">MY ORDERS</h3>
 
@@ -381,25 +401,25 @@
        <!-- Modal 2 -->
         <div class="modal fade" id="modal_2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div style="box-shadow: 0px 0px 5px 5px rgba(78, 78, 78, 0.479); background-color: black;" class="modal-content">
+                <div class="modal-content modal_background_style">
                     <form id="order_list_form" action="" method="POST">
                         {% csrf_token %}
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel">Order Reject</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+                        <div class="d-flex justify-content-between p-3">
+                            <h1 class="modal-title fs-5 text-light fw-light" id="staticBackdropLabel">ORDER REJECT</h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" ></button>
                         </div>
                         
                         <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                             <div id="modal_content" class="modal-body p-3 m-0">
-                                <label class="text-light mb-1" for="">Reason</label>
-                                <textarea id="reason_here" class="form-control bg-dark text-light" name="reject_bill_reason" rows="5" placeholder="Type here the reason ...." required></textarea>
+                                <label class="text-light mb-1 fw-light" for="">Reason</label>
+                                <textarea style="background-color: transparent;" id="reason_here" class="form-control text-light fw-light" name="reject_bill_reason" rows="5" placeholder="Type here the reason ...." required></textarea>
                                 <input id="bill_id_here" name="reject_bill_id" type="number" hidden readonly>
                             </div>
                         </div>
-                        <hr class="border pb-0 mb-2">
+                        <!-- <hr class="border pb-0 mb-2"> -->
                         <div class="d-flex justify-content-end">
                         </div>
-                        <div class="modal-footer">
+                        <div class="mb-2 text-end">
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                             <button id="confirm_order_id" type="button" class="btn btn-outline-warning">Confirm</button>
                         </div>

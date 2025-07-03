@@ -171,6 +171,27 @@
         color: gray;
     }
 </style>
+
+
+<style>
+    .modal_background_style{
+        box-shadow: 3px 3px 5px 10px rgba(0, 0, 0, 0.701); 
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.718),rgba(0, 0, 0, 0.57));
+        backdrop-filter: blur(3px);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        border-image: linear-gradient(to bottom right,white,rgba(255, 255, 255, 0.512)) 1;
+    }
+    
+    .text-red{
+        color: rgb(224, 60, 60);
+    }
+    .text-orange{
+        color: orange;
+    }
+</style>
+
+
     <div class="container padd-marg-mob-0">
         <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">DISPATCHED ORDERS</h3>
 
@@ -279,7 +300,7 @@
                             <button class="btn btn-sm text-light btn-danger bg-gradient w-100 fw-bolder text_size me-1" onclick="order_reject_confirm('{{ bill.id }}',$(this))">
                                 <small class="fw-bolder ts">Reject</small>
                             </button>
-                            <button class="btn btn-sm text-light btn-primary bg-gradient w-100 fw-bolder text_size" onclick="delevered_order('{{ bill.id }}',$(this))">
+                            <button class="btn btn-sm text-light btn-primary bg-gradient w-100 fw-bolder text_size" onclick="delivered_click('{{ bill.id }}',$(this))">
                                 <small class="fw-bolder ts">UNDELIVERED</small>
                             </button>
                         </div>
@@ -322,6 +343,93 @@
         </div>
     </div>
 
+    
+    <!-- Modal 4 [ confirm ready ]-->
+        <div class="modal fade" id="modal_4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal_background_style">
+                    <form id="order_list_form" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="text-end me-2">
+                            <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel"></h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" ></button>
+                        </div>
+                        
+                        <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                            <div id="modal_content1" class="modal-body p-3 m-0">
+                                <h5 class="text-light fw-light">Do you want to <span class="fw-bold text-red">change</span> the <span class="fw-bold text-red">Ready</span> status ? </h5>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                        </div>
+                        <div class="text-end me-2 mb-2">
+                            <button type="button" class="btn btn-outline-danger me-2" data-bs-dismiss="modal">Close</button>
+                            <button onclick="order_ready_confirm()" type="button" class="btn btn-outline-warning me-2">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Modal 5 [ confirm call ]-->
+        <div class="modal fade" id="modal_5" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal_background_style">
+                    <form id="order_list_form" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="text-end me-2">
+                            <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel"></h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" ></button>
+                        </div>
+                        
+                        <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                            <div id="modal_content1" class="modal-body p-3 m-0">
+                                <h5 class="text-light">Do you want to <span class="fw-bolder text-red">Call</span>  this <span class="fw-bolder text-red">Customer</span> ? </h5>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                        </div>
+                        <div class="mb-2 text-end">
+                            <button type="button" class="btn btn-outline-danger me-2" data-bs-dismiss="modal">Close</button>
+                            <button onclick="order_call_confirm()" type="button" class="btn btn-outline-warning me-2">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+     <!-- Modal 7 [ confirm call ]-->
+        <div class="modal fade" id="modal_7" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal_background_style">
+                    <form id="order_list_form" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="text-end me-2">
+                            <h1 class="modal-title fs-5 text-light" id="staticBackdropLabel"></h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" ></button>
+                        </div>
+                        
+                        <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                            <div id="modal_content1" class="modal-body p-3 m-0">
+                                <h5 class="text-light">Do you want to <span class="fw-bolder text-red">UnDeliver</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                        </div>
+                        <div class="mb-2 text-end">
+                            <button type="button" class="btn btn-outline-danger me-2" data-bs-dismiss="modal">Close</button>
+                            <button onclick="delivered_order()" type="button" class="btn btn-outline-warning me-2">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <script>
     $(document).ready(function(){
         $('#order_history').addClass('text-light');
@@ -348,102 +456,123 @@
             })
         })
     })
+
+    
+    // order ready start==============================================
+    $(document).ready(function(){
+        var ready_id;
+        var ready_obj;
+        var ready_src_link;
+    })
     function order_ready(id,obj){
-        var user_confirm = confirm("Do you want to change the ready status ?");
-        var src_link = obj.prev().find('img').attr('src');
-        if(user_confirm){
-            $.ajax({
-                url : "{% url 'order_ready' %}",
-                type:"POST",
-                data:{
-                    "id":id,
-                    csrfmiddlewaretoken:"{{ csrf_token }}"
-                },
-                success:function(res){
-                    if(src_link.indexOf('x_mark.png')!==-1){
-                        obj.prev().find('img').attr('src','static/images/check_mark.png')
-                    }
-                    else{
-                        obj.prev().find('img').attr('src','static/images/x_mark.png')
-                    }
-                },
-                error:function(res){
-                    alert('failed')
-                }
-            })
-        }
+        ready_id = id;
+        ready_obj = obj;
+        ready_src_link = obj.prev().find('img').attr('src');
+        $('#modal_4').modal("show");
     }
+    function order_ready_confirm(){
+        $.ajax({
+            url : "{% url 'order_ready' %}",
+            type:"POST",
+            data:{
+                "id":ready_id,
+                csrfmiddlewaretoken:"{{ csrf_token }}"
+            },
+            success:function(res){
+                if(ready_src_link.indexOf('x_mark.png')!==-1){
+                    ready_obj.prev().find('img').attr('src','static/images/check_mark.png')
+                }
+                else{
+                    ready_obj.prev().find('img').attr('src','static/images/x_mark.png')
+                }
+                $('#modal_4').modal("hide");
+            },
+            error:function(res){
+                alert('failed')
+            }
+        })
+    }
+    // order ready end====================================================
+    
+    
+    // order call start ==========================================================
+    $(document).ready(function(){
+        var call_phone;
+        var call_id;
+        var call_obj;
+        var call_src_link;
+    })
     function order_call(phone,id,obj){
-        var user_confirm = confirm(`Do you want to call this [${phone}] number ? `);
-        var src_link = obj.prev().find('img').attr('src');
-        if(user_confirm){
-            $.ajax({
-                url : `{% url 'order_call' %}`,
-                type:"POST",
-                data:{
-                    'id':id,
-                    csrfmiddlewaretoken:'{{ csrf_token }}',
-                },
-                success: function(res){
-                    // if(src_link.indexOf('x_mark.png')!==-1){
-                        window.location.href=`tel:${phone}`
-                        obj.prev().find('img').attr('src','static/images/check_mark.png')
-                    // }
-                    // else{
-                    //     obj.prev().find('img').attr('src','static/images/x_mark.png')
-                    // }
-                },
-                error: function(res){
-                    alert('failed')
-                }
-            })
-        }
+
+        call_phone = phone;
+        call_id = id;
+        call_obj = obj;
+
+        call_src_link = obj.prev().find('img').attr('src');
+
+        $('#modal_5').modal('show');
+
     }
-    function dispatch_order(id,obj){
-        var user_confirm = confirm("Do you want to undispatch the product ? ");
-        if(user_confirm){
-            $.ajax({
-                url:"{% url 'dispatch_order' %}",
-                type:"POST",
-                data:{
-                    "id":id,
-                    csrfmiddlewaretoken:"{{ csrf_token }}"
-                },
-                success:function(res){
-                    obj.parent().parent().parent().attr('hidden',true)
-                    // alert('success')
-                },
-                error:function(error){
-                    alert("failed")
-                }
-            })
-        }
+    function order_call_confirm(){
+        $.ajax({
+            url : `{% url 'order_call' %}`,
+            type:"POST",
+            data:{
+                'id':call_id,
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+            },
+            success: function(res){
+                window.location.href=`tel:${call_phone}`
+                call_obj.prev().find('img').attr('src','static/images/check_mark.png')
+                $('#modal_5').modal('hide');
+            },
+            error: function(res){
+                alert('failed')
+            }
+        })
     }
+    // order call end ==============================================================
+
+    
+
     $(document).ready(function(){
         var height_here = $(window).height()
         var ten_percent = (height_here*25)/100;
         $('.scrolling_window_height').height(height_here-ten_percent);
     })
-    function delevered_order(id,obj){
-        var user_confirm = confirm("Do you want to undispatch the product ? ");
-        if(user_confirm){
-            $.ajax({
-                url:"{% url 'delevered_order' %}",
-                type:"POST",
-                data:{
-                    "id":id,
-                    csrfmiddlewaretoken:"{{ csrf_token }}"
-                },
-                success:function(res){
-                    obj.parent().parent().parent().attr('hidden',true)
-                    // alert('success')
-                },
-                error:function(error){
-                    alert("failed")
-                }
-            })
-        }
+    
+    
+    // delivered status change start =======================================================
+    var delivered_id;
+    var delivered_obj;
+
+    function delivered_click(id,obj){
+        delivered_id = id;
+        delivered_obj = obj;
+        $("#modal_7").modal("show");
     }
+
+    function delivered_order(){
+        $.ajax({
+            url:"{% url 'delevered_order' %}",
+            type:"POST",
+            data:{
+                "id":delivered_id,
+                csrfmiddlewaretoken:"{{ csrf_token }}"
+            },
+            success:function(res){
+                $("#modal_7").modal("hide");
+                delivered_obj.parent().parent().parent().attr('hidden',true);
+            },
+            error:function(error){
+                $("#modal_7").modal("hide");
+                alert("failed")
+            }
+        })
+    }
+    // delivered status change end =======================================================
+
+
     function order_reject_confirm(id,obj){
         $('#modal_2').modal('show');
         $('#bill_id_here').val(id);

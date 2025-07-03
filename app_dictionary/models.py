@@ -115,7 +115,10 @@ class BillModel(models.Model):
 
     expected_delevery_time = models.DateTimeField(blank=True,null=True)
 
+    current_loc = models.BooleanField(default=False,blank=True,null=True)
     delivery_address = models.TextField(blank=True,null=True)
+    delivery_addres_lat = models.FloatField(blank=True,null=True)
+    delivery_addres_lon = models.FloatField(blank=True,null=True)
     
 
     def save(self,*args,**kwargs):

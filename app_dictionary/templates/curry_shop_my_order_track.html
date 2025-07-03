@@ -316,6 +316,16 @@
             <div class="thin_border bg-gradient bg-dark">
                 <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Delivery Address</label>
                 <h6 class="ts mt-2 side_border p-2">{% if bill %} {{ bill.delivery_address|upper }} {% else %} Please add delivery address {% endif %}</h6>
+                {% if bill.current_loc %}
+                <div class="border">
+                    <iframe src="https://www.google.com/maps?q={{ bill.delivery_addres_lat }},{{ bill.delivery_addres_lon }}&h1=es;z=14&output=embed"
+                        frameborder="0"
+                        width="100%"
+                        height="20%"
+                    >
+                    </iframe>
+                </div>
+                {% endif %}
             </div>
 
             <div class="thin_border bg-gradient">

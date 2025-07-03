@@ -276,12 +276,18 @@ def create_order(request):
         grand_total = float(request.POST.get('grant_total'))
         address_location = request.POST.get("location")
 
+        lat = request.POST.get("lat") or None
+        lon = request.POST.get("lon") or None
+
+
         if address_location:
             if address_location == "my home address":
                 user = User.objects.get(id=request.user.id)
                 loc_addr = user.delivery_address
+                current_loc = False
             else:
                 loc_addr = address_location
+                current_loc = True
 
         # validation check1
         if(len(item_id)!=len(ordered_item_name)!=len(qty)!=len(price)!=len(total_price)):
@@ -311,7 +317,10 @@ def create_order(request):
             user=request.user,
             grand_total= grand_total,
             ordered_time= datetime.now(),
-            delivery_address = loc_addr
+            current_loc=current_loc,
+            delivery_address = loc_addr,
+            delivery_addres_lat = lat,
+            delivery_addres_lon = lon
         )
         bill.save()
         print("================= [data here] ================")
