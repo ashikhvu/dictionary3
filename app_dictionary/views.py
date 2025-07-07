@@ -492,10 +492,12 @@ def delevered_order(request):
     print(bill.delevered_status)
     if bill.delevered_status == 'notdelevered':
         bill.delevered_status = 'delevered'
+        bill.delevered_time = datetime.now()
+        bill.save()
     else:
         bill.delevered_status = 'notdelevered'
-    bill.delevered_time = datetime.now()
-    bill.save()
+        bill.delevered_time = None
+        bill.save()
     print(bill.delevered_status)
     return JsonResponse({'success':'success'})
 

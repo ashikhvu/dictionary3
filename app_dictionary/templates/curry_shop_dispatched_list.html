@@ -437,14 +437,24 @@
                         
                         <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                             <div id="modal_content1" class="modal-body p-3 m-0">
-                                <h5 class="text-light">Do you want to <span class="fw-bolder text-red">Deliver</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
+                                <h5 class="text-light">Did you <span class="fw-bolder text-red">Deliver</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
+                                <select class="bg-dark text-light form-control" name="" id="paid_status" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="fully">Fully Paid</option>
+                                    <option value="partially">Partially Paid</option>
+                                </select>
+                                <br>
+                                <div>
+                                    <small><label class="text-light" for="paid_amount">Paid Amounts</label></small>
+                                    <input class="form-control bg-dark text-light" type="tel" id="paid_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                </div>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
                         </div>
                         <div class="mb-2 text-end">
-                            <button type="button" class="btn btn-outline-danger me-2" data-bs-dismiss="modal">Close</button>
-                            <button onclick="delivered_order()" type="button" class="btn btn-outline-warning me-2">Confirm</button>
+                            <button type="button" class="btn btn-outline-danger me-2" data-bs-dismiss="modal">No</button>
+                            <button onclick="delivered_order()" type="button" class="btn btn-outline-warning me-2">Yes</button>
                         </div>
                     </form>
                 </div>
@@ -592,6 +602,11 @@
     })
 
     // delivered status change start =======================================================
+
+    $(document).ready(function(){
+        $("#paid_status").val("");
+    })
+
     var delivered_id;
     var delivered_obj;
 
@@ -602,22 +617,33 @@
     }
 
     function delivered_order(){
-        $.ajax({
-            url:"{% url 'delevered_order' %}",
-            type:"POST",
-            data:{
-                "id":delivered_id,
-                csrfmiddlewaretoken:"{{ csrf_token }}"
-            },
-            success:function(res){
-                $("#modal_7").modal("hide");
-                delivered_obj.parent().parent().parent().attr('hidden',true);
-            },
-            error:function(error){
-                $("#modal_7").modal("hide");
-                alert("failed")
-            }
-        })
+
+        let paid_status = $("#paid_status").val();
+        alert(paid_status)
+        if(paid_status==null || paid_status==""){
+            $("#paid_status").focus();
+            alert("Select an option");
+        }
+        else{
+
+            
+            $.ajax({
+                url:"{% url 'delevered_order' %}",
+                type:"POST",
+                data:{
+                    "id":delivered_id,
+                    csrfmiddlewaretoken:"{{ csrf_token }}"
+                },
+                success:function(res){
+                    $("#modal_7").modal("hide");
+                    delivered_obj.parent().parent().parent().attr('hidden',true);
+                },
+                error:function(error){
+                    $("#modal_7").modal("hide");
+                    alert("failed")
+                }
+            })
+        }
     }
     // delivered status change end =======================================================
 
