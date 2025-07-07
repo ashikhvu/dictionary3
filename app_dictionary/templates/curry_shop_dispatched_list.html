@@ -212,6 +212,15 @@
     .text-orange{
         color: orange;
     }
+    .tran_bg_light_text{
+        background: transparent;
+    }
+    .tran_bg_light_text:focus{
+        background: transparent;
+    }
+    .tran_bg_light_text::placeholder{
+        color: white;
+    }
 </style>
 
 
@@ -274,15 +283,15 @@
                         <div class="d-flex my_margin justify-content-between">
                             <div>
                                 <label for="" class="fw-bolder text-light ts text_size"><small>TOTAL</small></label>
-                                <input class="form-control form-control-sm fw-bold text_size" type="text" name="" id="" value="{{ bill.grand_total }}" readonly>
+                                <input class="form-control form-control-sm fw-bold text_size input_total" type="text" name="" id="" value="{{ bill.grand_total }}" readonly>
                             </div>
                             <div class="text-center ms-1 me-1">
                                 <label for="" class="fw-bolder text-light ts text_size"><small>PAID</small></label>
-                                <input class="form-control form-control-sm fw-bold text-center text_size" type="text" name="" id="" value="{{ bill.paid }}" readonly>
+                                <input class="form-control form-control-sm fw-bold text-center text_size input_paid" type="text" name="" id="" value="{{ bill.paid }}" readonly>
                             </div>
                             <div class="text-end">
                                 <label for="" class="fw-bolder text-light ts text-end text_size"><small>BAL</small></label>
-                                <input class="form-control form-control-sm text-end fw-bold text_size" type="text" name="" id="" value="{{ bill.bal }}" readonly>
+                                <input class="form-control form-control-sm text-end fw-bold text_size input_bal" type="text" name="" id="" value="{{ bill.bal }}" readonly>
                             </div>
                         </div>
                         <div class="d-flex my_margin justify-content-between">
@@ -380,7 +389,7 @@
                         
                         <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                             <div id="modal_content1" class="modal-body p-3 m-0">
-                                <h5 class="text-light">Do you want to <span class="fw-bolder text-red">Call</span>  this <span class="fw-bolder text-red">Customer</span> ? </h5>
+                                <h5 class="text-light fw-light">Do you want to <span class="fw-bolder text-red">Call</span>  this <span class="fw-bolder text-red">Customer</span> ? </h5>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -395,7 +404,7 @@
         </div>
     </div>
 
-     <!-- Modal 6 [ confirm call ]-->
+     <!-- Modal 6 [ confirm undispatch ]-->
         <div class="modal fade" id="modal_6" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content modal_background_style">
@@ -408,7 +417,7 @@
                         
                         <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                             <div id="modal_content1" class="modal-body p-3 m-0">
-                                <h5 class="text-light">Do you want to <span class="fw-bolder text-red">UnDispatch</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
+                                <h5 class="text-light fw-light">Do you want to <span class="fw-bolder text-red">UnDispatch</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -424,7 +433,7 @@
     </div>
 
     
-     <!-- Modal 7 [ confirm call ]-->
+     <!-- Modal 7 [ confirm deliver ]-->
         <div class="modal fade" id="modal_7" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content modal_background_style">
@@ -437,16 +446,28 @@
                         
                         <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                             <div id="modal_content1" class="modal-body p-3 m-0">
-                                <h5 class="text-light">Did you <span class="fw-bolder text-red">Deliver</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
-                                <select class="bg-dark text-light form-control" name="" id="paid_status" required>
-                                    <option value="" disabled selected>Select an option</option>
-                                    <option value="fully">Fully Paid</option>
-                                    <option value="partially">Partially Paid</option>
+                                <h5 class="text-light fw-light">Did you <span class="fw-bolder text-red">Deliver</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
+                                <select class="bg-dark text-light form-control fw-lighter" name="" id="paid_status" required>
+                                    <option class="fw-lighter" value="" disabled selected>Select an option</option>
+                                    <option class="fw-lighter" value="fully">Fully Paid</option>
+                                    <option class="fw-lighter" value="partially">Partially Paid</option>
                                 </select>
                                 <br>
-                                <div>
-                                    <small><label class="text-light" for="paid_amount">Paid Amounts</label></small>
-                                    <input class="form-control bg-dark text-light" type="tel" id="paid_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                <div id="display_paid_amount" hidden>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <small><label class="text-light" for="paid_amount">Paid Amount</label></small>
+                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="paid_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'');valid_check_paid($(this))" placeholder="0.00">
+                                        </div>
+                                        <div class="col-4">
+                                            <small><label class="text-light" for="total_amount">Total Amount</label></small>
+                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="total_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="0.00">
+                                        </div>
+                                        <div class="col-4">
+                                            <small><label class="text-light" for="total_amount">Balance Amount</label></small>
+                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="total_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="0.00">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -609,23 +630,38 @@
 
     var delivered_id;
     var delivered_obj;
+    var paid_amnt = 0;
 
     function delivered_click(id,obj){
         delivered_id = id;
         delivered_obj = obj;
         $("#modal_7").modal("show");
+        paid_amnt = parseFloat(delivered_obj.parent().parent().find(".input_total").val()).toFixed(2);
+        $("#total_amount").val(paid_amnt);
+        $("#paid_amount").attr('max',paid_amnt-1);
+    }
+
+    function valid_check_paid(element){
+        var val = parseFloat(element.val());
+        var max = parseFloat(element.attr('max'));
+        var min = parseFloat(element.attr('min'));
+        if(val>max){
+            element.val('');
+        }
     }
 
     function delivered_order(){
 
         let paid_status = $("#paid_status").val();
-        alert(paid_status)
         if(paid_status==null || paid_status==""){
             $("#paid_status").focus();
             alert("Select an option");
         }
         else{
 
+            if(paid_status=="partially"){
+                $('#display_paid_amount').attr('hidden',false);
+            }
             
             $.ajax({
                 url:"{% url 'delevered_order' %}",
@@ -650,16 +686,19 @@
 </script>
 
 <script type="text/javascript">
+
+
     $(document).ready(function(){
-        let url = `ws://${window.location.host}/ws/socket-server/`;
-        const chatSocket = new WebSocket(url);
-        chatSocket.onmessage = function(e){
-            let data = JSON.parse(e.data);
-            console.log('Data',data);
+        $("#display_paid_amount").attr("hidden",true);
+    })
+
+    $("#paid_status").on("input",function(){
+        if($(this).val()=="partially"){
+            $("#display_paid_amount").attr("hidden",false);
         }
-        $('#form1').on("submit",function(){
-            
-        })
+        else{
+            $("#display_paid_amount").attr("hidden",true);
+        }
     })
 </script>
 {% endblock %}
