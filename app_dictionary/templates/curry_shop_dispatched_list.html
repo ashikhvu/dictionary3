@@ -212,6 +212,9 @@
     .text-orange{
         color: orange;
     }
+    .text-grn{
+        color: rgb(84, 255, 84);
+    }
     .tran_bg_light_text{
         background: transparent;
     }
@@ -221,11 +224,14 @@
     .tran_bg_light_text::placeholder{
         color: white;
     }
+    .tran_bg_light_text:disabled{
+        background: transparent;
+    }
 </style>
 
 
     <div class="container padd-marg-mob-0">
-        <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">DISPATCHED ORDERS</h3>
+        <!-- <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">DISPATCHED ORDERS</h3> -->
 
         <div class="input-group my-2">
             <span class="input-group-text bi bi-search icon_size"></span>
@@ -446,26 +452,27 @@
                         
                         <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
                             <div id="modal_content1" class="modal-body p-3 m-0">
-                                <h5 class="text-light fw-light">Did you <span class="fw-bolder text-red">Deliver</span>  this <span class="fw-bolder text-red">Order</span> ? </h5>
+                                <h5 class="text-light fw-light">Did you <span class="fw-bolder text-red">Deliver</span>  this <span class="fw-bolder text-red">Order</span> ? <small>( Select the <span class="text-red fw-bolder">Payment Type</span> )</small></h5>
                                 <select class="bg-dark text-light form-control fw-lighter" name="" id="paid_status" required>
-                                    <option class="fw-lighter" value="" disabled selected>Select an option</option>
-                                    <option class="fw-lighter" value="fully">Fully Paid</option>
-                                    <option class="fw-lighter" value="partially">Partially Paid</option>
+                                    <option class="fw-light" value="" disabled selected>Select an option</option>
+                                    <option class="fw-light" value="fully_paid">Fully Paid</option>
+                                    <option class="fw-light" value="partially_paid">Partially Paid</option>
+                                    <option class="fw-light" value="not_paid">Not Paid</option>
                                 </select>
                                 <br>
                                 <div id="display_paid_amount" hidden>
                                     <div class="row">
                                         <div class="col-6">
                                             <small><label class="text-light" for="total_amount">Total Amount</label></small>
-                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="total_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="0.00">
+                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="total_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="0.00" disabled>
                                         </div>
                                         <div class="col-6">
+                                            <small><label class="text-light" for="bal_amount">Balance Amount</label></small>
+                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="bal_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="0.00" disabled>
+                                        </div>
+                                        <div class="col-12 mt-2">
                                             <small><label class="text-light" for="paid_amount">Paid Amount</label></small>
                                             <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="paid_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'');valid_check_paid($(this))" placeholder="0.00">
-                                        </div>
-                                        <div class="col-12">
-                                            <small><label class="text-light" for="total_amount">Balance Amount</label></small>
-                                            <input class="form-control text-light fw-light tran_bg_light_text" type="tel" id="total_amount" min="0" max="" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" placeholder="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -482,6 +489,34 @@
             </div>
         </div>
     </div>
+
+      <!-- Modal new-->
+        <div class="modal fade" id="modal_new" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal_background_style">
+
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                            <div class="text-end me-2">
+                                <button type="button" class="btn-close btn-close-white modal_new_close_btn" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_new').modal('hide');"></button>
+                            </div>
+                            <h5 id="modal_new_contenst" class="fw-light p-3 text-light">
+                                <div id="modal_new_content">
+
+                                </div>
+                            </h5>
+                            <div class="mb-2 text-end">
+                                <button type="button" class="btn btn-outline-danger me-2 fw-light modal_new_close_btn" data-bs-dismiss="modal" onclick="$('#modal_new').modal('hide');">Close</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
 <script>
     $(document).ready(function(){
@@ -626,6 +661,9 @@
 
     $(document).ready(function(){
         $("#paid_status").val("");
+        $("#paid_amount").val("");
+        $("#total_amount").val("");
+        $("#bal_amount").val("");
     })
 
     var delivered_id;
@@ -647,6 +685,17 @@
         var min = parseFloat(element.attr('min'));
         if(val>max){
             element.val('');
+            $("#bal_amount").val("");
+        }
+        else{
+            var tot = parseFloat($("#total_amount").val());
+            // alert(`${tot}-${val}=${tot-val}`)
+            if(tot!=null){
+                $("#bal_amount").val(tot-val);
+            }
+            else{
+                $("#bal_amount").val('')
+            }
         }
     }
 
@@ -655,12 +704,16 @@
         let paid_status = $("#paid_status").val();
         if(paid_status==null || paid_status==""){
             $("#paid_status").focus();
-            alert("Select an option");
+            modal_new_open("Select an option .","modal_7","modal_7","paid_status",'info',1);
         }
         else{
 
-            if(paid_status=="partially"){
-                $('#display_paid_amount').attr('hidden',false);
+            if(paid_status=="partially_paid"){
+                if($("#paid_amount")==null || $("#paid_amount").val()==""){
+                    modal_new_open("Enter the paid amount .","modal_7","modal_7","paid_amount",'info',1);
+                    return;
+                }
+
             }
             
             $.ajax({
@@ -668,6 +721,10 @@
                 type:"POST",
                 data:{
                     "id":delivered_id,
+                    'paid_status':$("#paid_status").val(),
+                    'paid_amount':$('#paid_amount').val() || null,
+                    'bal_amount':$('#bal_amount').val() || null,
+                    'total_amount':$('#total_amount').val() || null,
                     csrfmiddlewaretoken:"{{ csrf_token }}"
                 },
                 success:function(res){
@@ -676,7 +733,7 @@
                 },
                 error:function(error){
                     $("#modal_7").modal("hide");
-                    alert("failed")
+                    modal_new_open("Failed .","modal_7","modal_7","paid_amount",'exclamation-circle',1);
                 }
             })
         }
@@ -685,7 +742,7 @@
 
 </script>
 
-<script type="text/javascript">
+<script>
 
 
     $(document).ready(function(){
@@ -693,12 +750,43 @@
     })
 
     $("#paid_status").on("input",function(){
-        if($(this).val()=="partially"){
+        if($(this).val()=="partially_paid"){
             $("#display_paid_amount").attr("hidden",false);
         }
         else{
             $("#display_paid_amount").attr("hidden",true);
+            $("#paid_amount").val("");
+            $("#bal_amount").val("");
         }
     })
+
+</script>
+
+<!-- modal New -->
+<script>
+    //example====== modal_new_open("Enter the paid amount .","modal_7","modal_7","paid_amount",'info',1); -->
+    function modal_new_open(content,close_modal_name,goto_modal_name,focus_point,sign,row){
+        $("#modal_new_content").html(`
+            <div class="d-flex">
+                <span class="bi bi-${sign}-circle pe-3 text-red"></span>
+                <div class="w-100">
+                    <textarea rows="${row}" class="w-100 pt-0 tran_bg_light_text text-light" style="border:none;" name="" id="modal_new_content">${content}</textarea>
+                </div>
+            </div>
+        `);
+        $(`#${close_modal_name}`).modal("hide")
+        $('#modal_new').modal("show");
+        $('.modal_new_close_btn').attr('onclick'
+            ,`$('#${goto_modal_name}').modal("show");
+            setTimeout(() => {
+                $('#${focus_point}').focus()
+            }, 500);
+            clear_close();
+        `);
+    }
+
+    function clear_close(){
+        $('.modal_new_close_btn').attr('onclick',`$('#modal_new').modal('hide');`)
+    }
 </script>
 {% endblock %}

@@ -300,7 +300,7 @@ def create_order(request):
             tot = int(qty[i])*float(item.prize)
             print(f'{ordered_item_name} {qty[i]} * {float(item.prize)} = {tot}\n {tot}=={total_price[i]}\n {type(tot)}=={type(total_price[i])}')
             if float(tot) != float(total_price[i]):
-                return JsonResponse({'error':'error'})
+                return JsonResponse({'error':'error'},status=400)
         print('validation check2 completed')
 
         for i in item_id:
@@ -336,7 +336,7 @@ def create_order(request):
             )
             item_list.save()
             print("success")
-    return JsonResponse({"success":"order created"})
+    return JsonResponse({"success":"order created"},status=201)
 
 @login_required
 def reject_order(request):
@@ -488,17 +488,65 @@ def dispatched_list(request):
 
 @login_required
 def delevered_order(request):
-    bill = BillModel.objects.get(id=request.POST.get('id'))
-    print(bill.delevered_status)
+
+    try:
+        bill = BillModel.objects.get(id=request.POST.get('id'))
+    except BillModel.DoesNotExist:
+        return JsonResponse({"error":"Bill doesn't exist !"},status=400)
+    except Exception as e:
+        return JsonResponse({"error":str(e)},status=400)
+
+    try:
+        paid_status = request.POST.get('paid_status') or None
+        paid_amount = request.POST.get('paid_amount') or None
+        bal_amount = request.POST.get('bal_amount') or None
+        total_amount = request.POST.get('total_amount') or None
+    except:
+        pass
+
+    # print(f"{paid_status}\n{paid_amount}\n{bal_amount}\n{total_amount}")
+
+    if total_amount!=None and total_amount!="":
+        total_amount = float(total_amount)
+        if bill.grand_total != total_amount:
+            return JsonResponse({"error":"Failed"},status=400)
+    if paid_amount!=None and paid_amount!="":
+        paid_amount = float(paid_amount)
+    if bal_amount!=None and bal_amount!="":
+        bal_amount = float(bal_amount)
+        if (bill.grand_total - paid_amount) != bal_amount:
+            return JsonResponse({"error":"Failed"},status=400)
+        
+
+    
     if bill.delevered_status == 'notdelevered':
         bill.delevered_status = 'delevered'
         bill.delevered_time = datetime.now()
-        bill.save()
+
+        if paid_status == "fully_paid":
+            bill.bal= 0.00
+            bill.paid = bill.grand_total
+        elif paid_status == "partially_paid":
+            bill.paid = paid_amount
+            bill.bal = bal_amount
+        elif paid_status == "not_paid":
+            bill.paid = 0.00
+            bill.bal = bill.grand_total
+
+        if paid_status == "partially_paid" and int(paid_amount)==0:
+            bill.paid_type = "not_paid"
+        else:
+            bill.paid_type = paid_status
+        
     else:
         bill.delevered_status = 'notdelevered'
         bill.delevered_time = None
-        bill.save()
-    print(bill.delevered_status)
+        bill.paid_type = "not_paid"
+        bill.paid = 0.00
+        bill.bal = 0.00
+
+    bill.save()
+
     return JsonResponse({'success':'success'})
 
 @login_required

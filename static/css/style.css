@@ -48,3 +48,18 @@
 .text_start{
     text-align: start;
 }
+
+
+
+.tran_bg_light_text{
+    background: transparent;
+}
+.tran_bg_light_text:focus{
+    background: transparent;
+}
+.tran_bg_light_text::placeholder{
+    color: white;
+}
+.tran_bg_light_text:disabled{
+    background: transparent;
+}

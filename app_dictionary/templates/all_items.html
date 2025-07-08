@@ -7,7 +7,7 @@
 
 {% block body_block %}
 
-<script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+<!-- <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script> -->
 
 <style>
     .custom-dropdown{
@@ -305,7 +305,7 @@
 
 <div class="container padd-marg-mob-0" >
     
-    <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">ITEMS</h3>
+    <!-- <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">ITEMS</h3> -->
 
     <div class="input-group my-2">
         <span class="input-group-text bi bi-search icon_size"></span>
@@ -313,8 +313,8 @@
     </div>
     
         {% if all_items %}
-        <!-- <div style="overflow-y: auto;height: 50vh;"> -->
-            <div class="container1 scrolling_window_height" style="overflow-y: auto;">
+        <div class="container1">
+            <!-- <div class="container1 scrolling_window_height" style="overflow-y: auto;"> -->
                 {% for i in all_items %}
                     <div class="container_items mt-2 clickhere">
                         <div class="card my_card position-relative mb-0">
@@ -560,6 +560,36 @@
   </div>
 
 
+      <!-- Modal new-->
+        <div class="modal fade" id="modal_new" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal_background_style">
+
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="modal_container overflow-y-auto" style="max-height: 20rem;scrollbar-width: thin;scrollbar-color: black;">
+                            <div class="text-end me-2">
+                                <button type="button" class="btn-close btn-close-white modal_new_close_btn" data-bs-dismiss="modal" aria-label="Close" onclick="$('#modal_new').modal('hide');"></button>
+                            </div>
+                            <div id="modal_new_content">
+
+                            </div>
+                            </h5>
+                            <div class="mb-2 text-end">
+                                <button type="button" class="btn btn-outline-danger me-2 fw-light modal_new_close_btn" data-bs-dismiss="modal" onclick="$('#modal_new').modal('hide');">Close</button>
+                                <button type="button" class="btn btn-outline-warning me-2 fw-light modal_new_confirm_btn" data-bs-dismiss="modal" onclick="$('#modal_new').modal('hide');">Confirm</button>
+                            </div>
+                        </div>
+
+                    </form>
+            </div>
+            </div>
+        </div>
+
+  
+
+
   <!-- <input id="message-input" type="text"> -->
 
 <script>
@@ -589,7 +619,8 @@
         $('#modal_content').find('.order_item_id').filter(function(){
                 if(parseInt($(this).val())==parseInt(id)){
                     exist = true;
-                    alert(`Item "${item_name.toUpperCase()}" Already exist`);
+                    // alert(`Item "${item_name.toUpperCase()}" Already exist`);
+                    modal_new_open(`Item "${item_name.toUpperCase()}" Already exist`,"modal_1","modal_1","",'info',1,'confirm_clear_content()');
                 }
         })
         if(exist==false){
@@ -635,19 +666,39 @@
         }
     }
 
+
+    // CLEAR CONTENT START
+
+    $(document).ready(function(){
+        var row_count;
+        var gtot;
+        var tot;
+        var clear_contetent_obj;
+        var clear_contetent_id;
+    })
+
     function clearContent(id,obj){
-        var row_count = parseInt($('.rowCounterClass').length);
-        var user_confirm = confirm('Do you want to clear this item ? ')
-        var gtot = $('#grand_total').val();
-        var tot = obj.parent().parent().parent().find('.my_total').val();
-        if(user_confirm){
-            obj.parent().parent().parent().empty();
-            if(row_count<=1){
-                $('#modal_1').modal('hide');
-            }
-            $('#grand_total').val(parseFloat(gtot) - parseFloat(tot))
-        }
+        row_count = parseInt($('.rowCounterClass').length);
+        clear_contetent_id = id;
+        clear_contetent_obj = obj;
+        gtot = $('#grand_total').val();
+        tot = clear_contetent_obj.parent().parent().parent().find('.my_total').val();
+        modal_new_open("Do you want to clear this item ?","modal_1","modal_1","",'info',1,'confirm_clear_content()');
     }
+    
+    function confirm_clear_content(){
+        clear_contetent_obj.parent().parent().parent().empty();
+        if(row_count<=1){
+            $('#modal_1').modal('hide');
+        }
+        else{
+            $('#modal_1').modal('show');
+        }
+        $('#grand_total').val(parseFloat(gtot) - parseFloat(tot))
+    }
+
+    // CLEAR CONTENT END
+
     function add_here(obj){
         var qty = obj.parent().parent().find('.qty_val')
         var qty_val = parseInt(qty.val())
@@ -681,7 +732,7 @@
     }
     function openmodal(){
         
-        clear_close()
+        clear_the_close()
         
         var row_count = parseInt($('.rowCounterClass').length);
         if(row_count==0){
@@ -865,8 +916,40 @@
         })
     }
 
-    function clear_close(){
+    function clear_the_close(){
         $('.modal_5_close_btn').attr('onclick',`$('#modal_5').modal('hide');`)
+    }
+</script>
+
+
+<!-- modal New -->
+<script>
+    //example====== modal_new_open("Enter the paid amount .","modal_7","modal_7","paid_amount",'info',1); -->
+    function modal_new_open(content,close_modal_name,goto_modal_name,focus_point,sign,row,confirm_fn){
+        $("#modal_new_content").html(`
+            <div class="d-flex">
+                <span class="bi bi-${sign}-circle pe-3 text-red ps-3 fs-5"></span>
+                <div class="w-100">
+                    <textarea rows="${row}" class="w-100 pt-0 tran_bg_light_text text-light fs-5" style="border:none;" name="" id="modal_new_content">${content}</textarea>
+                </div>
+            </div>
+        `);
+        $(`#${close_modal_name}`).modal("hide")
+        $('#modal_new').modal("show");
+        $('.modal_new_close_btn').attr('onclick',`
+            $('#${goto_modal_name}').modal("show");
+            if('${focus_point}'!==""){
+                setTimeout(() => {
+                    $('#${focus_point}').focus();
+                }, 500);
+            }
+            clear_close();
+        `);
+        $('.modal_new_confirm_btn').attr('onclick',confirm_fn);
+    }
+
+    function clear_close(){
+        $('.modal_new_close_btn').attr('onclick',`$('#modal_new').modal('hide');`)
     }
 </script>
 {% endblock %}

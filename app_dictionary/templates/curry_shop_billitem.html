@@ -45,13 +45,13 @@
     {% csrf_token %}
     <div class="container">
     
-        <h3 class="bg-dark p-2 text-center text-light rounded mb-4">BILL ITEMS</h3>
+        <!-- <h3 class="bg-dark p-2 text-center text-light rounded mb-4">BILL ITEMS</h3> -->
         {% if items %}
     
         <div class="position-relative" style="z-index: 1;">
-            <div class="mb-3 input-group">
+            <div class="mb-3 input-group mt-2">
                 <span class="input-group-text bi bi-search"></span>
-                <input id="search_item_id" class="form-control" type="text" onclick="$('#toggle_dropdown').toggle()">
+                <input id="search_item_id" class="form-control" type="text" placeholder="search here .."  onclick="$('#toggle_dropdown').toggle()">
             </div>
             <div class="position-absolute w-100">
                 <div id="toggle_dropdown" class="custom-dropdown rounded text-light" style="overflow-y: auto;" onclick="$('#toggle_dropdown').toggle()">

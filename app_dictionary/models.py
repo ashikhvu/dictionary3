@@ -119,6 +119,13 @@ class BillModel(models.Model):
     delivery_address = models.TextField(blank=True,null=True)
     delivery_addres_lat = models.FloatField(blank=True,null=True)
     delivery_addres_lon = models.FloatField(blank=True,null=True)
+
+    paid_type_choices = (
+        ("fully_paid","fully_paid"),
+        ("partially_paid","partially_paid"),
+        ("not_paid","not_paid")
+    )
+    paid_type = models.CharField(max_length=100,default="not_paid",blank=True,null=True,choices=paid_type_choices)
     
 
     def save(self,*args,**kwargs):
