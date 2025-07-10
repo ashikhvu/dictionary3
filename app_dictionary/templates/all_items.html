@@ -363,7 +363,7 @@
             </div>
             <!-- </div> -->
         {% else %}
-        <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No Items Added yet</h4>
+        <h4 class="bg-success p-2 text-center text-light rounded mb-4 py-5">No Items Added yet <br><a class="btn btn-outline-light mt-3" href="{% url 'add_item' %}"> Add New Item</a></h4>
         {% endif %}
     </div>
 
@@ -427,15 +427,15 @@
                     <div class="d-flex justify-content-center text-light">
                         <div class="border-light me-5">
                             <div class="position-relative" id="loading_food_img" hidden>
-                                <div class="position-absolute" style="margin-top: 1.5rem;margin-left: 3rem;">
-                                    <img src="{% static 'images/food_loading.gif' %}" alt="" style="width: 3rem;height: 3rem;">
+                                <div class="position-absolute" style="margin-top: 1.7rem;margin-left: 1.7rem;">
+                                    <img src="{% static 'images/food_loading.gif' %}" alt="" style="width: 5rem;height: 5rem;">
                                 </div>
                             </div>
                             <img id="current_loc_img" onclick="$('#current_loc').click()" class="img_map_2" src="{% static 'images\googlemap.jpg' %}" width="130px" height="130px" alt="">
                             <div class="position-relative">
                                 <div class="position-absolute" style="margin-left: 0.70rem;margin-top: -1.5rem;">
                                     <input id="current_loc" class="form-check-input" name="choose_loc" type="radio" style="opacity: 0;">
-                                    <label for="current_loc">MY_LOCATION</label>
+                                    <label for="current_loc">MY LOCATION</label>
                                 </div>
                             </div>
                         </div>
@@ -445,7 +445,7 @@
                                 <div class="position-absolute" style="margin-left: -0rem;">
                                     <div class="d-flex justify-content-center">
                                         <input id="home_loc" class="form-check-input" name="choose_loc" type="radio" checked style="opacity: 0;">
-                                        <label for="home_loc">MY_ADDRESS</label>
+                                        <label for="home_loc">MY ADDRESS</label>
                                     </div>
                                 </div>
                             </div>
@@ -617,11 +617,11 @@
         var item_img = $(`#item_img${id}`).attr('src');
         var exist = false;
         $('#modal_content').find('.order_item_id').filter(function(){
-                if(parseInt($(this).val())==parseInt(id)){
-                    exist = true;
-                    // alert(`Item "${item_name.toUpperCase()}" Already exist`);
-                    modal_new_open(`Item "${item_name.toUpperCase()}" Already exist`,"modal_1","modal_1","",'info',1,'confirm_clear_content()');
-                }
+            if(parseInt($(this).val())==parseInt(id)){
+                exist = true;
+                alert(`Item "${item_name.toUpperCase()}" Already Added`);
+                // modal_new_open(`Item "${item_name.toUpperCase()}" Already Added`,"modal_1","modal_1","",'info',1,'');
+            }
         })
         if(exist==false){
             $('#modal_content').append(`
@@ -799,6 +799,10 @@
 
 <script>
     $(document).ready(function(){
+        $("#home_loc_img").click();
+    })
+
+    $(document).ready(function(){
         $('#current_loc').on('input',function(){
             $('#confirm_order_id').prop('disabled',true);
             $("#current_loc_img").addClass("img_map_1");
@@ -930,11 +934,11 @@
             <div class="d-flex">
                 <span class="bi bi-${sign}-circle pe-3 text-red ps-3 fs-5"></span>
                 <div class="w-100">
-                    <textarea rows="${row}" class="w-100 pt-0 tran_bg_light_text text-light fs-5" style="border:none;" name="" id="modal_new_content">${content}</textarea>
+                    <textarea rows="${row}" class="w-100 pt-0 tran_bg_light_text text-light fs-5" style="border:none;" name="" id="modal_new_content" readonly>${content}</textarea>
                 </div>
             </div>
         `);
-        $(`#${close_modal_name}`).modal("hide")
+        $(`#${close_modal_name}`).modal("hide");
         $('#modal_new').modal("show");
         $('.modal_new_close_btn').attr('onclick',`
             $('#${goto_modal_name}').modal("show");
@@ -945,7 +949,12 @@
             }
             clear_close();
         `);
-        $('.modal_new_confirm_btn').attr('onclick',confirm_fn);
+        if(confirm_fn===""){
+            $('.modal_new_confirm_btn').attr("hidden",true);
+        }
+        else{
+            $('.modal_new_confirm_btn').attr('onclick',confirm_fn);
+        }
     }
 
     function clear_close(){

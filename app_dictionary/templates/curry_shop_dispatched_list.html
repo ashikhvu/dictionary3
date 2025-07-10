@@ -677,6 +677,8 @@
         paid_amnt = parseFloat(delivered_obj.parent().parent().find(".input_total").val()).toFixed(2);
         $("#total_amount").val(paid_amnt);
         $("#paid_amount").attr('max',paid_amnt-1);
+        $("#bal_amount").val('');
+        $("#paid_amount").val('');
     }
 
     function valid_check_paid(element){

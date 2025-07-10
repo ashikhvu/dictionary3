@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -32,6 +34,18 @@ class ProfileModel(models.Model):
 
     def __str__(self):
         return str(f'profile [ {self.user.username} ]')
+    
+@receiver(post_save,sender=User)
+def create_profile(sender,instance,created,**kwargs):
+    if created:
+        ProfileModel.objects.create(
+            user=instance
+        )
+
+@receiver(post_save,sender=User)
+def save_profile(sender,instance,**kwargs):
+    if hasattr(instance,"profilemodel"):
+        instance.profilemodel.save()
 
 class ItemModel(models.Model):
     name = models.CharField(max_length=255)
@@ -146,3 +160,11 @@ class ItemlistModel(models.Model):
 
     def __str__(self):
         return self.name
+    
+class RevenueModel(models.Model):
+    bill = models.ForeignKey(BillModel,on_delete=models.CASCADE,blank=True,null=True)
+    daily_revenue = models.FloatField(default=0.00,blank=True,null=True)
+    created_at = models.DateField(blank=True,null=True)
+
+    # def __str__(self):
+    #     return self.daily_revenue

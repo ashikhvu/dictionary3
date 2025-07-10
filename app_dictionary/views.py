@@ -3,7 +3,7 @@ from django.contrib import messages
 from app_dictionary.models import *
 from .forms import ItemForm,RegisterForm
 from django.contrib.auth.decorators import login_required
-from .models import ItemModel,BillModel,ItemlistModel
+from .models import ItemModel,BillModel,ItemlistModel,RevenueModel
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -336,6 +336,19 @@ def create_order(request):
             )
             item_list.save()
             print("success")
+
+        today = datetime.date().today()
+
+        obj,created = RevenueModel.objects.get_or_create(
+            bill=bill,
+            created_at=today,
+            defaults={
+                "daily_revenue":grand_total
+            }
+        )
+        if not created:
+            obj.save()
+
     return JsonResponse({"success":"order created"},status=201)
 
 @login_required
