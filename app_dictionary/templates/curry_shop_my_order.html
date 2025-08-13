@@ -157,6 +157,16 @@
             padding: 0px;
         }
     }
+    .padd-marg-mob-1{
+        margin-bottom: 5rem;
+        padding: 1rem;
+    }
+    @media screen and (max-width:700px){
+        .padd-marg-mob-1{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
     @media screen and (max-width:1199px) {
         .font_size1{
             font-size: 1rem;
@@ -275,7 +285,8 @@
     }
 </style>
 
-    <div class="container padd-marg-mob-0">
+    <!-- <div class="container padd-marg-mob-0"> -->
+    <div class="padd-marg-mob-1">
         <!-- <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">MY ORDERS</h3> -->
 
         <div class="d-flex  my-2">
@@ -298,7 +309,8 @@
         </div>
 
         {% if bills %}
-            <div class="container1 scrolling_window_height" style="overflow-y: auto;">
+            <!-- <div class="container1 scrolling_window_height" style="overflow-y: auto;"> -->
+            <div class="container1 scrolling_window_height" >
             {% for bill in bills %}
             <div class="container1_tems billbox">
                 <div class="position-relative">
@@ -311,7 +323,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="card b_s bill_box_padding mt-2 bg-dark bg-gradient">
+                <div class="card b_s bill_box_padding mt-2 bg-gradient" style="background-color: black;">
                     <div class="d-flex justify-content-between">
                         <strong class="ts text-light text_size">{{ bill.billno }}</strong>
                         <strong class="ts 
