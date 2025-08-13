@@ -337,7 +337,7 @@ def create_order(request):
             item_list.save()
             print("success")
 
-        today = datetime.date().today()
+        today = datetime.now()
 
         obj,created = RevenueModel.objects.get_or_create(
             bill=bill,
