@@ -4,17 +4,74 @@
 
 {% block body_block %}
 
+<style>
+    .login_card{
+        background-image: linear-gradient(45deg,rgba(0, 0, 0, 0.781),rgba(0, 0, 0, 0.567));
+        padding: 5rem 3rem 10rem 3rem;
+        border-radius: 2%;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: -10px 10px 15px 15px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+    }
+    .login_card_light_border{
+        padding: 1px;
+        background-image: linear-gradient(45deg,rgba(255, 255, 255, 0));
+        border-radius: 2%;
+    }
+    .form-label{
+        color: white;
+    }
+    body{
+        background-image: url("static/images/bg/vegetables-set-left-black-slate_flipped.jpg");
+        background-repeat: none;
+        background-size: cover;
+    }
+    @media screen and (max-width:1024px){
+        .login_card{
+            padding: 5rem 1rem 10rem 1rem;
+        }
+        body{
+            font-size: 0.9rem;
+        }
+        .col_adjust{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+</style>
+
 <div class="container mt-5">
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <a href="{% url 'register' %}" class="my-5">New User Registration</a><br>
-        <button class="btn btn-success my-2" type="submit">LOGIN</button>
-    </form>
+
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col_adjust">
+            <div class="login_card_light_border">
+                <div class="login_card">
+                    <h1 class="text-center mt-5 mb-5 text-light text_shad">Login</h1>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <p class="text-center"><small class="text-light">Forgot password ?</small></p>
+                        <button class="btn btn-success my-2 form-control mt-1" type="submit">Login</button>
+                        <div class="d-flex justify-content-center mt-5">
+                            <a class="fw-lighter text-light pe-2 text-decoration-none">Don't Have an account ?</a>
+                            <a href="{% url 'register' %}" class="text-light text_shad text-decoration-none"> <span class="fw-light">Registration Here</span></a><br>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>  
+
 </div>
 <script>
     $(document).ready(function(){
         $('#user_login').addClass('active');
+
+        $("#id_username").attr("placeholder","username")
+        $("#id_password").attr("placeholder","password")
     })
 </script>
 {% endblock %}

@@ -3,29 +3,98 @@
 {% load crispy_forms_tags %}
 
 {% block body_block %}
+
+<style>
+    .login_card{
+        background-image: linear-gradient(45deg,rgba(0, 0, 0, 0.781),rgba(0, 0, 0, 0.567));
+        padding: 4rem 2rem 9rem 2rem;
+        border-radius: 1%;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: -10px 10px 15px 15px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+    }
+    .login_card_light_border{
+        padding: 1px;
+        background-image: linear-gradient(45deg,rgba(255, 255, 255, 0));
+        border-radius: 1%;
+    }
+    .form-label{
+        color: white;
+    }
+    body{
+        background-image: url("static/images/bg/vegetables-set-left-black-slate_flipped.jpg");
+        background-repeat: none;
+        background-size: cover;
+    }
+    @media screen and (max-width:1024px){
+        .login_card{
+            padding: 5rem 1rem 10rem 1rem;
+        }
+        body{
+            font-size: 0.9rem;
+        }
+        .col_adjust{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+</style>
+
 <div class="container">
-    <form action="" method = "POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <div>
-            <button class="btn btn-success" type="button">Get Current Location</button>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+        
         </div>
-        <div id="otp_input" class="mb-4" hidden>
-            <label for="">Enter the OTP</label>
-            <input id="my_otp" class="form-control" type="text">
-            <small id="valid_true" class="text-danger fw-bolder" hidden><span class="bi bi-x-circle fw-bolder" ></span> Invalid otp entered</small>
-            <small id="valid_false" class="text-success fw-bolder" hidden><span class="bi bi-check-circle fw-bolder" ></span> Validation success</small>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div >
+                <div class="login_card">
+                    <h1 class="text-center mt-5 mb-5 text-light text_shad">Register</h1>
+
+                    <form action="" method = "POST" enctype="multipart/form-data" >
+                        <div style="height: 23rem;overflow: auto;padding: 1rem;">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <div class="mt-4">
+                                <button class="btn btn-primary" type="button"><span class="bi bi-geo-alt"></span>  Get Current Location</button>
+                            </div>
+                        </div>
+                        <div style="padding: 1rem;" class="mt-5">
+                            <div id="otp_input" class="mb-4" hidden>
+                                <label for="">Enter the OTP</label>
+                                <input id="my_otp" class="form-control" type="text">
+                                <small id="valid_true" class="text-danger fw-bolder" hidden><span class="bi bi-x-circle fw-bolder" ></span> Invalid otp entered</small>
+                                <small id="valid_false" class="text-success fw-bolder" hidden><span class="bi bi-check-circle fw-bolder" ></span> Validation success</small>
+                            </div>
+                            <button id="send_otp" class="btn btn-danger form-control" type="button" onclick="send_otp_here()">Send Validation OTP</button>
+                            <div id="validate_num" hidden>
+                                <button class="btn btn-sm text-primary p-0 form-control" style="text-decoration: underline;" type="button" onclick="send_otp_here()">Resend Otp</button><br>
+                                <button class="btn btn-primary mt-2 form-control" type="button" onclick="validate_otp()">Validate OTP</button>
+                            </div>
+                        </div>
+                        <button id="submit_btn" class="btn btn-success" type="submit" hidden>Register</button>
+                    </form>
+
+                </div>
+            </div>
         </div>
-        <button id="send_otp" class="btn btn-primary" type="button" onclick="send_otp_here()">Send Validation OTP</button>
-        <div id="validate_num" hidden>
-            <button class="btn btn-sm text-primary p-0" style="text-decoration: underline;" type="button" onclick="send_otp_here()">Resend Otp</button><br>
-            <button class="btn btn-primary mt-2" type="button" onclick="validate_otp()">Validate OTP</button>
-        </div>
-        <button id="submit_btn" class="btn btn-success" type="submit" hidden>Register</button>
-    </form>
+    </div>
 </div>
 
 <script>
+    // place holder setting
+    $(document).ready(function(){
+        $("#id_first_name").attr("placeholder","First name");
+        $("#id_last_name").attr("placeholder","Last name");
+        $("#id_username").attr("placeholder","User name");
+        $("#id_email").attr("placeholder","User@gmail.com");
+        $("#id_password1").attr("placeholder","Password");
+        $("#id_password2").attr("placeholder","Confirm password");
+        $("#id_phone").attr("placeholder","Phone");
+        $("#id_delivery_address").attr("placeholder","Enter the full address here for delivery");
+
+        $("#id_username_helptext,#id_password1_helptext,#id_password2_helptext,#id_phone_helptext").css({"color":"#b5d8ff"});
+    })
+
     $(document).ready(function(){
         $('#register').addClass('active');
         $('input[name="phone"]').attr('type','number')

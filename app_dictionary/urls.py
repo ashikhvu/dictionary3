@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # dictionary
     path('',views.home,name='home',),
     path('dictionary',views.dictionary,name='dictionary'),
     path('dictionary_add',views.dictionary_add,name='dictionary_add'),
@@ -25,8 +26,10 @@ urlpatterns = [
     path('billitem',views.billitem,name='billitem'),
     path('item_details/<int:pk>',views.item_details,name='item_details'),
     path('delete_item/<int:pk>',views.delete_item,name='delete_item'),
+
     path('login',auth_views.LoginView.as_view(template_name='curry_shop_login.html'),name='login'),
     path('logout',auth_views.LogoutView.as_view(template_name='curry_shop_logout.html'),name='logout'),
+
     path('addbill',views.addbill,name='addbill'),
     path('bill_list',views.bill_list,name='bill_list'),
     path('new_bill_list',views.new_bill_list,name='new_bill_list'),
