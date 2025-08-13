@@ -13,11 +13,11 @@
         box-shadow: -10px 10px 15px 15px rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(5px);
     }
-    .login_card_light_border{
+    /* .login_card_light_border{
         padding: 1px;
         background-image: linear-gradient(45deg,rgba(255, 255, 255, 0));
         border-radius: 2%;
-    }
+    } */
     .form-label{
         color: white;
     }
@@ -28,14 +28,45 @@
     }
     @media screen and (max-width:1024px){
         .login_card{
-            padding: 5rem 1rem 10rem 1rem;
+            padding: 0rem 1rem 5rem 1rem;
         }
-        body{
+        body,input,.form-control,.btn,a,span{
             font-size: 0.9rem;
         }
         .col_adjust{
             margin: 0px;
             padding: 0px;
+        }
+    }
+    .hover_effect{
+        color: white;
+    }
+    .hover_effect:hover,.hover_effect:active{
+        color: rgb(26, 255, 0);
+    }
+    @media screen and (max-width:992px){
+        .mob_viewadjust{
+            display: flex;
+            align-items: center;
+            height: 70vh;
+        }
+        .mob_viewadjust_child{
+            margin: auto;
+        }
+    }
+    .custom_flex{
+        display: flex;
+    }
+    @media screen and (max-width:992px){
+        .custom_flex{
+            display: block;
+            text-align: center;
+        }
+        .custom_flex div:first-child{
+            margin-top: 0rem;
+        }
+        .custom_flex div{
+            margin-top: 0.5rem;
         }
     }
 </style>
@@ -47,19 +78,25 @@
             
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col_adjust">
-            <div class="login_card_light_border">
-                <div class="login_card">
-                    <h1 class="text-center mt-5 mb-5 text-light text_shad">Login</h1>
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <p class="text-center"><small class="text-light">Forgot password ?</small></p>
-                        <button class="btn btn-success my-2 form-control mt-1" type="submit">Login</button>
-                        <div class="d-flex justify-content-center mt-5">
-                            <a class="fw-lighter text-light pe-2 text-decoration-none">Don't Have an account ?</a>
-                            <a href="{% url 'register' %}" class="text-light text_shad text-decoration-none"> <span class="fw-light">Registration Here</span></a><br>
-                        </div>
-                    </form>
+            <div class="mob_viewadjust"  >
+                <div class="mob_viewadjust_child ">
+                    <div class="login_card">
+                        <h1 class="text-center mt-5 mb-5 text-light text_shad">Login</h1>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <p class="text-center"><small class="text-light">Forgot password ?</small></p>
+                            <button class="btn btn-success my-2 form-control mt-1" type="submit">Login</button>
+                            <div class="custom_flex justify-content-center mt-3">
+                                <div>
+                                    <a class="fw-lighter text-light pe-2 text-decoration-none">Don't Have an account ?</a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'register' %}" class="text_shad text-decoration-none hover_effect"> <span class="fw-light">Registration Here</span></a><br>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
