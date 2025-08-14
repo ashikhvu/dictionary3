@@ -103,6 +103,16 @@
         }
     </style>
 
+    <!-- custom body -->
+    <style>
+        body{
+            background-image: url("static/images/bg/bg2.webp");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }        
+    </style>
 
     
     
@@ -283,7 +293,8 @@
     $(document).ready(function(){
         $("#check_status").prop("checked",false);
     })
-    $("#check_status").on("change",function(){        
+    $("#check_status").on("change",function(){    
+        alert($(window).width());    
         if($("#check_status").is(":checked")){
             $("#close_btn").attr("hidden",true);
             $("#open_btn").attr("hidden",false);
