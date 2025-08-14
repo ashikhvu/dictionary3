@@ -73,6 +73,7 @@
             padding: 0;
             margin: 0;
             height: 100vh;
+            left: 0rem;
         }
         .custom_nav .scroll_view{
             overflow-y: auto;
@@ -80,6 +81,26 @@
             padding: 0;
             margin: 0;
          }
+         /* #check_status:checked ~ .custom_nav {
+            left: -10rem;
+            background-color: white;
+         } */
+    </style>
+
+    <!-- navbar my style -->
+    <style>
+        .my_nav{
+            margin-left: 0rem;
+            padding: 0rem;
+        }
+        .my_nav li{
+            text-decoration: none;
+            list-style: none;
+            font-size: 1rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0rem;
+            margin-left: 0rem;
+        }
     </style>
 
 
@@ -96,46 +117,43 @@
         <div class="custom_nav">
             <div >
                 <div class="position-relative">
-                    <div class="position-absolute end-0" style="margin-top: 4.5rem;margin-right: 0.5rem;">
-                        <span class="btn btn-close btn-close-white"></span>
+                    <div class="position-absolute end-0" style="margin-top: 3.8rem;margin-right: 0.5rem;">
+                        <input hidden type="checkbox" id="check_status">
+                        <button id="close_btn" class="btn btn-close btn-close-white" onclick="$('#check_status').click();"></button>
+                        <span id="open_btn" hidden class="fa fa-bars text-light fs-4 pe-4"  onclick="$('#check_status').click();"></span>
                     </div>
                 </div>
                 <div class="">
                     <br><br><br>
                     <a href="/" class="ps-4 fw-bolder text-white text-decoration-none" style="margin-top: 5rem;">
-                        <span class="fs-5 d-none d-sm-inline ">Menu</span>
+                        <span class="fs-5   hiding_texts">Menu</span>
                     </a>
                     <div class="scroll_view mt-4 ps-3">
                         <div class="px-1 mx-2">
 
-                            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                                <!-- <li class="nav-item text-hover">
-                                    <a id="home" href="{% url 'index' %}" class="nav-link align-middle px-0 text-hover">
-                                        <i class="fs-5 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
-                                    </a>
-                                </li> -->
+                            <ul class="my_nav">
                                 <li>
-                                    <a id="profile" href="{% url 'profile' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">My Profile</span> 
+                                    <a id="profile" href="{% url 'profile' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-speedometer2"></i> <span class="ms-1   hiding_texts">My Profile</span> 
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="all_item" href="{% url 'all_items' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 fa fa-cutlery pe-1"></i> <span class="ms-1 d-none d-sm-inline"> All Items</span>
+                                    <a id="all_item" href="{% url 'all_items' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 fa fa-cutlery pe-1"></i> <span class="ms-1   hiding_texts"> All Items</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="my_order" href="{% url 'my_order' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-geo-alt"></i> <span class="ms-1 d-none d-sm-inline">Order Track</span>
+                                    <a id="my_order" href="{% url 'my_order' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-geo-alt"></i> <span class="ms-1   hiding_texts">Order Track</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="billitem" href="{% url 'billitem' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-cart-plus"></i> <span class="ms-1 d-none d-sm-inline">Bill Items</span>
+                                    <a id="billitem" href="{% url 'billitem' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-cart-plus"></i> <span class="ms-1   hiding_texts">Bill Items</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="new_bill_list" href="{% url 'new_bill_list' %}" class="nav-link px-0 align-middle  text-hover">
+                                    <a id="new_bill_list" href="{% url 'new_bill_list' %}" class="nav-link px-0   text-hover">
                                         {%  if new_bill_count > 0 %}
                                         <div class="position-relative">
                                             <div class="position-absolute count_position1 start-0">
@@ -143,69 +161,69 @@
                                             </div>
                                         </div>
                                         {% endif %}
-                                        <i class="fs-4 bi-cart4"></i> <span class="ms-1 d-none d-sm-inline">New Orders</span>
+                                        <i class="fs-4 bi-cart4"></i> <span class="ms-1   hiding_texts">New Orders</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="bill_list" href="{% url 'bill_list' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-cart4"></i> <span class="ms-1 d-none d-sm-inline">Bill List</span>
+                                    <a id="bill_list" href="{% url 'bill_list' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-cart4"></i> <span class="ms-1   hiding_texts">Bill List</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="dispatched_list" href="{% url 'dispatched_list' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi bi-truck"></i> <span class="ms-1 d-none d-sm-inline">Dispatched Orders</span>
+                                    <a id="dispatched_list" href="{% url 'dispatched_list' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi bi-truck"></i> <span class="ms-1   hiding_texts">Dispatched Orders</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="order_history" href="{% url 'order_history' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi bi-clock-history"></i> <span class="ms-1 d-none d-sm-inline">Order History</span>
+                                    <a id="order_history" href="{% url 'order_history' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi bi-clock-history"></i> <span class="ms-1   hiding_texts">Order History</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="add_item" href="{% url 'add_item' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-plus-square"></i> <span class="ms-1 d-none d-sm-inline">Add Item</span>
+                                    <a id="add_item" href="{% url 'add_item' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-plus-square"></i> <span class="ms-1   hiding_texts">Add Item</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="itemlist" href="{% url 'itemlist' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Item List</span>
+                                    <a id="itemlist" href="{% url 'itemlist' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-table"></i> <span class="ms-1   hiding_texts">Item List</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="rejected" href="" data-bs-toggle="collapse" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-exclamation-square"></i> <span class="ms-1 d-none d-sm-inline">Rejected Packs</span> </a>
+                                    <a id="rejected" href="" data-bs-toggle="collapse" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-exclamation-square"></i> <span class="ms-1   hiding_texts">Rejected Packs</span> </a>
                                         <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                         <li class="w-100">
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
+                                            <a href="#" class="nav-link px-0"> <span class=" ">Product</span> 1</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
+                                            <a href="#" class="nav-link px-0"> <span class=" ">Product</span> 2</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
+                                            <a href="#" class="nav-link px-0"> <span class=" ">Product</span> 3</a>
                                         </li>
                                         <li>
-                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
+                                            <a href="#" class="nav-link px-0"> <span class=" ">Product</span> 4</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a id="approved" href="" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Approved Packs</span></a>
+                                    <a id="approved" href="" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-grid"></i> <span class="ms-1   hiding_texts">Approved Packs</span></a>
                                 </li>
                                 <li>
-                                    <a id="itemlist" href="{% url 'home' %}" class="nav-link px-0 align-middle  text-hover">
-                                        <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Dictionary</span>
+                                    <a id="itemlist" href="{% url 'home' %}" class="nav-link px-0   text-hover">
+                                        <i class="fs-4 bi-book"></i> <span class="ms-1   hiding_texts">Dictionary</span>
                                     </a>
                                 </li>
                                 <li>
                                     {% if not user.is_authenticated %}
-                                    <a id="user_login" href="{% url 'login' %}" class="nav-link px-0 align-middle text-hover">
-                                        <i class="fs-4 bi-people "></i> <span class="ms-1 d-none d-sm-inline">Login</span> 
+                                    <a id="user_login" href="{% url 'login' %}" class="nav-link px-0  text-hover">
+                                        <i class="fs-4 bi-people "></i> <span class="ms-1   hiding_texts">Login</span> 
                                     </a>
                                     {% else %}
-                                    <a id="user_logout" href="{% url 'logout' %}" class="nav-link px-0 align-middle text-hover">
-                                        <i class="fs-4 bi-people "></i> <span class="ms-1 d-none d-sm-inline ">Logout</span> 
+                                    <a id="user_logout" href="{% url 'logout' %}" class="nav-link px-0  text-hover">
+                                        <i class="fs-4 bi-people "></i> <span class="ms-1    hiding_texts">Logout</span> 
                                     </a>
                                     {% endif %}
                                 </li>
@@ -218,7 +236,7 @@
                                     {% else %}
                                     <img src="{% static 'images\profile3d.png' %}" alt="hugenerd" width="30" height="30" class="rounded-circle text-hover">
                                     {% endif %}
-                                    <span class="d-none d-sm-inline mx-1">{{ user.username|upper }}</span>
+                                    <span class="  mx-1 hiding_texts">{{ user.username|upper }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                                     <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -240,8 +258,8 @@
 
 
 
-        <div class="col py-3">
-            <br>
+        <div class="col py-3 second_box_position" style="margin-left: 13rem;">
+            <!-- <br> -->
             <div class="overflow-y">
                 <br><br>
                 {% if messages %}
@@ -260,6 +278,28 @@
     </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#check_status").prop("checked",false);
+    })
+    $("#check_status").on("change",function(){        
+        if($("#check_status").is(":checked")){
+            $("#close_btn").attr("hidden",true);
+            $("#open_btn").attr("hidden",false);
+            $(".second_box_position").animate({"margin-left":"5rem"},100);
+            $(".hiding_texts").hide();
+        }
+        else{
+            $(".second_box_position").animate({"margin-left":"13rem"},100);
+            $(".custom_nav").animate({"left":"0rem"});
+            $("#close_btn").attr("hidden",false);
+            $("#open_btn").attr("hidden",true);
+            $(".hiding_texts").show();
+
+        }
+    })
+</script>
 
 </body>
 </html>
