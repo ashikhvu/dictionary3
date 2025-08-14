@@ -63,7 +63,7 @@
             .count_position1{
                 font-size: 0.8rem;
                 margin-top: 0.5rem;
-                margin-left: 0.8rem;
+                margin-right: -0.2rem;
             }
          }
          .custom_nav{
@@ -121,7 +121,9 @@
         <div class="d-flex bar justify-content-between fixed-top" style="margin: 0;background-color: black;">
             <button class="btn" onclick="history.back()"><i class="bi bi-chevron-left text-light ps-3"></i></button>
             <a class="navbar-brand p-3 text-light" href="#"><strong>CURRY_SHOP</strong></a>
-            <div></div>
+            <div>
+                <span id="mob_close_btn" hidden class="fa fa-bars text-light fs-4 pe-4 open_btn pt-3"  onclick="$('#check_status').click();"></span>
+            </div>
         </div>
 
         <div class="custom_nav">
@@ -129,8 +131,8 @@
                 <div class="position-relative">
                     <div class="position-absolute end-0" style="margin-top: 3.8rem;margin-right: 0.5rem;">
                         <input hidden type="checkbox" id="check_status">
-                        <button id="close_btn" class="btn btn-close btn-close-white" onclick="$('#check_status').click();"></button>
-                        <span id="open_btn" hidden class="fa fa-bars text-light fs-4 pe-4"  onclick="$('#check_status').click();"></span>
+                        <button class="btn btn-close btn-close-white close_btn" onclick="$('#check_status').click();"></button>
+                        <span hidden class="fa fa-bars text-light fs-4 pe-4 open_btn"  onclick="$('#check_status').click();"></span>
                     </div>
                 </div>
                 <div class="">
@@ -166,7 +168,7 @@
                                     <a id="new_bill_list" href="{% url 'new_bill_list' %}" class="nav-link px-0   text-hover">
                                         {%  if new_bill_count > 0 %}
                                         <div class="position-relative">
-                                            <div class="position-absolute count_position1 start-0">
+                                            <div class="position-absolute count_position1 end-0">
                                                 <span class="ms-2 badge badge-success bg-success">{{ new_bill_count }}</span>
                                             </div>
                                         </div>
@@ -296,30 +298,34 @@
         if(window_size<992){
             $(".second_box_position").animate({"margin-left":"0px"},100);
         }
+        else{
+            $("#mob_close_btn").hide();
+        }
     })
     $("#check_status").on("change",function(){    
         var window_size = $(window).width();
         if($("#check_status").is(":checked")){
             if(window_size<992){
                 $(".second_box_position").animate({"margin-left":"0px"},100);
+                $(".custom_nav").hide();
             }else{
                 $(".second_box_position").animate({"margin-left":"5rem"},100);
+                $(".hiding_texts").hide();
             }
-            $("#close_btn").attr("hidden",true);
-            $("#open_btn").attr("hidden",false);
-            $(".hiding_texts").hide();
+            $(".close_btn").attr("hidden",true);
+            $(".open_btn").attr("hidden",false);
         }
         else{
             if(window_size<992){
+                $(".custom_nav").show();
                 $(".second_box_position").animate({"margin-left":"0px"},100);
             }else{
+                $(".hiding_texts").show();
                 $(".second_box_position").animate({"margin-left":"13rem"},100);
             }
-            $(".custom_nav").animate({"left":"0rem"});
-            $("#close_btn").attr("hidden",false);
-            $("#open_btn").attr("hidden",true);
+            $(".close_btn").attr("hidden",false);
+            $(".open_btn").attr("hidden",true);
             $(".hiding_texts").show();
-
         }
     })
 </script>
