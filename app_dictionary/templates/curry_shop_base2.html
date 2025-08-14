@@ -68,7 +68,7 @@
          }
          .custom_nav{
             position: fixed;
-            z-index: 1;
+            z-index: 3;
             background-color: black;
             padding: 0;
             margin: 0;
@@ -292,17 +292,29 @@
 <script>
     $(document).ready(function(){
         $("#check_status").prop("checked",false);
+        var window_size = $(window).width();
+        if(window_size<992){
+            $(".second_box_position").animate({"margin-left":"0px"},100);
+        }
     })
     $("#check_status").on("change",function(){    
-        alert($(window).width());    
+        var window_size = $(window).width();
         if($("#check_status").is(":checked")){
+            if(window_size<992){
+                $(".second_box_position").animate({"margin-left":"0px"},100);
+            }else{
+                $(".second_box_position").animate({"margin-left":"5rem"},100);
+            }
             $("#close_btn").attr("hidden",true);
             $("#open_btn").attr("hidden",false);
-            $(".second_box_position").animate({"margin-left":"5rem"},100);
             $(".hiding_texts").hide();
         }
         else{
-            $(".second_box_position").animate({"margin-left":"13rem"},100);
+            if(window_size<992){
+                $(".second_box_position").animate({"margin-left":"0px"},100);
+            }else{
+                $(".second_box_position").animate({"margin-left":"13rem"},100);
+            }
             $(".custom_nav").animate({"left":"0rem"});
             $("#close_btn").attr("hidden",false);
             $("#open_btn").attr("hidden",true);
