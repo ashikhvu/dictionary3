@@ -1,12 +1,14 @@
 {% extends 'curry_shop_base2.html' %}
 
+{% load static %}
+
 {% load crispy_forms_tags %}
 
 {% block body_block %}
 
 <style>
      @media screen and (max-width:992px) {
-        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,button{
             font-size: 0.75rem;
         }
         #profile_img1{
@@ -19,7 +21,7 @@
         }
     }
     @media screen and (max-width:568px) {
-        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,button{
             font-size: 0.60rem;
         }
         #profile_img1{
@@ -30,6 +32,11 @@
         .padding_here{
             padding: 0.5rem 0.5rem;
         }
+    }
+    .image_size{
+        width: 120px;
+        height: 100px;
+        border-radius: 10px;
     }
 </style>
 
@@ -46,9 +53,10 @@
 
         {% if items %}
 
-        <table class="table table-success table-striped table-hover">
+        <table class="table table-dark table-striped table-bordered border-success table-hover">
             <thead>
                 <th>#</th>
+                <th style="width: 6rem;">Image</th>
                 <th>NAME</th>
                 <th>CATEGORY</th>
                 <th>QTY</th>
@@ -58,6 +66,13 @@
                 {% for i in items %}
                 <tr onclick="window.location.href=`{% url 'item_details' i.id %}`">
                     <td>{{ forloop.counter }}</td>
+                    <td>
+                        {% if i.image %}
+                        <img class="image_size" src="{{  i.image.url }}" alt="">
+                        {% else %}
+                        <img class="image_size" src="{% static 'images/empy_food1.jpg' %}" alt="">
+                        {% endif %}
+                    </td>
                     <td>{{ i.name|upper }}</td>
                     <td>{{ i.category|upper }}</td>
                     <td>{{ i.qty }}</td>

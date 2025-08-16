@@ -5,6 +5,64 @@
 
 {% block body_block %}
 
+
+<style>
+    .login_card{
+        background-image: linear-gradient(-45deg,rgba(0, 0, 0, 0.567),rgba(41, 41, 41, 0.492));
+        padding: 5rem 3rem 10rem 3rem;
+        border-radius: 2%;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: -10px 10px 15px 15px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+    }
+    body{
+        background-image: url("static/images/bg/bg2.webp");
+        background-size: cover;
+    }
+    @media screen and (max-width:1024px){
+        .login_card{
+            padding: 0rem 2rem 5rem 2rem;
+        }
+        body,input,.form-control,.btn,a,span{
+            font-size: 0.9rem;
+        }
+        .col_adjust{
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+
+    @media screen and (max-width:992px){
+        .mob_viewadjust{
+            display: flex;
+            align-items: center;
+            height: 70vh;
+        }
+        .mob_viewadjust_child{
+            margin: auto;
+            width: 100vw;
+        }
+    }
+    .custom_flex{
+        display: flex;
+    }
+    @media screen and (max-width:992px){
+        .custom_flex{
+            display: block;
+            text-align: center;
+        }
+        .custom_flex div:first-child{
+            margin-top: 0rem;
+        }
+        .custom_flex div{
+            margin-top: 0.5rem;
+        }
+    }
+    .form_label_style{
+        color: white;
+    }
+</style>
+
 <style>
     .profile_img{
         /* width: 20rem; */
@@ -23,9 +81,9 @@
         padding: 1rem 2rem;
     }
     @media screen and (max-width:992px) {
-        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+        /* .btn,.button,.form-control,input,label{
             font-size: 0.75rem;
-        }
+        } */
         #profile_img1{
             width: 13rem;
             height: 13rem;
@@ -36,9 +94,9 @@
         }
     }
     @media screen and (max-width:568px) {
-        body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+        /* .btn,.button,.form-control,input,label{
             font-size: 0.60rem;
-        }
+        } */
         #profile_img1{
             width: 7rem;
             height: 7rem;
@@ -52,44 +110,51 @@
 
 <div class="container padd-marg-mob-0">
     <!-- <h3 class="bg-dark p-2 text-center text-light rounded mb-3 font_size1">MY PROFILE</h3> -->
+    
+    <!-- <div class="padding_here scrolling_window_height" style="overflow-y: auto;"> -->
+    <div class="mob_viewadjust">
+        <div class="mob_viewadjust_child">
 
-    <div class="padding_here scrolling_window_height" style="overflow-y: auto;">
-        <div class="text-center rounded">
-            <img id="profile_img1" class="profile_img" {% if user_data.profile_image %} src="{{ user_data.profile_image.url }}" {% else %} src="{% static 'images\profile3d.png' %}"{% endif %} alt="">
-            <div class="d-flex justify-content-center mt-2">
-                <small><button class="btn btn-sm btn-danger me-1" type="button" onclick="remove_image()"><span class="bi bi-x-square"></span> Remove</button></small>
-                <button class="btn btn-sm btn-secondary" type="button" onclick="$('#image_field').click()"><label class="bi bi-pencil-square"></label> Edit</button>
+            <div class="login_card pt-4 mt-3">
+                <!-- <h1 class="text-center mt-5 mb-5 text-light text_shad">MY PROFILE</h1> -->
+                <div class="text-center rounded">
+                    <img id="profile_img1" class="profile_img" {% if user_data.profile_image %} src="{{ user_data.profile_image.url }}" {% else %} src="{% static 'images\profile3d.png' %}"{% endif %} alt="">
+                    <div class="d-flex justify-content-center mt-2">
+                        <small><button class="btn btn-sm btn-danger me-1" type="button" onclick="remove_image()"><span class="bi bi-x-square"></span> Remove</button></small>
+                        <button class="btn btn-sm btn-secondary" type="button" onclick="$('#image_field').click()"><label class="bi bi-pencil-square"></label> Edit</button>
+                    </div>
+                </div>
+                
+                <form id="form_here" action="{% url 'update_userdata' user.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label class="fw-bold text-uppercase mt-3 form_label_style" for="">username</label>
+                    <input class="form-control" type="text" name="username" value="{{ user_data.username }}" id="" readonly>
+        
+                    <label class="fw-bold text-uppercase mt-3 form_label_style" for="">first name</label>
+                    <input class="form-control" type="text" name="first_name" value="{{ user_data.first_name }}" id="" readonly>
+        
+                    <label class="fw-bold text-uppercase mt-3 form_label_style" for="">last name</label>
+                    <input class="form-control" type="text" name="last_name" value="{{ user_data.last_name }}" id="" readonly>
+        
+                    <label class="fw-bold text-uppercase mt-3 form_label_style" for="">email</label>
+                    <input class="form-control" type="email" name="email" value="{{ user_data.email }}" id="" readonly>
+        
+                    <label class="fw-bold text-uppercase mt-3 form_label_style" for="">phone</label>
+                    <input class="form-control" type="text" name="phone" value="{{ user_data.phone }}" id="" readonly>
+        
+                    <label class="fw-bold text-uppercase mt-3 form_label_style" for="">address</label>
+                    <textarea class="form-control" rows="5" name="address" id="" placeholder="Enter you address here">{{ user_data.delivery_address|upper }}</textarea>
+        
+                    <input type="file" name="image_field" id="image_field" hidden>
+        
+                    <div class="text-center">
+                        <a class="btn btn-outline-danger mt-4" type="button" href="">Cancel</a>
+                        <button class="btn btn-outline-primary mt-4" type="submit">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
-        
 
-        <form id="form_here" action="{% url 'update_userdata' user.id %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label class="fw-bold text-uppercase mt-3" for="">username</label>
-            <input class="form-control" type="text" name="username" value="{{ user_data.username }}" id="" readonly>
-
-            <label class="fw-bold text-uppercase mt-3" for="">first name</label>
-            <input class="form-control" type="text" name="first_name" value="{{ user_data.first_name }}" id="" readonly>
-
-            <label class="fw-bold text-uppercase mt-3" for="">last name</label>
-            <input class="form-control" type="text" name="last_name" value="{{ user_data.last_name }}" id="" readonly>
-
-            <label class="fw-bold text-uppercase mt-3" for="">email</label>
-            <input class="form-control" type="email" name="email" value="{{ user_data.email }}" id="" readonly>
-
-            <label class="fw-bold text-uppercase mt-3" for="">phone</label>
-            <input class="form-control" type="text" name="phone" value="{{ user_data.phone }}" id="" readonly>
-
-            <label class="fw-bold text-uppercase mt-3" for="">address</label>
-            <textarea class="form-control" rows="5" name="address" id="">{{ user_data.delivery_address|upper }}</textarea>
-
-            <input type="file" name="image_field" id="image_field" hidden>
-
-            <div class="text-center">
-                <a class="btn btn-outline-danger mt-4" type="button" href="">Cancel</a>
-                <button class="btn btn-outline-primary mt-4" type="submit">Save Changes</button>
-            </div>
-        </form>
     </div>
 
    <!-- Modal 2 -->

@@ -35,6 +35,11 @@
         height: 8rem;
         opacity: 0.8;
     }
+    .container1_tems:hover .large_img{
+        opacity: 1;
+        transform: rotate(-45deg);
+    }
+
     .container1{
         display: grid;
         grid-template-rows: repeat(1,25rem);
@@ -43,8 +48,27 @@
     .container1_tems{
         margin: 0.1rem;
     }
-    @media screen and (max-width:992px){
+    @media screen and (max-width:1200px){
         .container1{
+            grid-template-rows: repeat(1,24.9rem);
+            grid-template-columns: repeat(3,1fr);
+        }
+    }
+    @media screen and (max-width:1046px) {
+        .container1{
+            grid-template-rows: repeat(1,23.7rem);
+            grid-template-columns: repeat(3,1fr);
+        }
+        .text_size{
+            font-size: 0.75rem;
+        }
+        .text_size1{
+            font-size: 0.75rem;
+        }
+    }
+    @media screen and (max-width:992px) {
+        .container1{
+            grid-template-rows: repeat(1,23.7rem);
             grid-template-columns: repeat(3,1fr);
         }
     }
@@ -61,7 +85,7 @@
     }
     @media screen and (max-width:460px) {
         .container1{
-            grid-template-rows: repeat(1,16rem);
+            grid-template-rows: repeat(1,16.5rem);
             grid-template-columns: repeat(2,1fr);
         }
         .text_size{
@@ -72,12 +96,12 @@
             /* width: 75%; */
         }
     }
-    @media screen and (max-width:700px){
+    /* @media screen and (max-width:700px){
         .padd-marg-mob-0{
             margin: 0px;
             padding: 0px;
         }
-    }
+    } */
     @media screen and (max-width:1199px) {
         .font_size1{
             font-size: 1.3rem;
@@ -201,7 +225,8 @@
         </div>
 
         {% if bills %}
-            <div class="container1 scrolling_window_height" style="overflow-y: auto;">
+            <!-- <div class="container1 scrolling_window_height" style="overflow-y: auto;"> -->
+            <div class="container1">
                 <!-- <div class="row"> -->
             {% for bill in bills %}
             <div class="container1_tems billbox ">
@@ -215,7 +240,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="card b_s bill_box_padding mt-2 bg-dark bg-gradient">
+                <div class="card b_s bill_box_padding mt-2 bg-gradient" style="background-color: black;">
                     <div class="d-flex justify-content-between">
                         <strong class="ts text-light text_size">{{ bill.billno }}</strong>
                         <strong class="ts text-light text_size">{% if bill.user.phone %}XX {{ bill.user.phone|cropback:4 }}{% else %}None{% endif %}</strong>

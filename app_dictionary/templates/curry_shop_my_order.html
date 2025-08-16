@@ -9,9 +9,9 @@
 
 <style>
     @media screen and (max-width:992px) {
-       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+       /* body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,button{
            font-size: 0.75rem;
-       }
+       } */
        #profile_img1{
            width: 13rem;
            height: 13rem;
@@ -22,9 +22,9 @@
        }
    }
    @media screen and (max-width:568px) {
-       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+       /* body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,button{
            font-size: 0.60rem;
-       }
+       } */
        #profile_img1{
            width: 7rem;
            height: 7rem;
@@ -66,10 +66,6 @@
         transform: rotate(0deg); /* Optional: Rotate back to normal on hover */
         transition: opacity 0.2s ease, transform 0.2s ease; /* Added transform for smooth rotation */
     }
-    .container1_tems:hover .large_img{
-        opacity: 1;
-        transform: rotate(-45deg);
-    }
     .large_img_position{
         margin-top: 3rem;
         margin-left: -7.5rem;
@@ -104,6 +100,10 @@
             margin-left: -3.5rem;
         }
     }
+    .container1_tems:hover .large_img{
+        opacity: 1;
+        transform: rotate(-45deg);
+    }
 
     .container1{
         display: grid;
@@ -133,7 +133,7 @@
     }
     @media screen and (max-width:992px) {
         .container1{
-            grid-template-rows: repeat(1,21.3rem);
+            grid-template-rows: repeat(1,21.7rem);
             grid-template-columns: repeat(3,1fr);
         }
     }
@@ -150,7 +150,7 @@
     }
     @media screen and (max-width:460px) {
         .container1{
-            grid-template-rows: repeat(1,14.4rem);
+            grid-template-rows: repeat(1,14.7rem);
             grid-template-columns: repeat(2,1fr);
         }
         .text_size{
@@ -161,12 +161,12 @@
             /* width: 75%; */
         }
     }
-    @media screen and (max-width:700px){
+    /* @media screen and (max-width:700px){
         .padd-marg-mob-0{
             margin: 0px;
             padding: 0px;
         }
-    }
+    } */
     .padd-marg-mob-1{
         margin-bottom: 5rem;
         padding: 2rem;
@@ -295,14 +295,25 @@
     }
 </style>
 
+    <style>
+        .black_input,.black_input:active,.black_input:focus{
+            background-color: rgba(0, 0, 0, 0.363);
+            color: #c6c6c6;
+            border: 1px solid gray;
+        }
+        .black_input::placeholder{
+            color: #b1b1b1;
+        }
+    </style>
+
     <!-- <div class="container padd-marg-mob-0"> -->
-    <div class="padd-marg-mob-1">
+    <div class="container padd-marg-mob-0">
         <!-- <h3 class="bg-dark p-2 text-center text-light rounded mb-4 font_size1">MY ORDERS</h3> -->
 
         <div class="d-flex">
             <div class="input-group me-1">
-                <span class="input-group-text bi bi-search icon_size"></span>
-                <input id="search_bill_filter" class="form-control search_font_size" placeholder="search here .." type="text">
+                <span class="input-group-text bi bi-search icon_size black_input"></span>
+                <input id="search_bill_filter" class="form-control search_font_size black_input" placeholder="search here .." type="text">
             </div>
             <div class="me-1">
                 <a class="btn btn-dark bg-gradient font_size1 btn_width1" href="{% url 'change_sort' %}">
@@ -320,7 +331,7 @@
 
         {% if bills %}
             <!-- <div class="container1 scrolling_window_height" style="overflow-y: auto;"> -->
-            <div class="container1 scrolling_window_height" >
+            <div class="container1" >
             {% for bill in bills %}
             <div class="container1_tems billbox">
                 <div class="position-relative">

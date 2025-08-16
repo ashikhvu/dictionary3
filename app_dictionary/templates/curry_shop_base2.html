@@ -101,6 +101,29 @@
             padding-left: 0rem;
             margin-left: 0rem;
         }
+        .menu_title_margin{
+            margin-top: 0.5rem;
+            margin-left: 0.2rem;
+        }
+        .margin_open_btn{
+            margin-right: 1.55rem;
+        }
+        .navbar_iconset_margin{
+            margin-top: 3.7rem;
+            margin-right: 0.5rem;
+        }
+        @media screen and (max-width:992px) {
+            .navbar_iconset_margin{
+                margin-top: 3.7rem;
+                margin-right: 0.5rem;
+            }
+        }
+        @media screen and (max-width:568px) {
+            .navbar_iconset_margin{
+                margin-top: 3.8rem;
+                margin-right: 0.5rem;
+            }
+        }
     </style>
 
     <!-- custom body -->
@@ -129,17 +152,21 @@
         <div class="custom_nav">
             <div >
                 <div class="position-relative">
-                    <div class="position-absolute end-0" style="margin-top: 3.8rem;margin-right: 0.5rem;">
+                    <div class="position-absolute end-0 navbar_iconset_margin">
                         <input hidden type="checkbox" id="check_status">
-                        <button class="btn btn-close btn-close-white close_btn" onclick="$('#check_status').click();"></button>
-                        <span hidden class="fa fa-bars text-light fs-4 pe-4 open_btn"  onclick="$('#check_status').click();"></span>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-close btn-close-white close_btn" onclick="$('#check_status').click();"></button>
+                            <span hidden class="fa fa-bars text-light fs-4 open_btn margin_open_btn"  onclick="$('#check_status').click();"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="">
-                    <br><br><br>
-                    <a href="/" class="ps-4 fw-bolder text-white text-decoration-none" style="margin-top: 5rem;">
-                        <span class="fs-5   hiding_texts">Menu</span>
-                    </a>
+                    <br><br>
+                    <div class="menu_title_margin">
+                        <a href="/" class="ps-4 fw-bolder text-white text-decoration-none">
+                            <span class="fs-5   hiding_texts">Menu</span>
+                        </a>
+                    </div>
                     <div class="scroll_view mt-4 ps-3">
                         <div class="px-1 mx-2">
 

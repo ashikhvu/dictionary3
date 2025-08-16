@@ -31,6 +31,7 @@ class ProfileModel(models.Model):
         ('deccending','deccending')
     )
     order_sort = models.CharField(max_length=255,default='accending',choices=order_sort_choices)
+    navbar_icon_closed = models.BooleanField(default=False)
 
     def __str__(self):
         return str(f'profile [ {self.user.username} ]')

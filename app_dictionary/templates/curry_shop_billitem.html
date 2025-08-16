@@ -6,9 +6,9 @@
 
 <style>
     @media screen and (max-width:992px) {
-       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+       /* body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,button{
            font-size: 0.75rem;
-       }
+       } */
        #profile_img1{
            width: 13rem;
            height: 13rem;
@@ -19,9 +19,9 @@
        }
    }
    @media screen and (max-width:568px) {
-       body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,span,button{
+       /* body,h1,h2,h3,h4,h5,h6,input,.form-control,.btn,button{
            font-size: 0.60rem;
-       }
+       } */
        #profile_img1{
            width: 7rem;
            height: 7rem;
@@ -41,6 +41,25 @@
     }
 </style>
 
+<style>
+    .black_input,.black_input:active,.black_input:focus{
+        background-color: rgba(0, 0, 0, 0.363);
+        color: #c6c6c6;
+        border: 1px solid gray;
+    }
+    .black_input::placeholder{
+        color: #b1b1b1;
+    }
+    @media screen and (max-width:460px){
+        .search_font_size{
+            font-size: 0.65rem;
+        }
+        .icon_size{
+            font-size: 0.65rem;
+        }
+    }
+</style>
+
 <form action="{% url 'addbill' %}" method="POST">
     {% csrf_token %}
     <div class="container">
@@ -50,8 +69,8 @@
     
         <div class="position-relative" style="z-index: 1;">
             <div class="mb-3 input-group mt-2">
-                <span class="input-group-text bi bi-search"></span>
-                <input id="search_item_id" class="form-control" type="text" placeholder="search here .."  onclick="$('#toggle_dropdown').toggle()">
+                <span class="input-group-text bi bi-search black_input"></span>
+                <input id="search_item_id" class="form-control search_font_size black_input" type="text" placeholder="search here .."  onclick="$('#toggle_dropdown').toggle()">
             </div>
             <div class="position-absolute w-100">
                 <div id="toggle_dropdown" class="custom-dropdown rounded text-light" style="overflow-y: auto;" onclick="$('#toggle_dropdown').toggle()">

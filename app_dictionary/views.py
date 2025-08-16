@@ -238,11 +238,16 @@ def addbill(request):
 @login_required
 def new_bill_list(request):
     bills = BillModel.objects.filter(accept_status='notaccepted')
+
+    bills,itemlist,user_data,profile = date_sort(request,bills)
+
     new_bill_count = bills.count()
     itemlist = ItemlistModel.objects.all()
     return render(request,'curry_shop_new_bill_list.html',{
         'bills':bills,
         'itemlist':itemlist,
+        "user_data":user_data,
+        "profile":profile,
         'new_bill_count':new_bill_count})
 
 @login_required
@@ -404,18 +409,15 @@ def order_call(request):
     return redirect('bill_list')
 
 @login_required
-def my_order(request):
+def sort_function(request):
     user = request.user
     try:
-        profile = ProfileModel.objects.get(user=request.user.id)
+        profile = ProfileModel.objects.get(user=user.id)
     except ProfileModel.DoesNotExist:
-        return render(request,'curry_shop_my_order.html',{
-                                                      'bills':None,
-                                                      'itemlist':None,
-                                                      'profile':None,
-                                                      'user_data':None})
-    all_bills = BillModel.objects.filter(user=user).order_by('-ordered_time')
-    user_data = User.objects.get(id=request.user.id)
+        return None,None,None,None
+
+    all_bills = BillModel.objects.filter(user=user.id).order_by('-ordered_time')
+
     if profile.order_filter == 'date':
         if profile.order_sort == 'accending':
             bills = all_bills.order_by('ordered_time')
@@ -430,6 +432,40 @@ def my_order(request):
         else:
             bills = list(bills_except_rejected_and_delivered.order_by('-ordered_time'))+list(delevered.order_by('-ordered_time'))+list(rejected.order_by('-ordered_time'))
     itemlist = ItemlistModel.objects.filter(bill__in=bills)
+    user_data = User.objects.get(id=user.id)
+
+    return bills,itemlist,user_data,profile
+
+@login_required
+def date_sort(request,bills):
+    user = request.user
+    try:
+        profile = ProfileModel.objects.get(user=user.id)
+    except ProfileModel.DoesNotExist:
+        return None,None,None,None
+
+    if profile.order_filter == 'date':
+        if profile.order_sort == 'accending':
+            bills = bills.order_by('ordered_time')
+        else:
+            bills = bills.order_by('-ordered_time')
+    itemlist = ItemlistModel.objects.filter(bill__in=bills)
+    user_data = User.objects.get(id=user.id)
+    return bills,itemlist,user_data,profile
+
+
+@login_required
+def my_order(request):
+    # user = request.user
+    bills,itemlist,user_data,profile = sort_function(request)
+    # print(user_data)
+
+    if profile==None:
+        return render(request,'curry_shop_my_order.html',{
+                                                      'bills':None,
+                                                      'itemlist':None,
+                                                      'profile':None,
+                                                      'user_data':None})
     return render(request,'curry_shop_my_order.html',{
                                                       'bills':bills,
                                                       'itemlist':itemlist,
