@@ -77,23 +77,44 @@
     }
 </style>
 
+<style>
+    .loader {
+        border: 3px solid #f3f3f3; /* Light grey */
+        border-top: 3px solid #000000; /* Blue */
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-        
+        <img src="" alt="">
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="mob_viewadjust">
                 <div class="mob_viewadjust_child">
                     <div class="login_card">
                         <h1 class="text-center mt-5 reg_text_marg text-light text_shad">Register</h1>
-
+                        
                         <form action="" method = "POST" enctype="multipart/form-data" >
                             <div style="height: 23rem;overflow: auto;padding: 1rem;">
                                 {% csrf_token %}
                                 {{ form|crispy }}
                                 <div class="mt-4">
-                                    <button class="btn btn-primary" type="button"><span class="bi bi-geo-alt"></span>  Get Current Location</button>
+                                    <button class="btn btn-primary" type="button" onclick="get_current_location()"><span class="bi bi-geo-alt"></span>  Get Current Location</button>
+                                </div>
+                            </div>
+                            <div class="position-relative z-1">
+                                <div class="position-absolute start-50 bottom-50" style="margin-bottom: 10rem;margin-left: -1rem;">
+                                    <div id="loader_id" class="loader"></div>
                                 </div>
                             </div>
                             <div style="padding: 1rem;" class="mt-5">
@@ -103,11 +124,12 @@
                                     <small id="valid_true" class="text-danger fw-bolder" hidden><span class="bi bi-x-circle fw-bolder" ></span> Invalid otp entered</small>
                                     <small id="valid_false" class="text-success fw-bolder" hidden><span class="bi bi-check-circle fw-bolder" ></span> Validation success</small>
                                 </div>
-                                <button id="send_otp" class="btn btn-danger form-control" type="button" onclick="send_otp_here()">Send Validation OTP</button>
+                                <button id="submit_btn" class="btn btn-danger w-100" type="submit">Register</button>
+                                <!-- <button id="send_otp" class="btn btn-danger form-control" type="button" onclick="send_otp_here()">Send Validation OTP</button>
                                 <div id="validate_num" hidden>
                                     <button class="btn btn-sm text-primary p-0 form-control" style="text-decoration: underline;" type="button" onclick="send_otp_here()">Resend Otp</button><br>
                                     <button class="btn btn-primary mt-2 form-control" type="button" onclick="validate_otp()">Validate OTP</button>
-                                </div>
+                                </div> -->
                                 <div class="custom_flex justify-content-center mt-3">
                                     <div>
                                         <a class="fw-lighter text-light pe-2 text-decoration-none">Already have an Account ?</a>
@@ -117,7 +139,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <button id="submit_btn" class="btn btn-success" type="submit" hidden>Register</button>
                         </form>
 
                     </div>
@@ -200,6 +221,62 @@
         }
         else{
             alert('Please enter the otp here !')
+        }
+    }
+</script>
+
+
+<script>
+
+    var loc_response = null;
+    var latitude = 0;
+    var longitude = 0;
+
+    $(document).ready(function(){
+        $("#loader_id").hide();
+    });
+
+    function get_current_location(){
+
+        $("#loader_id").show();
+        const addressBox = $("#id_delivery_address");
+    
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lng = position.coords.longitude;
+                    const lat = position.coords.latitude;
+
+                    latitude = lat;
+                    longitude = lng;
+    
+                    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+    
+                    try {
+                        const response = await fetch(url);
+                        loc_response = response;
+                        const data = await response.json();
+                        const address = data.display_name || "Address not found";
+                        addressBox.val(address);
+                    } catch (err) {
+                        $("#loader_id").hide();
+                        addressBox.val('Failed to get address');
+                        console.error('Error fetching address:', err);
+                        $('#loading_food_img').attr('hidden',true);
+                    }finally{
+                        $("#loader_id").hide();
+                        $('#confirm_order_id').prop('disabled',false);
+                        $('#loading_food_img').attr('hidden',true);
+                    }
+                },
+                (error) => {
+                    addressBox.val('Location access denied');
+                    console.error(error);
+                    $('#loading_food_img').attr('hidden',true);
+                }
+            );
+        } else {
+            addressBox.val('Geolocation not supported');
         }
     }
 </script>
