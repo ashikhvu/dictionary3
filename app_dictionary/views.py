@@ -254,10 +254,14 @@ def new_bill_list(request):
 def bill_list(request):
     new_bill_count = BillModel.objects.filter(accept_status='notaccepted').count()
     bills = BillModel.objects.filter(accept_status='accepted').exclude(dispatched_status='dispatched')
-    itemlist = ItemlistModel.objects.all()
+
+    bills,itemlist,user_data,profile = date_sort(request,bills)
+    
     return render(request,'curry_shop_bill_list.html',{
         'bills':bills,
         'itemlist':itemlist,
+        "user_data":user_data,
+        "profile":profile,
         'new_bill_count':new_bill_count})
 
 
@@ -530,10 +534,12 @@ def dispatch_order(request):
 def dispatched_list(request):
     bills = BillModel.objects.filter(dispatched_status='dispatched').exclude(delevered_status='delevered')
     new_bill_count = BillModel.objects.filter(accept_status='notaccepted').count()
-    itemlist = ItemlistModel.objects.filter(bill__in=bills)
+    bills,itemlist,user_data,profile = date_sort(request,bills)
     return render(request,'curry_shop_dispatched_list.html',{'bills':bills,
-                                                             'itemlist':itemlist,
-                                                             'new_bill_count':new_bill_count})
+                                                            'itemlist':itemlist,
+                                                            "user_data":user_data,
+                                                            "profile":profile,
+                                                            'new_bill_count':new_bill_count})
 
 @login_required
 def delevered_order(request):
@@ -602,10 +608,12 @@ def delevered_order(request):
 def order_history(request):
     bills = BillModel.objects.filter(delevered_status='delevered')
     new_bill_count = BillModel.objects.filter(accept_status='notaccepted').count()
-    itemlist = ItemlistModel.objects.filter(bill__in=bills)
+    bills,itemlist,user_data,profile = date_sort(request,bills)
     return render(request,'curry_shop_order_history.html',{'bills':bills,
-                                                             'itemlist':itemlist,
-                                                             'new_bill_count':new_bill_count})
+                                                            'itemlist':itemlist,
+                                                            "user_data":user_data,
+                                                            "profile":profile,
+                                                            'new_bill_count':new_bill_count})
 
 @login_required
 def change_filter(request):

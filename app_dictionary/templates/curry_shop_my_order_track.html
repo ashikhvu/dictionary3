@@ -20,7 +20,7 @@
         }
     }
     .progress_bar1{
-        border-left: 5px solid rgb(9, 185, 9);
+        border-left: 5px solid rgb(255, 255, 255);
         height: 4.5rem;
         border-radius: 5px;
         margin-top: 2.3rem;
@@ -28,7 +28,7 @@
         border-radius: 50%;
     }
     .progress_bar{
-        border-left: 5px solid rgb(179, 227, 179);
+        border-left: 5px solid rgb(92, 92, 92);
         height: 4.5rem;
         border-radius: 5px;
         margin-top: 2.3rem;
@@ -49,9 +49,20 @@
         font-size: 1.5rem;
     }
     /* @media screen and (min-width:768px) and (max-width:971px) { */
+    .text_size3{
+        color: white;
+    }
+    .text_size3_dim{
+        color: rgb(104, 104, 104);
+    }
+    .text_size4{
+        color: white;
+    }
+    .text_size4_dim{
+        color: rgb(104, 104, 104);
+    }
     @media screen and (max-width:971px) {
         .progress_bar1{
-            border-left: 5px solid rgb(9, 185, 9);
             height: 4.5rem;
             border-radius: 5px;
             margin-top: 2.3rem;
@@ -59,7 +70,6 @@
             border-radius: 50%;
         }
         .progress_bar{
-            border-left: 5px solid rgb(179, 227, 179);
             height: 4.5rem;
             border-radius: 5px;
             margin-top: 2rem;
@@ -83,8 +93,8 @@
     }
     .thin_border{
         margin-top: 1rem;
-        border: 2px solid green;
-        box-shadow: 1px 1px 5px 5px rgba(0, 128, 0, 0.4);
+        border: 2px solid rgb(255, 255, 255);
+        box-shadow: 1px 1px 5px 5px rgba(255, 255, 255, 0.4);
         border-radius: 10px;
         padding: 1rem;
         background-color: rgb(32, 32, 32);
@@ -118,6 +128,21 @@
         border-right: 2px solid rgb(255, 255, 255);
         border-radius: 10px;
     }
+    .custom_text{
+        color: rgb(255, 255, 255);
+    }
+    .custom_text1{
+        color: rgb(107, 107, 107);
+    }
+    .custom_bg{
+        background-color: rgba(0, 0, 0, 0.459);
+    }
+    .ts1{
+        text-shadow: 1px 1px 1px black;
+    }
+    .bs1{
+        box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.352);
+    }
 </style>
 
 <div class="container">
@@ -134,21 +159,31 @@
                                 progress_bar1
                             {% else %}
                                 progress_bar
-                            {% endif %}"></div>
+                            {% endif %} bs1"></div>
                         </div>
                     </div>
                     <div class="col-2 col-md-1">
                         <div class="
                         {% if bill.delevered_time %}
-                            bi bi-geo-alt-fill
-                        {% else %}
-                            bi bi-geo-alt
-                        {% endif %} text-success progress_icons"></div>
+                            bi bi-geo-alt-fill custom_text
+                        {% else %} 
+                            bi bi-geo-alt custom_text1
+                        {% endif %} ts1 progress_icons"></div>
                     </div>
                     <div class="col-10">
-                        <h5 class="pt-2 text_size3">Delivered</h5>
+                        <h5 class="pt-2 
+                        {% if bill.delevered_time %}
+                            text_size3
+                        {% else %} 
+                            text_size3_dim
+                        {% endif %} ts1">Delivered</h5>
                         <div class="d-flex">
-                            <small class="text_size4">{% if bill.delevered_time %}{{ bill.delevered_time }}{% else %}time and date{% endif %}</small>
+                            <small class="
+                            {% if bill.delevered_time %}
+                                text_size4
+                            {% else %} 
+                                text_size4_dim
+                            {% endif %} ts1">{% if bill.delevered_time %}{{ bill.delevered_time }}{% else %}time and date{% endif %}</small>
                             {% if bill.delevered_time %}
                                 <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
                             {% else %}
@@ -166,23 +201,33 @@
                                 progress_bar1
                             {% else %}
                                 progress_bar
-                            {% endif %}
+                            {% endif %} bs1
                             "></div>
                         </div>
                     </div>
                     <div class="col-2 col-md-1">
                         <div class="
                         {% if bill.dispatched_time %}
-                            bi bi-truck-front-fill
+                            bi bi-truck-front-fill custom_text
                         {% else %}
-                            bi bi-truck-front
+                            bi bi-truck-front custom_text1
                         {% endif %}
-                         text-success progress_icons"></div>
+                          progress_icons ts1"></div>
                     </div>
                     <div class="col-10">
-                        <h5 class="pt-2 text_size3">Food Item Dispatched</h5>
+                        <h5 class="pt-2 
+                        {% if bill.dispatched_time %}
+                            text_size3
+                        {% else %} 
+                            text_size3_dim
+                        {% endif %} ts1">Food Item Dispatched</h5>
                         <div class="d-flex">
-                            <small class="text_size4">{% if bill.dispatched_time %}{{ bill.dispatched_time }}{% else %}time and date{% endif %}</small>
+                            <small class="
+                            {% if bill.dispatched_time %}
+                                text_size4
+                            {% else %} 
+                                text_size4_dim
+                            {% endif %} ts1">{% if bill.dispatched_time %}{{ bill.dispatched_time }}{% else %}time and date{% endif %}</small>
                             {% if bill.dispatched_time %}
                                 <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
                             {% else %}
@@ -200,22 +245,32 @@
                                 progress_bar1
                             {% else %}
                                 progress_bar
-                            {% endif %}
+                            {% endif %} bs1
                             "></div>
                         </div>
                     </div>
                     <div class="col-2 col-md-1">
                         <div class="
                         {% if bill.packed_time %}
-                            bi bi-box-fill
+                            bi bi-box-fill custom_text
                         {% else %}
-                            bi bi-box
-                        {% endif %} text-success progress_icons"></div>
+                            bi bi-box custom_text1
+                        {% endif %} ts1 progress_icons"></div>
                     </div>
                     <div class="col-10">
-                        <h5 class="pt-2 text_size3">Food Item Packed</h5>
+                        <h5 class="pt-2 
+                        {% if bill.packed_time %}
+                            text_size3
+                        {% else %} 
+                            text_size3_dim
+                        {% endif %} ts1">Food Item Packed</h5>
                         <div class="d-flex">
-                            <small class="text_size4">{% if bill.packed_time %}{{ bill.packed_time }}{% else %}time and date{% endif %}</small>
+                            <small class="
+                            {% if bill.packed_time %}
+                                text_size4
+                            {% else %} 
+                                text_size4_dim
+                            {% endif %} ts1">{% if bill.packed_time %}{{ bill.packed_time }}{% else %}time and date{% endif %}</small>
                             {% if bill.packed_time %}
                             <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
                             {% else %}
@@ -233,21 +288,31 @@
                                 progress_bar1
                             {% else %}
                                 progress_bar
-                            {% endif %}"></div>
+                            {% endif %} bs1"></div>
                         </div>
                     </div>
                     <div class="col-2 col-md-1">
                         <div class="
                         {% if bill.prepared_time %}
-                            bi bi-cup-hot-fill
+                            bi bi-cup-hot-fill custom_text
                         {% else %}
-                            bi bi-cup-hot
-                        {% endif %} text-success progress_icons"></div>
+                            bi bi-cup-hot custom_text1
+                        {% endif %} ts1 progress_icons"></div>
                     </div>
                     <div class="col-10">
-                        <h5 class="pt-2 text_size3">Food Item Prepared</h5>
+                        <h5 class="pt-2 
+                        {% if bill.prepared_time %}
+                            text_size3
+                        {% else %} 
+                            text_size3_dim
+                        {% endif %} ts1">Food Item Prepared</h5>
                         <div class="d-flex">
-                            <small class="text_size4">{% if bill.prepared_time %}{{ bill.prepared_time }}{% else %}time and date{% endif %}</small>
+                            <small class="
+                            {% if bill.prepared_time %}
+                                text_size4
+                            {% else %} 
+                                text_size4_dim
+                            {% endif %} ts1">{% if bill.prepared_time %}{{ bill.prepared_time }}{% else %}time and date{% endif %}</small>
                             {% if bill.prepared_time %}
                                 <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
                             {% else %}
@@ -265,21 +330,31 @@
                                 progress_bar1
                             {% else %}
                                 progress_bar
-                            {% endif %}"></div>
+                            {% endif %} bs1"></div>
                         </div>
                     </div>
                     <div class="col-2 col-md-1">
                         <div class="
                         {% if bill.accept_status == 'accepted' %}
-                            bi bi-clipboard-check-fill
+                            bi bi-clipboard-check-fill custom_text
                         {% else %}
-                            bi bi-clipboard-check
-                        {% endif %} text-success progress_icons"></div>
+                            bi bi-clipboard-check custom_text1
+                        {% endif %} ts1 progress_icons"></div>
                     </div>
                     <div class="col-10">
-                        <h5 class="pt-2 text_size3">Order Accepeted</h5>
+                        <h5 class="pt-2 
+                        {% if bill.accept_status == 'accepted' %}
+                            text_size3
+                        {% else %} 
+                            text_size3_dim
+                        {% endif %} ts1">Order Accepeted</h5>
                         <div class="d-flex">
-                            <small class="text_size4">{% if bill.accept_or_reject_time %}{{ bill.accept_or_reject_time }}{% else %}time and date{% endif %}</small>
+                            <small class="
+                            {% if bill.accept_status == 'accepted' %}
+                                text_size4
+                            {% else %} 
+                                text_size4_dim
+                            {% endif %} ts1">{% if bill.accept_or_reject_time %}{{ bill.accept_or_reject_time }}{% else %}time and date{% endif %}</small>
                             {% if bill.accept_status == "accepted" %}
                             <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
                             {% else %}
@@ -291,12 +366,12 @@
 
                 <div class="row mt-5">
                     <div class="col-2 col-md-1">
-                        <div class="bi bi-cart-fill text-success progress_icons"></div>
+                        <div class="bi bi-cart-fill custom_text progress_icons"></div>
                     </div>
                     <div class="col-10">
-                        <h5 class="pt-2 text_size3">Order Placed</h5>
+                        <h5 class="pt-2 text_size3 ts1">Order Placed</h5>
                         <div class="d-flex">
-                            <small class="text_size4">{% if bill.ordered_time %}{{ bill.ordered_time }}{% else %}time and date{% endif %}</small>
+                            <small class="text_size4 ts1">{% if bill.ordered_time %}{{ bill.ordered_time }}{% else %}time and date{% endif %}</small>
                             {% if bill.ordered_time %}
                             <small><small class="bi bi-check text-light bg_check_round ms-2"></small></small>
                             {% else %}
@@ -308,12 +383,12 @@
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-            <div class="thin_border bg-gradient bg-dark">
+            <div class="thin_border bg-gradient custom_bg">
                 <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Expected Delivery Time</label>
                 <h6 class="ts mt-2 side_border p-2">{% if bill.expected_delevery_time %} {{ bill.expected_delevery_time }} {% else %} Will let you know the time soon {% endif %}</h6>
             </div>
 
-            <div class="thin_border bg-gradient bg-dark">
+            <div class="thin_border bg-gradient custom_bg">
                 <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Delivery Address</label>
                 <h6 class="ts mt-2 side_border p-2">{% if bill %} {{ bill.delivery_address|upper }} {% else %} Please add delivery address {% endif %}</h6>
                 {% if bill.current_loc %}
@@ -328,7 +403,7 @@
                 {% endif %}
             </div>
 
-            <div class="thin_border bg-gradient">
+            <div class="thin_border bg-gradient custom_bg">
                 <label class="fw-bolder ts" style="text-transform: uppercase;" for="">Order</label>
                 <div class="side_border mt-2">
                     <!-- ************************ -->
