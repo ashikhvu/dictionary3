@@ -324,6 +324,11 @@
         $("#check_status").prop("checked",false);
         if(window_size<992){
             $(".second_box_position").animate({"margin-left":"0px"},100);
+            $(".second_box_position").animate({"margin-left":"0px"},100);
+            $(".custom_nav").hide();
+            $(".close_btn").attr("hidden",true);
+            $(".open_btn").attr("hidden",false);
+            $("#check_status").prop("checked",true);
         }
         else{
             $("#mob_close_btn").hide();
