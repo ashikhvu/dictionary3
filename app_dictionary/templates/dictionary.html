@@ -42,13 +42,13 @@
               </div>
               <div class="col-md-3 my-2">
                 <div class="d-flex justify-content-between">
-                  <button class="btn btn-sm btn-info text-uppercase" data-toggle="modal" data-target="#modal1" >confirm delete</button>
+                  <!-- <button class="btn btn-sm btn-info text-uppercase" data-toggle="modal" data-target="#modal1" >confirm delete</button> -->
                   <input id="letter_here" class="form-control text-center"style="width: 3rem;" minlength="1" maxlength="1" type="text" oninput="$(this).val($(this).val().toUpperCase())">
                   <a class="btn btn-sm btn-dark" href="" id="hide">Test Reset</a>
                   <button class="btn btn-sm btn-dark" onclick="reandomTest()" >R Test</button>
                   <button class="btn btn-sm btn-dark" onclick="normalTest()" >N Test</button>
                   <!-- <input class="form-control text-center"style="width: 3rem;" minlength="1" maxlength="1" type="text" oninput="$(this).val($(this).val().toUpperCase())"> -->
-                  <!-- <a class="btn btn-warning" href="{% url 'delete_all' %}">Delete All</a> -->
+                  <a class="btn btn-warning" onclick="confirm('Do you want to delete the dictionary ? ')" href="{% url 'delete_all' %}">Delete All</a>
                 </div>
               </div>
 
@@ -61,11 +61,11 @@
                     <span data-dismiss="modal" class="">x</span>
                   </div>
                   <div class="modal-body">
-                    <p class="">Do you want to delete all the dictionary contents ? </p>
+                    <p class="text-danger">Do you want to delete all the dictionary contents ? </p>
                   </div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button class="btn btn-success"  >Yes</button>
+                    <a class="btn btn-success"  href="{% url 'delete_all' %}">Yes</a>
                   </div>
                 </div>
               </div>

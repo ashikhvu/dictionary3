@@ -709,3 +709,37 @@ def reset_product_availability_status(requet):
             i.item_finished = False
             i.save()
     return redirect('all_items')
+
+import requests
+from bs4 import BeautifulSoup
+
+def fetch_words_from_web(request):
+
+    url = "https://meaninginhindi.net/english-malayalam-words-and-their-meaning/"
+    response = requests.get(url)
+
+    soup = BeautifulSoup(response.text,"html.parser")
+    
+    table = soup.find("table")
+    if not table:
+        print("Table not available")
+    
+    rows = table.find_all("tr")
+
+    word_set = []
+
+    for i in rows[1:]:
+        cols = i.find_all("td")
+        if len(cols)>=2:
+            eng = cols[0].get_text(strip=True)
+            mal = cols[1].get_text(strip=True)
+            word_set.append(
+                dictionary_model(
+                    eng_word=eng,
+                    mal_word=mal
+                )
+            )
+
+    dictionary_model.objects.bulk_create(word_set)
+
+    return redirect("dictionary")

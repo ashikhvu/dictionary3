@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # dictionary
-    path('',views.home,name='home',),
+    path('',views.home,name='home'),
     path('dictionary',views.dictionary,name='dictionary'),
     path('dictionary_add',views.dictionary_add,name='dictionary_add'),
     path('add_words',views.add_words,name='add_words'),
@@ -17,6 +17,7 @@ urlpatterns = [
     path('prev_word/<int:pk>',views.prev_word,name='prev_word'),
     path('edit_word/<int:pk>',views.edit_word,name='edit_word'),
     path('save_word/<int:pk>',views.save_word,name='save_word'),
+    path('fetch_words_from_web',views.fetch_words_from_web,name='fetch_words_from_web'),
     # currey shop
     path('index',auth_views.LoginView.as_view(template_name='curry_shop_login.html'),name='index'),
     path('register',views.register,name='register'),
