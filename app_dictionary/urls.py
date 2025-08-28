@@ -18,6 +18,7 @@ urlpatterns = [
     path('edit_word/<int:pk>',views.edit_word,name='edit_word'),
     path('save_word/<int:pk>',views.save_word,name='save_word'),
     path('fetch_words_from_web',views.fetch_words_from_web,name='fetch_words_from_web'),
+    path('text_to_speach',views.text_to_speach,name='text_to_speach'),
     # currey shop
     path('index',auth_views.LoginView.as_view(template_name='curry_shop_login.html'),name='index'),
     path('register',views.register,name='register'),

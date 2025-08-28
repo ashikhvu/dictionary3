@@ -723,7 +723,6 @@ def fetch_words_from_web(request):
     table = soup.find("table")
     if not table:
         print("Table not available")
-    
     rows = table.find_all("tr")
 
     word_set = []
@@ -743,3 +742,24 @@ def fetch_words_from_web(request):
     dictionary_model.objects.bulk_create(word_set)
 
     return redirect("dictionary")
+
+from gtts import gTTS
+from io import BytesIO
+
+def text_to_speach(request):
+    texts = [
+        "നമസ്കാരം", 
+        "സുഖമാണോ", 
+        "ഞാൻ ഡ്ജാങോയാണ് സംസാരിക്കുന്നത്"
+    ]
+
+    audio_stram = []
+
+    for i in texts:
+        tts = gTTS(text=i,lang="ml")
+        audio_fp = BytesIO()    
+        tts.write_to_fp(audio_fp)
+        audio_fp.seek(0)
+        audio_stram.append(audio_fp)
+
+    return redirect("home",{"audio":audio_stram})

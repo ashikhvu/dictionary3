@@ -90,8 +90,8 @@
                     <input name="mal[]" class="fw-bolder form-control input_color1 bg-light font_size" type="text" value="{{ i.mal_word }}" readonly>
                   </td>
                   <td class="format2" hidden> 
-                    <input name="eng[]" class="fw-bolder form-control input_color1 engText bg-light font_size" type="text" value="{{ i.eng_word | upper }}" readonly>
-                    <input name="mal[]" class="fw-bolder form-control input_color1 bg-light font_size" type="text" value="{{ i.mal_word }}" readonly>
+                    <input name="eng[]" class="fw-bolder form-control input_color1 engText bg-light font_size eng_txt" type="text" value="{{ i.eng_word | upper }}" readonly>
+                    <input name="mal[]" class="fw-bolder form-control input_color1 bg-light font_size mal_txt" type="text" value="{{ i.mal_word }}" readonly>
                   </td>
                 </tr>
                 {% endfor %}
@@ -195,24 +195,35 @@
       }
 
       function normalTest(){
-        // console.log('inside function')
-        var interval=setInterval(function(){
-        // console.log('inside interval')
-          if(index_register.length>0){
-            console.log('inside if')
-            removing_number1 = index_register[0]
-            if(removing_number1!=null){
-              $('.diction_field').hide()
-              $(`#index${removing_number1}`).show();
-            }
-            index_register.shift();
-            // console.log(`index =${index_register[0]}\n`)
-          }
-          else{
-            // console.log('inside else')
-            clearInterval(interval);
-          }
-        }, 2000);
+
+        var text_arr = [];
+
+        $.each($(".format2"),function(index,col){
+          $(col).find("input").each(function(ind,ele){
+            text_arr.push($(ele).val());
+          })
+        })
+
+        console.log(text_arr);
+
+        // $.ajax({
+        //   url :"{% url 'text_to_speach' %}"
+        // });
+
+        // var interval=setInterval(function(){
+        //   if(index_register.length>0){
+        //     console.log('inside if')
+        //     removing_number1 = index_register[0]
+        //     if(removing_number1!=null){
+        //       $('.diction_field').hide()
+        //       $(`#index${removing_number1}`).show();
+        //     }
+        //     index_register.shift();
+        //   }
+        //   else{
+        //     clearInterval(interval);
+        //   }
+        // }, 2000);
 
       }
 
